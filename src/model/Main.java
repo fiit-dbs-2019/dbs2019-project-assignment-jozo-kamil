@@ -10,9 +10,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../view/add_car.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/login.fxml"));
         primaryStage.setTitle("Vehicle List");
         primaryStage.setScene(new Scene(root, 600, 600));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
