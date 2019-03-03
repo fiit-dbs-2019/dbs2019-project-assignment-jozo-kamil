@@ -1,0 +1,72 @@
+* {
+    black: #000000;
+    orange: #FFA500;
+    white: #FFFFFF;
+}
+
+.root {
+    -fx-background-color: black;
+}
+
+.button {
+    -fx-font: 16px "Lucida Console";
+    -fx-text-fill: black;
+    -fx-padding: 5;
+    -fx-background-color: orange;
+    //-fx-effect: dropshadow(one-pass-box, black, 14, 0.0 , 6, 0);
+    //-fx-background-radius: 10;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+}
+
+.label {
+    -fx-font-family: "Lucida Console";          // zabezpeci ze budu vsetky texty velkosti 16
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+}
+
+.choice-box {
+    -fx-font: 16px "Lucida Console";
+    -fx-text-fill: black;             // pozor pri vybere
+    -fx-text-alignment: left;
+    -fx-background-color: orange;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: black;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: orange;
+}
+
+.choice-box .menu-item > .label {
+    -fx-text-fill: white;
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: black;
+}
+
+.text-field {
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-background-color: orange;
+    -fx-text-fill: black;
+}
+
+.spinner {
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-background-color: orange;
+    -fx-text-fill: black;
+}
+
+.date-picker {
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-background-color: orange;
+    -fx-text-fill: black;
+}
