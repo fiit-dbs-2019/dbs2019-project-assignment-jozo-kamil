@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -12,18 +13,17 @@ import java.util.ResourceBundle;
 
 public class AddCarController implements Initializable {
 
-
-    public ChoiceBox chboxBrand;
-    public ChoiceBox chboxModel;
-    public DatePicker datePickerYear;
-    public TextField textFieldMileage;
-    public ChoiceBox chboxFuel;
-    public Spinner spinnerEngineCapacity;
-    public Spinner spinnerEnginePower;
-    public ChoiceBox chboxGearBox;
-    public ChoiceBox chboxCarBody;
-    public ChoiceBox chboxColor;
-    public TextField textFieldLicensePlate;
+    @FXML private ChoiceBox chboxBrand;
+    @FXML private ChoiceBox chboxModel;
+    @FXML private DatePicker datePickerYear;
+    @FXML private TextField textFieldMileage;
+    @FXML private ChoiceBox chboxFuel;
+    @FXML private Spinner spinnerEngineCapacity;
+    @FXML private Spinner spinnerEnginePower;
+    @FXML private ChoiceBox chboxGearBox;
+    @FXML private ChoiceBox chboxCarBody;
+    @FXML private ChoiceBox chboxColor;
+    @FXML private TextField textFieldLicensePlate;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
