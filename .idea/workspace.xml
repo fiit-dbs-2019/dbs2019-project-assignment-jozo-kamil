@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7ff0ca42-02fd-4dbb-a922-9f1ba33e90e4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/dbs_projekt/controller/AddCarController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/dbs_projekt/controller/AddCarController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/dbs_projekt/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/dbs_projekt/controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/dbs_projekt/view/create_agreement.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/dbs_projekt/view/create_agreement.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/AddCarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/AddCarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="7ff0ca42-02fd-4dbb-a922-9f1ba33e90e4" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
