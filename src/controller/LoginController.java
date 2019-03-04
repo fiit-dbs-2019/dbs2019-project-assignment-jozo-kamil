@@ -14,10 +14,9 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-
+    @FXML private AnchorPane rootPane;
     @FXML private PasswordField fieldPassword;
     @FXML private TextField fieldLogin;
-    @FXML private AnchorPane rootPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
