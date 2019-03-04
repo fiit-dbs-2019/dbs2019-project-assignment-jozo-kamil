@@ -24,10 +24,14 @@ public class CreateAgreementController implements Initializable {
 
     }
 
-    public void btnLegalPushed(ActionEvent actionEvent) {
+    public void btnLegalPushed(ActionEvent actionEvent) throws IOException {
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/legal_person.fxml"));
+        rootPane.getChildren().setAll(pane);
     }
 
-    public void btnNaturalPushed(ActionEvent actionEvent) {
+    public void btnNaturalPushed(ActionEvent actionEvent) throws IOException{
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/natural_person.fxml"));
+        rootPane.getChildren().setAll(pane);
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
