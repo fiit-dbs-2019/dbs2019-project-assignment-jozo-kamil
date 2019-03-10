@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddCarController implements Initializable {
+public class EmployeeAddCarController implements Initializable {
 
     @FXML private AnchorPane rootPane;
     @FXML private ChoiceBox chboxBrand;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeAddNaturalPersonController">
+   <children>
+      <Label fx:id="labelFirstName" layoutX="15.0" layoutY="15.0" text="Meno" />
+      <Label layoutX="81.0" layoutY="137.0" text="Meno:" />
+      <Label fx:id="labelLastName" layoutX="70.0" layoutY="15.0" text="Priezvisko" />
+      <Label fx:id="labelDate" layoutX="510.0" layoutY="15.0" text="Date" />
+      <Button layoutX="520.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnBackPushed" prefHeight="20.0" prefWidth="55.0" text="Späť" />
+      <Label layoutX="78.0" layoutY="192.0" text="Priezvisko:" />
+      <Label layoutX="74.0" layoutY="245.0" text="Číslo OP:" />
+      <Label layoutX="81.0" layoutY="293.0" text="Adresa:" />
+      <Button layoutX="231.0" layoutY="436.0" mnemonicParsing="false" onAction="#btnAddPushed" prefHeight="28.0" prefWidth="139.0" text="Pridať" />
+      <Label layoutX="78.0" layoutY="342.0" text="Číslo účtu:" />
+      <Label layoutX="78.0" layoutY="392.0" text="Tel. číslo:" />
+      <TextField fx:id="textFieldFirstName" layoutX="194.0" layoutY="132.0" />
+      <TextField fx:id="textFieldLastName" layoutX="194.0" layoutY="186.0" />
+      <TextField fx:id="textFieldID" layoutX="194.0" layoutY="240.0" />
+      <TextField fx:id="textFieldAdress" layoutX="194.0" layoutY="288.0" />
+      <TextField fx:id="textFieldBankAccount" layoutX="194.0" layoutY="337.0" />
+      <TextField fx:id="textFieldPhone" layoutX="194.0" layoutY="387.0" />
+   </children>
+</AnchorPane>

@@ -9,28 +9,27 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class CreateAgreementController implements Initializable {
+public class EmployeeAddCustomerController implements Initializable {
     @FXML private AnchorPane rootPane;
-    @FXML private Label labelDateFrom;
-    @FXML private Label labelDateTo;
     @FXML private Label labelFirstName;
-    @FXML private Label labelSecondName;
+    @FXML private Label labelLastName;
     @FXML private Label labelDate;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        labelDate.setText(LocalDate.now().toString());
     }
 
-    public void btnLegalPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/legal_person.fxml"));
+    public void btnLegalPersonPushed(ActionEvent actionEvent) throws IOException{
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_add_legal_person.fxml"));
         rootPane.getChildren().setAll(pane);
     }
 
-    public void btnNaturalPushed(ActionEvent actionEvent) throws IOException{
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/natural_person.fxml"));
+    public void btnNaturalPersonPushed(ActionEvent actionEvent) throws IOException{
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_add_natural_person.fxml"));
         rootPane.getChildren().setAll(pane);
     }
 

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NaturalPersonController implements Initializable {
+public class EmployeeNaturalPersonController implements Initializable {
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
     @FXML private Label labelSecondName;
