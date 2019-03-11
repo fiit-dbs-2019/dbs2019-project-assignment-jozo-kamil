@@ -10,22 +10,27 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class AdminSearchEmployeeController implements Initializable {
 
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
-    @FXML private Label labelSecondName;
+    @FXML private Label labelLastName;
     @FXML private Label labelDate;
     @FXML private ListView listView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // labelFirstName.setText();
-        //labelSecondName.setText();
-        labelDate.setText(LocalDate.now().toString());
+        updateHeader();
+    }
+
+    public void updateHeader() {
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
+        labelDate.setText(time);
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {

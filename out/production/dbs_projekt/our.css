@@ -25,7 +25,7 @@
     -fx-text-alignment: left;
 }
 
-.choice-box {
+.combo-box {
     -fx-font: 16px "Lucida Console";
     -fx-text-fill: black;             // pozor pri vybere
     -fx-text-alignment: left;
@@ -34,20 +34,9 @@
     -fx-background-insets: 0;
 }
 
-.choice-box .context-menu {
+.combo-box-popup .list-view .list-cell {
     -fx-background-color: black;
-}
-
-.choice-box .menu-item:focused {
-    -fx-background-color: orange;
-}
-
-.choice-box .menu-item > .label {
     -fx-text-fill: white;
-}
-
-.choice-box .menu-item:focused > .label {
-    -fx-text-fill: black;
 }
 
 .text-field {

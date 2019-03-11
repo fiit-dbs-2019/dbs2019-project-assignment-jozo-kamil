@@ -12,10 +12,10 @@
       <HBox alignment="CENTER" layoutX="38.0" layoutY="250.0" prefHeight="100.0" prefWidth="525.0" spacing="50.0">
          <children>
             <Button mnemonicParsing="false" onAction="#btnAddEmployeePushed" prefHeight="90.0" prefWidth="225.0" text="Pridať zamestnanca" />
-            <Button mnemonicParsing="false" onAction="#btnSearchEmployeePushed" prefHeight="90.0" prefWidth="225.0" text="Vyhľadať zamestnanca" />
+            <Button fx:id="btnSearchEmployee" mnemonicParsing="false" onAction="#btnSearchEmployeePushed" prefHeight="90.0" prefWidth="225.0" text="Vyhľadať zamestnanca" />
          </children>
       </HBox>
-      <VBox layoutX="1.0" prefHeight="70.0" prefWidth="600.0">
+      <VBox prefHeight="70.0" prefWidth="600.0">
          <children>
             <HBox prefHeight="38.0" prefWidth="600.0">
                <children>
@@ -26,7 +26,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="labelSecondName" prefHeight="21.0" prefWidth="120.0" text="Label" />
+                        <Label fx:id="labelLastName" prefHeight="21.0" prefWidth="120.0" text="Label" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" top="10.0" />

@@ -20,7 +20,6 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     public void log_in(ActionEvent actionEvent) throws IOException {
