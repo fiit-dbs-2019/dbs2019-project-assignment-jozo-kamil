@@ -7,9 +7,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import persistancemanagers.PersonManager;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -33,7 +35,12 @@ public class EmployeeAddNaturalPersonController implements Initializable {
         rootPane.getChildren().setAll(pane);
     }
 
-    public void btnAddPushed(ActionEvent actionEvent) {
+    public void btnAddPushed(ActionEvent actionEvent) throws SQLException,IOException{
+        PersonManager pm = new PersonManager();
+        pm.addNewNaturalPersonToDatabase(getID(),getFirstName(),getLastName(),getAdress(),getBankAccount(),getPhone());
+
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+        rootPane.getChildren().setAll(pane);
     }
 
     public String getFirstName(){
