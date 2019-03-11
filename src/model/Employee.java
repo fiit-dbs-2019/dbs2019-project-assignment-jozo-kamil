@@ -7,19 +7,19 @@ public class Employee {
     private String login;
     private String password;
     private String phoneNumber;
-    private String bankAccount;
+    private String type;
 
     public Employee() {
 
     }
 
-    public Employee(String firstName, String lastName, String login, String password, String phoneNumber, String bankAccount) {
+    public Employee(String firstName, String lastName, String login, String password, String phoneNumber, String type) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.bankAccount = bankAccount;
+        this.type = type;
     }
 
     public String getFirstName() {
@@ -62,11 +62,11 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getBankAccount() {
-        return bankAccount;
+    public String getType() {
+        return type;
     }
 
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
+    public void setType(String type) {
+        this.type = type;
     }
 }

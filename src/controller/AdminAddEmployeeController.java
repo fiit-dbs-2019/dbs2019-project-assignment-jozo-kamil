@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import persistancemanagers.EmployeeManager;
 import persistancemanagers.EnumManager;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class AdminAddEmployeeController implements Initializable {
 
+
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
@@ -29,14 +31,19 @@ public class AdminAddEmployeeController implements Initializable {
     @FXML private TextField textFieldLastName;
     @FXML private TextField textFieldLogin;
     @FXML private TextField textFieldPassword;
+    @FXML private TextField textPhoneNumber;
     @FXML private ComboBox comboBoxType;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updateHeader();
+        addItemsComboBox();
+    }
 
-        EnumManager em = new EnumManager();
+    public void addItemsComboBox() {
         try {
+            EnumManager em = new EnumManager();
+
             em.employeeTypeEnum(comboBoxType,"employee_type");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,11 +71,20 @@ public class AdminAddEmployeeController implements Initializable {
         return textFieldPassword.getText();
     }
 
+    public String getPhone() { return textPhoneNumber.getText(); }
+
     public String getType() {
         return comboBoxType.getSelectionModel().getSelectedItem().toString();
     }
 
-    public void btnAddEmployeePushed(ActionEvent actionEvent) throws IOException {
+    public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException {
+        EmployeeManager em = new EmployeeManager();
+        if(em.AddNewEmployeeToDatabase(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
+            System.out.println("OK");
+        } else {
+            System.out.println("BAD");
+        }
+
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {

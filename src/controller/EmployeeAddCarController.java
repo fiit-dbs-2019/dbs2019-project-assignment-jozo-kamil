@@ -40,8 +40,9 @@ public class EmployeeAddCarController implements Initializable {
     }
 
     public void addItemsComboBox() {
-        EnumManager em = new EnumManager();
         try {
+            EnumManager em = new EnumManager();
+
             em.employeeTypeEnum(comboBoxBrand,"car_brand");
             em.employeeTypeEnum(comboBoxCarBody,"car_body_style");
             em.employeeTypeEnum(comboBoxGearBox,"car_gear_box");
