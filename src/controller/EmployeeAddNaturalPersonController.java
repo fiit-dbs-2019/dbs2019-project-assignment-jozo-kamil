@@ -35,4 +35,28 @@ public class EmployeeAddNaturalPersonController implements Initializable {
 
     public void btnAddPushed(ActionEvent actionEvent) {
     }
+
+    public String getFirstName(){
+        return textFieldFirstName.getText();
+    }
+
+    public String getLastName() {
+        return textFieldLastName.getText();
+    }
+
+    public String getID(){
+        return textFieldID.getText();
+    }
+
+    public String getAdress(){
+        return textFieldAdress.getText();
+    }
+
+    public String getBankAccount(){
+        return textFieldBankAccount.getText();
+    }
+
+    public String getPhone(){
+        return textFieldPhone.getText();
+    }
 }

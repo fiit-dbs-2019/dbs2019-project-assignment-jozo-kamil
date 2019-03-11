@@ -34,4 +34,28 @@ public class EmployeeAddLegalPersonController implements Initializable {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_add_customer.fxml"));
         rootPane.getChildren().setAll(pane);
     }
+
+    public String getIco(){
+        return textFieldIco.getText();
+    }
+
+    public String getDic(){
+        return textFieldDic.getText();
+    }
+
+    public String getName(){
+        return textFieldName.getText();
+    }
+
+    public String getAdress(){
+        return textFieldAdress.getText();
+    }
+
+    public String getBankAccount(){
+        return textFieldBankAccount.getText();
+    }
+
+    public String getPhone(){
+        return textFieldPhone.getText();
+    }
 }
