@@ -9,11 +9,11 @@ public class NaturalPerson {
     private String bankAccount;
     private String phoneNumber;
 
-    NaturalPerson(){
+    public NaturalPerson(){
 
     }
 
-    NaturalPerson(String firstName, String lastName, String op, String adress, String bankAccount, String phoneNumber){
+    public NaturalPerson(String firstName, String lastName, String op, String adress, String bankAccount, String phoneNumber){
         this.adress=adress;
         this.bankAccount=bankAccount;
         this.firstName=firstName;

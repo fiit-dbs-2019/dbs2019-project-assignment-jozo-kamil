@@ -9,11 +9,11 @@ public class LegalPerson {
     private String bankAccount;
     private String phoneNumber;
 
-    LegalPerson(){
+    public LegalPerson(){
 
     }
 
-    LegalPerson(String ico,String dic,String name,String adress,String bankAccount,String phoneNumber){
+    public LegalPerson(String ico,String dic,String name,String adress,String bankAccount,String phoneNumber){
         this.ico=ico;
         this.dic=dic;
         this.name=name;
