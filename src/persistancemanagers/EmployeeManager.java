@@ -43,6 +43,7 @@ public class EmployeeManager {
 
                 return true;
             } else {
+                System.out.println("Employee login already exists");
                 return false;
             }
 

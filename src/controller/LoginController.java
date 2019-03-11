@@ -4,9 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+
+import javafx.stage.Stage;
 import model.Employee;
 import persistancemanagers.EmployeeManager;
 
@@ -23,6 +28,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
     }
 
     public String getLogin() {
@@ -44,8 +50,21 @@ public class LoginController implements Initializable {
                 AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
                 rootPane.getChildren().setAll(pane);
             } else {
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                rootPane.getChildren().setAll(pane);
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("../view/employee_menu.fxml"));
+                Parent parent = loader.load();
+
+                Scene tableViewScene = new Scene(parent);
+
+                //access the controller and call a method
+                EmployeeMenuController controller = loader.getController();
+                controller.initData(employee);
+
+                //This line gets the Stage information
+                Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+
+                window.setScene(tableViewScene);
+                window.show();
             }
         }
     }
