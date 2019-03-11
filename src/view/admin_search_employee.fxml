@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminSearchEmployeeController">
    <children>
-      <VBox layoutX="6.0" prefHeight="70.0" prefWidth="600.0">
+      <VBox prefHeight="70.0" prefWidth="600.0">
          <children>
             <HBox prefHeight="38.0" prefWidth="600.0">
                <children>
@@ -21,7 +21,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="labelSecondName" prefHeight="21.0" prefWidth="120.0" text="Label" />
+                        <Label fx:id="labelLastName" prefHeight="21.0" prefWidth="120.0" text="Label" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" top="10.0" />

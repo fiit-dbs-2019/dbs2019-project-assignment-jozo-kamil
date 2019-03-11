@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeAddCarController">
     <children>
-        <HBox alignment="CENTER" layoutY="10.0" prefHeight="61.0" prefWidth="600.0">
+        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
             <children>
                 <Label alignment="CENTER" prefHeight="85.0" prefWidth="442.0" text="Pridanie záznamu o aute">
                     <font>
@@ -22,7 +22,7 @@
                 </Label>
             </children>
         </HBox>
-        <HBox layoutX="57.0" layoutY="84.0" prefHeight="460.0" prefWidth="380.0" spacing="40.0">
+        <HBox layoutX="74.0" layoutY="60.0" prefHeight="460.0" prefWidth="380.0" spacing="40.0">
             <children>
                 <VBox prefHeight="460.0" prefWidth="145.0" spacing="10.0">
                     <children>
@@ -60,14 +60,14 @@
                 </VBox>
             </children>
         </HBox>
-        <VBox layoutX="472.0" layoutY="522.0" prefHeight="78.0" prefWidth="120.0">
+        <VBox layoutX="466.0" layoutY="499.0" prefHeight="78.0" prefWidth="120.0">
             <children>
                 <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="102.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#btnBackPushed" text="Späť" />
                     </children>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="74.0" prefWidth="128.0">
+                <HBox alignment="BOTTOM_CENTER" prefHeight="74.0" prefWidth="128.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#btnConfirmPushed" prefHeight="38.0" prefWidth="120.0" text="Pridať" />
                     </children>

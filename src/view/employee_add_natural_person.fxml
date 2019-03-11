@@ -12,8 +12,8 @@
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeAddNaturalPersonController">
    <children>
       <Button layoutX="530.0" layoutY="15.0" mnemonicParsing="false" onAction="#btnBackPushed" prefHeight="20.0" prefWidth="55.0" text="Späť" />
-      <Button layoutX="231.0" layoutY="421.0" mnemonicParsing="false" onAction="#btnAddPushed" prefHeight="28.0" prefWidth="139.0" text="Pridať" />
-      <HBox layoutX="116.0" layoutY="98.0" prefHeight="300.0" prefWidth="300.0">
+      <Button layoutX="232.0" layoutY="474.0" mnemonicParsing="false" onAction="#btnAddPushed" prefHeight="28.0" prefWidth="139.0" text="Pridať" />
+      <HBox layoutX="151.0" layoutY="150.0" prefHeight="300.0" prefWidth="300.0">
          <children>
             <VBox prefHeight="300.0" prefWidth="150.0">
                <children>
@@ -25,7 +25,7 @@
                   <Label prefHeight="50.0" text="Tel. číslo:" />
                </children>
             </VBox>
-            <VBox prefHeight="263.0" prefWidth="150.0" spacing="25.0">
+            <VBox prefHeight="263.0" prefWidth="150.0" spacing="18.0">
                <children>
                   <TextField fx:id="textFieldFirstName" prefHeight="30.0" />
                   <TextField fx:id="textFieldLastName" prefHeight="30.0" />
@@ -35,12 +35,12 @@
                   <TextField fx:id="textFieldPhone" prefHeight="30.0" />
                </children>
                <padding>
-                  <Insets bottom="40.0" top="14.0" />
+                  <Insets top="10.0" />
                </padding>
             </VBox>
          </children>
       </HBox>
-      <Label alignment="CENTER" layoutX="66.0" layoutY="43.0" prefHeight="72.0" prefWidth="468.0" text="Pridanie žiadaťeľa">
+      <Label alignment="CENTER" layoutX="66.0" layoutY="78.0" prefHeight="72.0" prefWidth="468.0" text="Pridanie žiadaťeľa">
          <font>
             <Font name="Lucida Console" size="30.0" />
          </font>
