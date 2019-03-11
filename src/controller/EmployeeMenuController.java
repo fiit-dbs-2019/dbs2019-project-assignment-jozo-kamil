@@ -10,7 +10,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class EmployeeMenuController implements Initializable {
@@ -25,14 +27,14 @@ public class EmployeeMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        labelDate.setText(LocalDate.now().toString());
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
+        labelDate.setText(time);
         ee.setDisable(true);
         aa.setDisable(true);
     }
 
     public void btnSearchingPushed(ActionEvent actionEvent) throws IOException {
-        //AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/searching.fxml"));
-        //rootPane.getChildren().setAll(pane);
+
     }
 
     public void btnCreateCarPushed(ActionEvent actionEvent) throws IOException {
@@ -41,8 +43,7 @@ public class EmployeeMenuController implements Initializable {
     }
 
     public void btnCreateAgreement(ActionEvent actionEvent) throws IOException {
-        //AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/create_agreement.fxml"));
-        //rootPane.getChildren().setAll(pane);
+
     }
 
     public void btnLogoutPushed(ActionEvent actionEvent) throws IOException {

@@ -46,12 +46,12 @@
                 </HBox>
                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#log_in" prefHeight="40.0" prefWidth="124.0" text="Prihlásenie" />
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#log_in" prefHeight="40.0" prefWidth="144.0" text="Prihlásiť sa" />
                     </children>
                 </HBox>
             </children>
         </VBox>
-        <ImageView fitHeight="100.0" fitWidth="114.0" layoutX="472.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="108.0" fitWidth="190.0" layoutX="206.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../logo.png" />
             </image>

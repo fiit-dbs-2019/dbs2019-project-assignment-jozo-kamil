@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 
@@ -17,18 +14,18 @@ import java.util.ResourceBundle;
 
 public class EmployeeAddCarController implements Initializable {
 
+    @FXML private ComboBox comboBoxBrand;
+    @FXML private ComboBox comboBoxModel;
+    @FXML private Spinner spinnerMileage;
+    @FXML private ComboBox comboBoxFuel;
+    @FXML private ComboBox comboBoxGearBox;
+    @FXML private ComboBox comboBoxCarBody;
+    @FXML private ComboBox comboBocColor;
+    @FXML private Spinner spinnerPrice;
     @FXML private AnchorPane rootPane;
-    @FXML private ChoiceBox chboxBrand;
-    @FXML private ChoiceBox chboxModel;
     @FXML private DatePicker datePickerYear;
-    @FXML private TextField textFieldMileage;
-    @FXML private ChoiceBox chboxFuel;
     @FXML private Spinner spinnerEngineCapacity;
     @FXML private Spinner spinnerEnginePower;
-    @FXML private ChoiceBox chboxGearBox;
-    @FXML private ChoiceBox chboxCarBody;
-    @FXML private ChoiceBox chboxColor;
-    @FXML private TextField textFieldLicensePlate;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

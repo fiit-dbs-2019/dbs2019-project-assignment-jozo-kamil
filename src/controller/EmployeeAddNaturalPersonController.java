@@ -15,9 +15,6 @@ import java.util.ResourceBundle;
 
 public class EmployeeAddNaturalPersonController implements Initializable {
     @FXML private AnchorPane rootPane;
-    @FXML private Label labelFirstName;
-    @FXML private Label labelLastName;
-    @FXML private Label labelDate;
     @FXML private TextField textFieldFirstName;
     @FXML private TextField textFieldLastName;
     @FXML private TextField textFieldID;
@@ -28,7 +25,7 @@ public class EmployeeAddNaturalPersonController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        labelDate.setText(LocalDate.now().toString());
+
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {

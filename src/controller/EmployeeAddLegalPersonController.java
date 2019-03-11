@@ -10,17 +10,13 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class EmployeeAddLegalPersonController implements Initializable {
+    @FXML private TextField textFieldIco;
+    @FXML private TextField textFieldDic;
+    @FXML private TextField textFieldName;
     @FXML private AnchorPane rootPane;
-    @FXML private Label labelFirstName;
-    @FXML private Label labelLastName;
-    @FXML private Label labelDate;
-    @FXML private TextField textFieldICO;
-    @FXML private TextField textFieldDIC;
-    @FXML private TextField testFieldName;
     @FXML private TextField textFieldAdress;
     @FXML private TextField textFieldBankAccount;
     @FXML private TextField textFieldPhone;
@@ -28,7 +24,7 @@ public class EmployeeAddLegalPersonController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        labelDate.setText(LocalDate.now().toString());
+
     }
 
     public void btnAddPushed(ActionEvent actionEvent) {
