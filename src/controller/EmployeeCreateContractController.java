@@ -27,32 +27,35 @@ public class EmployeeCreateContractController implements Initializable {
 
     }
 
-    public void btnCreateContractPushed(ActionEvent actionEvent) throws SQLException {
-        CreateContractManager ccm = new CreateContractManager();
+    public void btnCreateContractPushed(ActionEvent actionEvent) throws SQLException,IOException {
 
-        int result = ccm.createNewContract(getTextFieldVin(),getTextFieldOp(),getDateFrom(),getDateTo());
-
-        if (result == 0) {
-            Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané VIN číslo: "+getTextFieldVin()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+        if (getDateTo() == null || getDateFrom() == null || getDateTo().before(getDateFrom())) {
+            Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadajte správne dobu trvania.",ButtonType.CLOSE);
             alertError.showAndWait();
-        } else if (result ==1) {
-            Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané OP číslo žiadateľa: "+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+        } else if(getTextFieldOp().trim().isEmpty() || getTextFieldVin().trim().isEmpty()) {
+            Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadajte údaje.",ButtonType.CLOSE);
             alertError.showAndWait();
-        } else if (result ==2){
-            Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané VIN číslo: "+getTextFieldVin()+" a OP číslo žiadateľa: "+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
-            alertError.showAndWait();
-        } else if (result ==3){
-            if (getDateTo() == null || getDateFrom() == null || getDateTo().before(getDateFrom())) {
-                Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadajte správne dobu trvania."+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
-                alertError.showAndWait();
-            }
-            else {
-                Alert alertOKInformation = new Alert(Alert.AlertType.INFORMATION,"Vytvorenie zmluvy prebehlo úspešne.", ButtonType.CLOSE);
-                alertOKInformation.setTitle("Informácia");
-                alertOKInformation.setHeaderText("Správa");
-                alertOKInformation.showAndWait();
-            }
         }
+        else {
+                CreateContractManager ccm = new CreateContractManager();
+
+                int result = ccm.checkInfo(getTextFieldVin(),getTextFieldOp(),getDateFrom(),getDateTo());
+
+                if (result == 0) {
+                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané VIN číslo: "+getTextFieldVin()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+                    alertError.showAndWait();
+                } else if (result ==1) {
+                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané OP číslo žiadateľa: "+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+                    alertError.showAndWait();
+                } else if (result ==2){
+                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané VIN číslo: "+getTextFieldVin()+" a OP číslo žiadateľa: "+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+                    alertError.showAndWait();
+                } else if (result ==3 ){
+                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_confirm_contract.fxml"));
+                    rootPane.getChildren().setAll(pane);
+                }
+            }
+
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
