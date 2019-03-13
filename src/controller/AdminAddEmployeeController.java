@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import model.Employee;
 import persistancemanagers.EmployeeManager;
 import persistancemanagers.EnumManager;
 
@@ -34,9 +35,23 @@ public class AdminAddEmployeeController implements Initializable {
     @FXML private TextField textPhoneNumber;
     @FXML private ComboBox comboBoxType;
 
+    public void setHeader () {
+        EmployeeManager em = new EmployeeManager();
+
+        try {
+            em.setHeader(labelFirstName,labelLastName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
+
+        labelDate.setText(time);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updateHeader();
+        setHeader();
         addItemsComboBox();
     }
 
@@ -48,11 +63,6 @@ public class AdminAddEmployeeController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public void updateHeader() {
-        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
-        labelDate.setText(time);
     }
 
     public String getFirstName() {

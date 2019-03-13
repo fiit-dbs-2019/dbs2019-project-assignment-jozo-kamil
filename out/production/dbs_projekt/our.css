@@ -59,3 +59,12 @@
     -fx-background-color: orange;
     -fx-text-fill: black;
 }
+
+.alert.error.dialog-pane {
+    -fx-background-color: black;
+}
+
+.dialog-pane {
+    -fx-background-color: black;
+    -fx-padding: 0;
+}

@@ -2,6 +2,7 @@ package model;
 
 public class Employee {
 
+    private Integer employeeID;
     private String firstName;
     private String lastName;
     private String login;
@@ -10,16 +11,29 @@ public class Employee {
     private String type;
 
     public Employee() {
-
     }
 
-    public Employee(String firstName, String lastName, String login, String password, String phoneNumber, String type) {
+    public Employee(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Employee(Integer employeeID, String firstName, String lastName, String login, String password, String phoneNumber, String type) {
+        this.employeeID = employeeID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.type = type;
+    }
+
+    public Integer getEmployeeID() {
+        return employeeID;
+    }
+
+    public void setEmployeeID(Integer employeeID) {
+        this.employeeID = employeeID;
     }
 
     public String getFirstName() {

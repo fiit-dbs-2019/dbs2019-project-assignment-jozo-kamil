@@ -9,41 +9,46 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import model.Employee;
+import persistancemanagers.EmployeeManager;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class EmployeeMenuController implements Initializable {
 
-    private Employee loggedIn = null;
     public Button ee;
     public Button aa;
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
-    @FXML private Label labelSecondName;
+    @FXML private Label labelLastName;
     @FXML private Label labelDate;
 
-    public void initData (Employee employee) {
-        this.loggedIn = employee;
-        labelFirstName.setText(employee.getFirstName());
-        labelSecondName.setText(employee.getLastName());
+    public void setHeader () {
+        EmployeeManager em = new EmployeeManager();
+        try {
+            em.setHeader(labelFirstName,labelLastName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
+
+        labelDate.setText(time);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        Platform.runLater(() -> {
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
-            labelDate.setText(time);
-            ee.setDisable(true);
-            aa.setDisable(true);
-            System.out.println(this.loggedIn.getLogin() + " " + this.loggedIn.getPassword());
-        });
-
+        setHeader();
+        ee.setDisable(true);
+        aa.setDisable(true);
     }
 
     public void btnSearchingPushed(ActionEvent actionEvent) throws IOException {

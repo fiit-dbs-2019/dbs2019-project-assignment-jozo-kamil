@@ -46,7 +46,7 @@
                 </HBox>
                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#log_in" prefHeight="40.0" prefWidth="144.0" text="Prihlásiť sa" />
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#logIn" prefHeight="40.0" prefWidth="144.0" text="Prihlásiť sa" />
                     </children>
                 </HBox>
             </children>
