@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.StageStyle;
 import persistancemanagers.CarManager;
 import persistancemanagers.EnumManager;
 
@@ -160,25 +161,37 @@ public class EmployeeAddCarController implements Initializable {
     public void btnConfirmPushed(ActionEvent actionEvent) throws SQLException, IOException {
 
         if(emptyFieldChecker()) {
-            Alert alertEmptyField = new Alert(Alert.AlertType.ERROR, "Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+            alertEmptyField.setHeaderText("Varovanie!");
             alertEmptyField.showAndWait();
             return;
         }
 
         if(!getYear().before(Calendar.getInstance().getTime())){
             Alert alertBadDate = new Alert(Alert.AlertType.ERROR,"Rok výroby auta je neplatný!", ButtonType.CLOSE);
+            alertBadDate.initStyle(StageStyle.TRANSPARENT);
+            alertBadDate.setHeaderText("Chyba!");
             alertBadDate.showAndWait();
+
             return;
         } else {
             CarManager cm = new CarManager();
             if(cm.addNewCarToDatabase(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
                     getPrice(),getYear(),getMileAge(),getSPZ())) {
+
                 Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Auto s VIN číslom " + getVIN() + " bolo pridané!", ButtonType.CLOSE);
+                alertInfo.initStyle(StageStyle.TRANSPARENT);
+                alertInfo.setHeaderText("Info!");
                 alertInfo.showAndWait();
+
                 AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
                 rootPane.getChildren().setAll(pane);
+
             } else {
                 Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Záznam o aute s VIN číslom " + getVIN() + " už existuje!", ButtonType.CLOSE);
+                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
+                alertLoginAlreadyExist.setHeaderText("Chyba!");
                 alertLoginAlreadyExist.showAndWait();
             }
         }

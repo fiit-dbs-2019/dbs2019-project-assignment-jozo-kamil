@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.StageStyle;
 import persistancemanagers.PersonManager;
 
 import java.io.IOException;
@@ -44,23 +45,27 @@ public class EmployeeAddNaturalPersonController implements Initializable {
     public void isTextEmpty() throws SQLException,IOException{
         if (getFirstName().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getLastName().trim().isEmpty() || getPhone().trim().isEmpty() || getID().trim().isEmpty()) {
             Alert alertError = new Alert(Alert.AlertType.ERROR,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
+            alertError.initStyle(StageStyle.TRANSPARENT);
+            alertError.setHeaderText("Chyba!");
             alertError.showAndWait();
         }
         else {
             PersonManager pm = new PersonManager();
 
             if (pm.addNewNaturalPersonToDatabase(getID(),getFirstName(),getLastName(),getAdress(),getBankAccount(),getPhone())){
+
                 Alert alertOKInformation = new Alert(Alert.AlertType.INFORMATION,"Informácie o žiadateľovi boli úspešne pridané.", ButtonType.CLOSE);
-                alertOKInformation.setTitle("Informácia");
-                alertOKInformation.setHeaderText("Správa");
+                alertOKInformation.initStyle(StageStyle.TRANSPARENT);
+                alertOKInformation.setHeaderText("Info!");
                 alertOKInformation.showAndWait();
+
                 AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
                 rootPane.getChildren().setAll(pane);
             }
             else {
                 Alert alertError = new Alert(Alert.AlertType.ERROR,"Žiadateteľ s číslom OP: "+getID()+" sa už v systéme nachádza.", ButtonType.CLOSE);
-                alertError.setTitle("Chyba:");
-                alertError.setHeaderText("Správa");
+                alertError.initStyle(StageStyle.TRANSPARENT);
+                alertError.setHeaderText("Chyba!");
                 alertError.showAndWait();
             }
         }

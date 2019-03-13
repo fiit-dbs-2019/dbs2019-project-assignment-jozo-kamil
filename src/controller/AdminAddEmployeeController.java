@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.StageStyle;
 import model.Employee;
 import persistancemanagers.EmployeeManager;
 import persistancemanagers.EnumManager;
@@ -100,18 +101,28 @@ public class AdminAddEmployeeController implements Initializable {
 
     public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException, IOException {
         if(emptyFieldChecker()){
-            Alert alertEmptyField = new Alert(Alert.AlertType.ERROR,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+            alertEmptyField.setHeaderText("Varovanie!");
             alertEmptyField.showAndWait();
             return;
         } else {
+
             EmployeeManager em = new EmployeeManager();
+
             if(em.AddNewEmployeeToDatabase(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
+
                 Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Konto zamestnanca bolo úspešne vytvorené!", ButtonType.CLOSE);
+                alertInfo.initStyle(StageStyle.TRANSPARENT);
+                alertInfo.setHeaderText("Info!");
                 alertInfo.showAndWait();
+
                 AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
                 rootPane.getChildren().setAll(pane);
             } else {
-                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login už existuje!", ButtonType.CLOSE);
+                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login - " + getLogin() + " - už existuje!", ButtonType.CLOSE);
+                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
+                alertLoginAlreadyExist.setHeaderText("Chyba!");
                 alertLoginAlreadyExist.showAndWait();
             }
         }

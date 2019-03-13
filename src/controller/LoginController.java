@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.stage.StageStyle;
 import model.Employee;
 import persistancemanagers.CarManager;
 import persistancemanagers.EmployeeManager;
@@ -34,6 +35,15 @@ public class LoginController implements Initializable {
     public String getPassword() { return fieldPassword.getText(); }
 
     public void logIn(ActionEvent actionEvent) throws SQLException, IOException {
+
+        if(getLogin().trim().isEmpty() || getPassword().trim().isEmpty()) {
+            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Zadaj údaje!", ButtonType.CLOSE);
+            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+            alertEmptyField.setHeaderText("Varovanie!");
+            alertEmptyField.showAndWait();
+            return;
+        }
+
         Employee employee = null;
 
         EmployeeManager em = new EmployeeManager();
@@ -41,6 +51,8 @@ public class LoginController implements Initializable {
 
         if (employee == null) {
             Alert alertBadLogin = new Alert(Alert.AlertType.ERROR,"Nesprávne prihlasovacie údaje", ButtonType.CLOSE);
+            alertBadLogin.initStyle(StageStyle.TRANSPARENT);
+            alertBadLogin.setHeaderText("Chyba!");
             alertBadLogin.showAndWait();
         } else {
 
