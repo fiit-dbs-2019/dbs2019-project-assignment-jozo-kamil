@@ -18,7 +18,14 @@ public class Car {
     private int mileage;
     private String car_vin;
 
-    Car(String brand,String model,String body_style,float engine_capacity,int engine_power,String gear_box,String fuel,String color,int price_per_day,LocalDate year_of_production,String spz,int mileage,String car_vin) {
+    public Car(LocalDate year_of_production, String spz, int mileage, String car_vin) {
+        this.year_of_production = year_of_production;
+        this.spz = spz;
+        this.mileage = mileage;
+        this.car_vin = car_vin;
+    }
+
+    public Car(String brand, String model, String body_style, float engine_capacity, int engine_power, String gear_box, String fuel, String color, int price_per_day, LocalDate year_of_production, String spz, int mileage, String car_vin) {
         this.brand=brand;
         this.model=model;
         this.body_style=body_style;

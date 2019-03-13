@@ -4,13 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import model.Employee;
+import persistancemanagers.CarManager;
 import persistancemanagers.EmployeeManager;
 
 import java.io.*;
@@ -21,12 +19,13 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
+    @FXML private Button buttonLogIn;
     @FXML private AnchorPane rootPane;
     @FXML private TextField fieldLogin;
     @FXML private PasswordField fieldPassword;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) { }
+    public void initialize(URL location, ResourceBundle resources) { buttonLogIn.setDefaultButton(true);}
 
     public String getLogin() {
         return fieldLogin.getText();
@@ -42,7 +41,7 @@ public class LoginController implements Initializable {
 
         if (employee == null) {
             Alert alertBadLogin = new Alert(Alert.AlertType.ERROR,"Nesprávne prihlasovacie údaje", ButtonType.CLOSE);
-            alertBadLogin.show();
+            alertBadLogin.showAndWait();
         } else {
 
             // add logged employeeID to properties file

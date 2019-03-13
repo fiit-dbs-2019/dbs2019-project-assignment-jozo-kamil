@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import persistancemanagers.CarManager;
 import persistancemanagers.EnumManager;
 
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class EmployeeAddCarController implements Initializable {
@@ -62,66 +64,134 @@ public class EmployeeAddCarController implements Initializable {
 
     // getters for fields and spinners in gui
     public String getBrand() {
+        if(comboBoxBrand.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxBrand.getSelectionModel().getSelectedItem().toString();
     }
 
     public String getModel() {
+        if(comboBoxModel.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxModel.getSelectionModel().getSelectedItem().toString();
     }
 
     public Integer getMileAge() {
-        return (Integer) spinnerMileage.getValue();
+        return Integer.parseInt(spinnerMileage.getValue().toString());
     }
 
     public String getFuel() {
+        if(comboBoxFuel.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxFuel.getSelectionModel().getSelectedItem().toString();
     }
 
     public String getGearBox() {
+        if(comboBoxGearBox.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxGearBox.getSelectionModel().getSelectedItem().toString();
     }
 
     public String getCarBody() {
+        if(comboBoxCarBody.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxCarBody.getSelectionModel().getSelectedItem().toString();
     }
 
     public String getColor() {
+        if(comboBoxColor.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxColor.getSelectionModel().getSelectedItem().toString();
     }
 
     public Integer getPrice() {
-        return (Integer) spinnerPrice.getValue();
+        return Integer.parseInt(spinnerPrice.getValue().toString());
     }
 
     public Date getYear() {
+        if(datePickerYear.getValue() == null) {
+            return null;
+        }
         Date date = Date.valueOf(datePickerYear.getValue());
         return date;
     }
 
     public Float getEngineCapacity() {
-        return (Float) spinnerEngineCapacity.getValue();
+        return Float.parseFloat(spinnerEngineCapacity.getValue().toString());
     }
 
     public Integer getEnginePower() {
-        return (Integer) spinnerEnginePower.getValue();
+        return Integer.parseInt(spinnerEnginePower.getValue().toString());
     }
 
     public String getSPZ() {
         return textFieldSpz.getText();
     }
 
-    public String getVIN() { return textFieldVin.getText(); }
+    public String getVIN() {
+        return textFieldVin.getText();
+    }
+
+    public boolean emptyFieldChecker() {
+        if(getBrand() == null ||
+            getModel() == null ||
+            getFuel() == null ||
+            getGearBox() == null ||
+            getCarBody() == null ||
+            getColor() == null ||
+            getYear() == null ||
+            getSPZ().trim().isEmpty() ||
+            getVIN().trim().isEmpty()){
+            return true;
+        }
+        return false;
+    }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
         rootPane.getChildren().setAll(pane);
     }
 
-    public void btnConfirmPushed(ActionEvent actionEvent) {
+    public void btnConfirmPushed(ActionEvent actionEvent) throws SQLException, IOException {
+
+        if(emptyFieldChecker()) {
+            Alert alertEmptyField = new Alert(Alert.AlertType.ERROR, "Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+            alertEmptyField.showAndWait();
+            return;
+        }
+
+        if(!getYear().before(Calendar.getInstance().getTime())){
+            Alert alertBadDate = new Alert(Alert.AlertType.ERROR,"Rok výroby auta je neplatný!", ButtonType.CLOSE);
+            alertBadDate.showAndWait();
+            return;
+        } else {
+            CarManager cm = new CarManager();
+            if(cm.addNewCarToDatabase(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
+                    getPrice(),getYear(),getMileAge(),getSPZ())) {
+                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Auto s VIN číslom " + getVIN() + " bolo pridané!", ButtonType.CLOSE);
+                alertInfo.showAndWait();
+                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+                rootPane.getChildren().setAll(pane);
+            } else {
+                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Záznam o aute s VIN číslom " + getVIN() + " už existuje!", ButtonType.CLOSE);
+                alertLoginAlreadyExist.showAndWait();
+            }
+        }
     }
 
-    public void comboBoxModelClicked(MouseEvent mouseEvent) {
-        // select na databazu
+    public void comboBoxModelClicked(MouseEvent mouseEvent) throws SQLException {
+
+        if(getBrand() == null) {
+            return;
+        } else {
+            EnumManager em = new EnumManager();
+            em.setModelsForSpecificBrand(getBrand(),comboBoxModel);
+        }
     }
 
 }

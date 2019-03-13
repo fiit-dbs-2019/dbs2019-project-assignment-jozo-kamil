@@ -93,7 +93,7 @@ public class EmployeeManager {
 
                 return true;
             } else {
-                System.out.println("Employee login already exists");
+                // user with login already exist
                 return false;
             }
 
@@ -106,7 +106,7 @@ public class EmployeeManager {
                 {
                     try { conn.close(); } catch (SQLException e) {}
                 }
-            }
+        }
     }
 
     public Employee LoginEngine(String login, String password) throws SQLException {

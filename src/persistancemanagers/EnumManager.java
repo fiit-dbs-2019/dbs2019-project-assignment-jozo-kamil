@@ -36,4 +36,35 @@ public class EnumManager {
             }
         }
     }
+
+    public void setModelsForSpecificBrand(String brand, ComboBox comboBox) throws SQLException {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT DISTINCT model FROM car_info WHERE brand = '" + brand + "';");
+            ResultSet rs = st.executeQuery();
+
+            comboBox.getItems().clear();
+
+            while(rs.next()){
+                comboBox.getItems().add(rs.getString("model"));
+            }
+
+            comboBox.setVisibleRowCount(comboBox.getItems().size() -1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            st.close();
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
 }

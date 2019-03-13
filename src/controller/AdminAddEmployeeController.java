@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import model.Employee;
 import persistancemanagers.EmployeeManager;
@@ -22,7 +19,6 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class AdminAddEmployeeController implements Initializable {
-
 
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
@@ -84,17 +80,41 @@ public class AdminAddEmployeeController implements Initializable {
     public String getPhone() { return textPhoneNumber.getText(); }
 
     public String getType() {
+        if(comboBoxType.getSelectionModel().isEmpty()) {
+            return null;
+        }
         return comboBoxType.getSelectionModel().getSelectedItem().toString();
     }
 
-    public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException {
-        EmployeeManager em = new EmployeeManager();
-        if(em.AddNewEmployeeToDatabase(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
-            System.out.println("OK");
-        } else {
-            System.out.println("BAD");
+    public boolean emptyFieldChecker() {
+        if (getFirstName().trim().isEmpty() ||
+            getLastName().trim().isEmpty() ||
+            getLogin().trim().isEmpty() ||
+            getPassword().trim().isEmpty() ||
+            getPhone().trim().isEmpty() ||
+            getType() == null) {
+            return true;
         }
+        return false;
+    }
 
+    public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException, IOException {
+        if(emptyFieldChecker()){
+            Alert alertEmptyField = new Alert(Alert.AlertType.ERROR,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+            alertEmptyField.showAndWait();
+            return;
+        } else {
+            EmployeeManager em = new EmployeeManager();
+            if(em.AddNewEmployeeToDatabase(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
+                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Konto zamestnanca bolo úspešne vytvorené!", ButtonType.CLOSE);
+                alertInfo.showAndWait();
+                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
+                rootPane.getChildren().setAll(pane);
+            } else {
+                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login už existuje!", ButtonType.CLOSE);
+                alertLoginAlreadyExist.showAndWait();
+            }
+        }
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
