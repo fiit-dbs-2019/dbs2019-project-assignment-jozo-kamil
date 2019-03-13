@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -36,11 +38,32 @@ public class EmployeeAddNaturalPersonController implements Initializable {
     }
 
     public void btnAddPushed(ActionEvent actionEvent) throws SQLException,IOException{
-        PersonManager pm = new PersonManager();
-        pm.addNewNaturalPersonToDatabase(getID(),getFirstName(),getLastName(),getAdress(),getBankAccount(),getPhone());
+        isTextEmpty();
+    }
 
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-        rootPane.getChildren().setAll(pane);
+    public void isTextEmpty() throws SQLException,IOException{
+        if (getFirstName().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getLastName().trim().isEmpty() || getPhone().trim().isEmpty() || getID().trim().isEmpty()) {
+            Alert alertError = new Alert(Alert.AlertType.ERROR,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
+            alertError.showAndWait();
+        }
+        else {
+            PersonManager pm = new PersonManager();
+
+            if (pm.addNewNaturalPersonToDatabase(getID(),getFirstName(),getLastName(),getAdress(),getBankAccount(),getPhone())){
+                Alert alertOKInformation = new Alert(Alert.AlertType.INFORMATION,"Informácie o žiadateľovi boli úspešne pridané.", ButtonType.CLOSE);
+                alertOKInformation.setTitle("Informácia");
+                alertOKInformation.setHeaderText("Správa");
+                alertOKInformation.showAndWait();
+                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+                rootPane.getChildren().setAll(pane);
+            }
+            else {
+                Alert alertError = new Alert(Alert.AlertType.ERROR,"Žiadateteľ s číslom OP: "+getID()+" sa už v systéme nachádza.", ButtonType.CLOSE);
+                alertError.setTitle("Chyba:");
+                alertError.setHeaderText("Správa");
+                alertError.showAndWait();
+            }
+        }
     }
 
     public String getFirstName(){
