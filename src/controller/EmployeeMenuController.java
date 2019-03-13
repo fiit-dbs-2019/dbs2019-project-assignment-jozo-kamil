@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 public class EmployeeMenuController implements Initializable {
 
     public Button ee;
-    public Button aa;
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
@@ -48,7 +47,6 @@ public class EmployeeMenuController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         setHeader();
         ee.setDisable(true);
-        aa.setDisable(true);
     }
 
     public void btnSearchingPushed(ActionEvent actionEvent) throws IOException {
@@ -61,7 +59,8 @@ public class EmployeeMenuController implements Initializable {
     }
 
     public void btnCreateAgreement(ActionEvent actionEvent) throws IOException {
-
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_create_contract.fxml"));
+        rootPane.getChildren().setAll(pane);
     }
 
     public void btnLogoutPushed(ActionEvent actionEvent) throws IOException {

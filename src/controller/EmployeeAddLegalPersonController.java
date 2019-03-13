@@ -1,9 +1,12 @@
 package controller;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -30,16 +33,40 @@ public class EmployeeAddLegalPersonController implements Initializable {
     }
 
     public void btnAddPushed(ActionEvent actionEvent) throws SQLException,IOException {
-        PersonManager pm = new PersonManager();
-        pm.addNewLegalPersonToDatabase(getIco(),getDic(),getName(),getAdress(),getBankAccount(),getPhone());
-
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-        rootPane.getChildren().setAll(pane);
+        isTextEmpty();
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_add_customer.fxml"));
         rootPane.getChildren().setAll(pane);
+    }
+
+    public void isTextEmpty() throws SQLException,IOException{
+        if (getIco().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getDic().trim().isEmpty() || getPhone().trim().isEmpty() || getName().trim().isEmpty()) {
+            Alert alertError = new Alert(Alert.AlertType.ERROR,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
+            alertError.setTitle("Chyba:");
+            alertError.setHeaderText("Správa");
+            alertError.showAndWait();
+        }
+        else {
+            PersonManager pm = new PersonManager();
+
+            if(pm.addNewLegalPersonToDatabase(getIco(),getDic(),getName(),getAdress(),getBankAccount(),getPhone())){
+                Alert alertOKInformation = new Alert(Alert.AlertType.INFORMATION,"Informácie o žiadateľovi boli úspešne pridané.", ButtonType.CLOSE);
+                alertOKInformation.setTitle("Informácia");
+                alertOKInformation.setHeaderText("Správa");
+                alertOKInformation.showAndWait();
+                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+                rootPane.getChildren().setAll(pane);
+            }
+            else {
+                Alert alertError = new Alert(Alert.AlertType.ERROR,"Žiadateteľ s IČO: "+getIco()+" sa už v systéme nachádza.", ButtonType.CLOSE);
+                alertError.setTitle("Chyba:");
+                alertError.setHeaderText("Správa");
+                alertError.showAndWait();
+            }
+
+        }
     }
 
     public String getIco(){

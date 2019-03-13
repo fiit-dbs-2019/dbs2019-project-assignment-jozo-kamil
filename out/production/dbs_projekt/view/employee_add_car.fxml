@@ -16,7 +16,7 @@
     <children>
         <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
             <children>
-                <Label alignment="CENTER" prefHeight="85.0" prefWidth="442.0" text="Pridanie záznamu o aute">
+                <Label alignment="CENTER" prefHeight="60.0" prefWidth="482.0" text="Pridanie záznamu o vozidle">
                     <font>
                         <Font name="Lucida Console" size="30.0" />
                     </font>
