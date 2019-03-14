@@ -87,6 +87,17 @@ public class AdminAddEmployeeController implements Initializable {
         return comboBoxType.getSelectionModel().getSelectedItem().toString();
     }
 
+    public boolean tooLongText(){
+        if (getFirstName().length() > 255 ||
+                getLastName().length() > 255 ||
+                getLogin().length() > 255 ||
+                getPassword().length() > 255 ||
+                getPhone().length() > 255) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean emptyFieldChecker() {
         if (getFirstName().trim().isEmpty() ||
             getLastName().trim().isEmpty() ||
@@ -100,7 +111,14 @@ public class AdminAddEmployeeController implements Initializable {
     }
 
     public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException, IOException {
-        if(emptyFieldChecker()){
+        if (tooLongText()){
+            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Príliš dlhé údaje. Max. veľkosť jedného údaju je 254 znakov!", ButtonType.CLOSE);
+            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+            alertEmptyField.setHeaderText("Varovanie!");
+            alertEmptyField.showAndWait();
+            return;
+        }
+        else if(emptyFieldChecker()){
             Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
             alertEmptyField.initStyle(StageStyle.TRANSPARENT);
             alertEmptyField.setHeaderText("Varovanie!");

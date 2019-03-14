@@ -42,8 +42,26 @@ public class EmployeeAddLegalPersonController implements Initializable {
         rootPane.getChildren().setAll(pane);
     }
 
+    public boolean tooLongText(){
+        if(getIco().length() > 8 ||
+                getDic().length() > 10 ||
+                getName().length()>255 ||
+                getAdress().length()>255 ||
+                getBankAccount().length()>30 ||
+                getPhone().length()>255){
+            return true;
+        }
+        return false;
+    }
+
     public void isTextEmpty() throws SQLException,IOException{
-        if (getIco().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getDic().trim().isEmpty() || getPhone().trim().isEmpty() || getName().trim().isEmpty()) {
+        if (tooLongText()) {
+            Alert alertError = new Alert(Alert.AlertType.WARNING,"Príliš dlhé údaje, niektoré položky majú obmedzený počet znakov, prosím skontrolujte, či ste všetky informácie zadali správne!", ButtonType.CLOSE);
+            alertError.initStyle(StageStyle.TRANSPARENT);
+            alertError.setHeaderText("Varovanie!");
+            alertError.showAndWait();
+        }
+        else if (getIco().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getDic().trim().isEmpty() || getPhone().trim().isEmpty() || getName().trim().isEmpty()) {
             Alert alertError = new Alert(Alert.AlertType.WARNING,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
             alertError.initStyle(StageStyle.TRANSPARENT);
             alertError.setHeaderText("Varovanie!");
