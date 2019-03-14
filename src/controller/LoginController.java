@@ -60,18 +60,32 @@ public class LoginController implements Initializable {
             Properties prop = new Properties();
             OutputStream output = null;
 
+            // input for properties
             FileInputStream input = new FileInputStream("src/properties");
             prop.load(input);
 
-            input = new FileInputStream("src/properties");
-            prop.load(input);
+            // input for contract_info
+            Properties prop_contract = new Properties();
+            input = new FileInputStream("src/contract_info");
+            prop_contract.load(input);
+
+//            input = new FileInputStream("src/properties");
+//            prop.load(input);
 
             try {
+                // output for properties
                 output = new FileOutputStream("src/properties");
 
                 prop.setProperty("loggedID", String.valueOf(employee.getEmployeeID()));
 
                 prop.store(output, null);
+
+                // output for contract_info
+                output = new FileOutputStream("src/contract_info");
+
+                prop_contract.setProperty("employeeID", String.valueOf(employee.getEmployeeID()));
+
+                prop_contract.store(output,null);
 
             } catch (IOException e) {
                 e.printStackTrace();

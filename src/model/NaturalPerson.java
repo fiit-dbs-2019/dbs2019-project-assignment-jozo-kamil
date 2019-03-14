@@ -1,10 +1,10 @@
 package model;
 
-public class NaturalPerson {
+public class NaturalPerson extends Person {
 
+    private String op;
     private String firstName;
     private String lastName;
-    private String op;
     private String adress;
     private String bankAccount;
     private String phoneNumber;
@@ -13,13 +13,13 @@ public class NaturalPerson {
 
     }
 
-    public NaturalPerson(String firstName, String lastName, String op, String adress, String bankAccount, String phoneNumber){
-        this.adress=adress;
-        this.bankAccount=bankAccount;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.op=op;
-        this.phoneNumber=phoneNumber;
+    public NaturalPerson(String op, String firstName, String lastName, String adress, String bankAccount, String phoneNumber) {
+        this.op = op;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adress = adress;
+        this.bankAccount = bankAccount;
+        this.phoneNumber = phoneNumber;
     }
 
     public void setAdress(String adress) {

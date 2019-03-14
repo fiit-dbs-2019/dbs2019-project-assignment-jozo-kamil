@@ -1,6 +1,6 @@
 package model;
 
-public class LegalPerson {
+public class LegalPerson extends Person {
 
     private String ico;
     private String dic;

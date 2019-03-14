@@ -1,8 +1,63 @@
 package persistancemanagers;
 
+import model.Car;
+
 import java.sql.*;
 
 public class CarManager {
+
+    public Car getCarFromDatabase(String car_vin) throws SQLException {
+        Car car = null;
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "SELECT car_info_id,year_of_production,mileage,spz FROM car WHERE car_vin = '" + car_vin + "';"
+            );
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            Integer car_info_id = rs.getInt("car_info");
+            Date year_of_production = rs.getDate("year_of_production");
+            Integer mileage = rs.getInt("mileage");
+            String SPZ = rs.getString("spz");
+
+            st = conn.prepareStatement(
+                    "SELECT * FROM car_info WHERE car_info_id = '" + car_info_id + "';"
+            );
+            rs = st.executeQuery();
+            rs.next();
+
+            String brand = rs.getString("brand");
+            String model = rs.getString("model");
+            String body_style = rs.getString("body_style");
+            Float engine_capacity = rs.getFloat("engine_capacity");
+            Integer engine_power = rs.getInt("engine_power");
+            String gear_box = rs.getString("gear_box");
+            String fuel = rs.getString("fuel");
+            String color = rs.getString("color");
+            Integer price_per_day = rs.getInt("price_per_day");
+
+            car = new Car(car_vin,model,brand,body_style,engine_capacity,engine_power,gear_box,fuel,color,price_per_day,year_of_production,mileage,SPZ);
+
+            return car;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            st.close();
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
 
     public void addNewCarInfo(String brand,String model) throws SQLException {
         AllTablesManager atm;

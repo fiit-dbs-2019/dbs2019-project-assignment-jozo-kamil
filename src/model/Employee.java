@@ -13,9 +13,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName) {
+    public Employee(String firstName, String lastName, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     public Employee(Integer employeeID, String firstName, String lastName, String login, String password, String phoneNumber, String type) {

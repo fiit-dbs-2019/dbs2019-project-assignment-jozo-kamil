@@ -10,10 +10,11 @@ import javafx.stage.StageStyle;
 import persistancemanagers.AllTablesManager;
 import persistancemanagers.CreateContractManager;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class EmployeeCreateContractController implements Initializable {
@@ -31,9 +32,9 @@ public class EmployeeCreateContractController implements Initializable {
     public void btnCreateContractPushed(ActionEvent actionEvent) throws SQLException,IOException {
 
         if (getDateTo() == null || getDateFrom() == null || getDateTo().before(getDateFrom())) {
-            Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadajte správne dobu trvania.",ButtonType.CLOSE);
+            Alert alertError = new Alert(Alert.AlertType.WARNING,"Zadajte správne dobu trvania.",ButtonType.CLOSE);
             alertError.initStyle(StageStyle.TRANSPARENT);
-            alertError.setHeaderText("Chyba!");
+            alertError.setHeaderText("Varovanie!");
             alertError.showAndWait();
         } else if(getTextFieldOp().trim().isEmpty() || getTextFieldVin().trim().isEmpty()) {
             Alert alertError = new Alert(Alert.AlertType.WARNING,"Zadajte údaje.",ButtonType.CLOSE);
@@ -62,6 +63,38 @@ public class EmployeeCreateContractController implements Initializable {
                     alertError.setHeaderText("Chyba!");
                     alertError.showAndWait();
                 } else if (result ==3 ){
+
+                    Properties prop = new Properties();
+                    OutputStream output = null;
+
+                    FileInputStream input = new FileInputStream("src/contract_info");
+                    prop.load(input);
+
+//                    input = new FileInputStream("src/contract_info");
+//                    prop.load(input);
+
+                    try {
+                        output = new FileOutputStream("src/contract_info");
+
+                        prop.setProperty("carVIN",getTextFieldVin());
+                        prop.setProperty("customerID",getTextFieldOp());
+                        prop.setProperty("dateFROM",getDateFrom().toString());
+                        prop.setProperty("dateTO",getDateTo().toString());
+
+                        prop.store(output, null);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (output != null) {
+                            try {
+                                output.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
                     AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_confirm_contract.fxml"));
                     rootPane.getChildren().setAll(pane);
                 }

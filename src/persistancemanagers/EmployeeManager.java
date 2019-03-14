@@ -15,6 +15,55 @@ import java.util.Properties;
 
 public class EmployeeManager {
 
+    public Employee getEmployeeFromDatabase() throws SQLException {
+        Employee employee = null;
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            Properties prop = new Properties();
+            InputStream input = new FileInputStream("src/properties");
+
+            prop.load(input);
+
+            Integer employee_id = Integer.valueOf(prop.getProperty("loggedID"));                       // get employee_id from properties file
+
+            input.close();
+
+            st = conn.prepareStatement("SELECT first_name,last_name,phone FROM employee " +
+                    "WHERE employee_id = '" + employee_id + "';"
+            );
+            ResultSet rs = st.executeQuery();
+
+            rs.next();
+
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String phone = rs.getString("phone");
+
+            employee = new Employee(firstName,lastName,phone);
+
+            return employee;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            st.close();
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public void setHeader(Label labelFirstName, Label labelLastName) throws SQLException {
         Employee employee = null;
 
