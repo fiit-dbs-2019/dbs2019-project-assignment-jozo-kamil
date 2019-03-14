@@ -4,6 +4,34 @@ import java.sql.*;
 
 public class CarManager {
 
+    public void addNewCarInfo(String brand,String model) throws SQLException {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "INSERT INTO car_info (brand, model) VALUES " +
+                            "(?::car_brand,?::car_model);"
+            );
+            st.setString(1,brand);
+            st.setString(2,model);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            st.close();
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public boolean addNewCarToDatabase(String car_vin, String brand, String model, String body_style,
                                        Float engine_capacity, Integer engine_power, String gear_box,
                                        String fuel, String color, Integer price_per_day,

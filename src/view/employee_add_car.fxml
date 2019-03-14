@@ -23,9 +23,9 @@
                 </Label>
             </children>
         </HBox>
-        <HBox layoutX="71.0" layoutY="60.0" prefHeight="535.0" prefWidth="380.0" spacing="40.0">
+        <HBox layoutX="75.0" layoutY="60.0" prefHeight="526.0" prefWidth="380.0" spacing="40.0">
             <children>
-                <VBox prefHeight="517.0" prefWidth="192.0" spacing="10.0">
+                <VBox prefHeight="526.0" prefWidth="144.0" spacing="6.0">
                     <children>
                         <Label prefHeight="35.0" prefWidth="120.0" text="Značka:" />
                         <Label prefHeight="35.0" prefWidth="120.0" text="Model:" />
@@ -42,7 +42,7 @@
                   <Label prefHeight="35.0" prefWidth="179.0" text="Cena výpožičky/deň:" />
                     </children>
                 </VBox>
-                <VBox prefHeight="460.0" prefWidth="187.0" spacing="10.0">
+                <VBox prefHeight="460.0" prefWidth="187.0" spacing="5.0">
                     <children>
                   <ComboBox fx:id="comboBoxBrand" prefHeight="35.0" prefWidth="185.0" />
                   <ComboBox fx:id="comboBoxModel" onMouseClicked="#comboBoxModelClicked" prefHeight="35.0" prefWidth="185.0" />
@@ -64,7 +64,7 @@
                 </VBox>
             </children>
         </HBox>
-        <VBox layoutX="466.0" layoutY="517.0" prefHeight="78.0" prefWidth="120.0">
+        <VBox layoutX="466.0" layoutY="508.0" prefHeight="78.0" prefWidth="120.0">
             <children>
                 <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="102.0">
                     <children>
@@ -78,5 +78,8 @@
                 </HBox>
             </children>
         </VBox>
+      <Button layoutX="479.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnAddBrandPushed" prefHeight="37.0" prefWidth="110.0" text="Pridať značku" />
+      <Button layoutX="479.0" layoutY="103.0" mnemonicParsing="false" onAction="#btnAddModelPushed" prefHeight="37.0" prefWidth="110.0" text="Pridať model" />
+      <Button layoutX="479.0" layoutY="429.0" mnemonicParsing="false" onAction="#btnAddColorPushed" prefHeight="37.0" prefWidth="110.0" text="Pridať farbu" />
     </children>
 </AnchorPane>

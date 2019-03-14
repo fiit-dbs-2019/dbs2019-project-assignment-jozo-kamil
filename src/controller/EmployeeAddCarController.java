@@ -4,12 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
 import javafx.stage.StageStyle;
 import persistancemanagers.CarManager;
 import persistancemanagers.EnumManager;
+import view.PopUpWindow;
 
 
 import java.io.IOException;
@@ -207,4 +210,42 @@ public class EmployeeAddCarController implements Initializable {
         }
     }
 
+    public void btnAddBrandPushed(ActionEvent actionEvent) throws IOException {
+        PopUpWindow popUpWindow = new PopUpWindow();
+        popUpWindow.display(null,"brand","Zadaj značku: ");
+
+        try {
+            EnumManager em = new EnumManager();
+
+            em.employeeTypeEnum(comboBoxBrand,"car_brand");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void btnAddModelPushed(ActionEvent actionEvent) {
+        if(getBrand() == null) {
+            Alert alertEmptyBrand = new Alert(Alert.AlertType.ERROR,"Pre pridanie modelu vyber príslušnú značku!", ButtonType.CLOSE);
+            alertEmptyBrand.initStyle(StageStyle.TRANSPARENT);
+            alertEmptyBrand.setHeaderText("Chyba!");
+            alertEmptyBrand.showAndWait();
+            return;
+        }
+
+        PopUpWindow popUpWindow = new PopUpWindow();
+        popUpWindow.display(getBrand(),"model","Zadaj model: ");
+    }
+
+    public void btnAddColorPushed(ActionEvent actionEvent) {
+        PopUpWindow popUpWindow = new PopUpWindow();
+        popUpWindow.display(null,"color","Zadaj farbu: ");
+
+        try {
+            EnumManager em = new EnumManager();
+
+            em.employeeTypeEnum(comboBoxBrand,"car_color");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

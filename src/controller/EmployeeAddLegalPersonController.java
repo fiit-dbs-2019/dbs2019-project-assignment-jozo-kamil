@@ -44,9 +44,9 @@ public class EmployeeAddLegalPersonController implements Initializable {
 
     public void isTextEmpty() throws SQLException,IOException{
         if (getIco().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getDic().trim().isEmpty() || getPhone().trim().isEmpty() || getName().trim().isEmpty()) {
-            Alert alertError = new Alert(Alert.AlertType.ERROR,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
+            Alert alertError = new Alert(Alert.AlertType.WARNING,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
             alertError.initStyle(StageStyle.TRANSPARENT);
-            alertError.setHeaderText("Chyba!");
+            alertError.setHeaderText("Varovanie!");
             alertError.showAndWait();
         }
         else {
