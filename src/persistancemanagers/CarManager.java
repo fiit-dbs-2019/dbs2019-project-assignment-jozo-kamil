@@ -17,12 +17,12 @@ public class CarManager {
             conn = atm.connect();
 
             st = conn.prepareStatement(
-                    "SELECT car_info_id,year_of_production,mileage,spz FROM car WHERE car_vin = '" + car_vin + "';"
+                    "SELECT car_info_id,year_of_production,mileage,spz FROM car WHERE car_vin ILIKE '" + car_vin + "';"
             );
             ResultSet rs = st.executeQuery();
             rs.next();
 
-            Integer car_info_id = rs.getInt("car_info");
+            Integer car_info_id = rs.getInt("car_info_id");
             Date year_of_production = rs.getDate("year_of_production");
             Integer mileage = rs.getInt("mileage");
             String SPZ = rs.getString("spz");
@@ -103,7 +103,7 @@ public class CarManager {
 
             // test if login name already exists in database
             st = conn.prepareStatement(
-                    "SELECT EXISTS (SELECT * FROM car WHERE car_vin = '" + car_vin + "') AS exist;"
+                    "SELECT EXISTS (SELECT * FROM car WHERE car_vin ILIKE '" + car_vin + "') AS exist;"
             );
             ResultSet rsExist = st.executeQuery();
 

@@ -40,7 +40,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="CENTER" layoutX="66.0" layoutY="78.0" prefHeight="72.0" prefWidth="468.0" text="Pridanie žiadateľa">
+      <Label alignment="CENTER" layoutX="66.0" layoutY="78.0" prefHeight="72.0" prefWidth="468.0" text="Pridanie vypožičiavateľa">
          <font>
             <Font name="Lucida Console" size="30.0" />
          </font>

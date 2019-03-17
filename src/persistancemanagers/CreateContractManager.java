@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CreateContractManager {
 
-    public void createNewContract(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException {
+    public boolean createNewContract(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -29,7 +29,7 @@ public class CreateContractManager {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return false;
         } finally {
             if (input != null) {
                 try {
@@ -50,7 +50,7 @@ public class CreateContractManager {
             long diff = date_to.getTime()-date_from.getTime();
             Date date = Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 
-            st = conn.prepareStatement("SELECT price_per_day FROM car_info WHERE car_info_id = (SELECT car_info_id FROM car WHERE car_vin = '" + car_vin + "');");
+            st = conn.prepareStatement("SELECT price_per_day FROM car_info WHERE car_info_id = (SELECT car_info_id FROM car WHERE car_vin ILIKE '" + car_vin + "');");
             rs = st.executeQuery();
             rs.next();
 
@@ -70,8 +70,10 @@ public class CreateContractManager {
             st.setInt(7,sum);
             st.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         } finally {
             st.close();
             if (conn != null)
@@ -94,11 +96,11 @@ public class CreateContractManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("SELECT EXISTS (SELECT car_vin FROM car WHERE car_vin = '" + car_vin + "') AS exist;");
+            st = conn.prepareStatement("SELECT EXISTS (SELECT car_vin FROM car WHERE car_vin ILIKE '" + car_vin + "') AS exist;");
             ResultSet rs = st.executeQuery();
             rs.next();
 
-            st = conn.prepareStatement("SELECT EXISTS (SELECT customer_id FROM customer WHERE customer_id = '" + customer_id + "') AS exist;");
+            st = conn.prepareStatement("SELECT EXISTS (SELECT customer_id FROM customer WHERE customer_id ILIKE '" + customer_id + "') AS exist;");
             ResultSet rs2 = st.executeQuery();
             rs2.next();
 

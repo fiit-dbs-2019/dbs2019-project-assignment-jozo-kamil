@@ -28,7 +28,7 @@ public class PersonManager {
 
 
             st = conn.prepareStatement("SELECT customer_type FROM customer " +
-                    "WHERE customer_id = '" + personID + "';"
+                    "WHERE customer_id ILIKE '" + personID + "';"
             );
             ResultSet rs = st.executeQuery();
 
@@ -38,7 +38,7 @@ public class PersonManager {
 
             if(customer_type.equals("Fyzická osoba")) {
                 st = conn.prepareStatement("SELECT first_name,last_name,adress,bank_account,phone FROM natural_person " +
-                        "WHERE natural_person_id = '" + personID + "';"
+                        "WHERE natural_person_id ILIKE '" + personID + "';"
                 );
                 rs = st.executeQuery();
 
@@ -54,7 +54,7 @@ public class PersonManager {
 
             } else {
                 st = conn.prepareStatement("SELECT dic,name_of_organization,adress,bank_account,phone FROM legal_person " +
-                        "WHERE legal_person_ico = '" + personID + "';"
+                        "WHERE legal_person_ico ILIKE '" + personID + "';"
                 );
                 rs = st.executeQuery();
 
@@ -82,7 +82,7 @@ public class PersonManager {
         }
     }
 
-    public boolean addNewLegalPersonToDatabase(String customerId,String dic,String name,String adress,String bankAccount,String phone) throws SQLException{
+    public int addNewLegalPersonToDatabase(String customerId,String dic,String name,String adress,String bankAccount,String phone) throws SQLException{
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -91,11 +91,15 @@ public class PersonManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("SELECT EXISTS (SELECT customer_id FROM customer WHERE customer_id = '" + customerId + "') AS exist;");
+            st = conn.prepareStatement("SELECT EXISTS (SELECT customer_id FROM customer WHERE customer_id ILIKE '" + customerId + "') AS exist;");
             ResultSet rs = st.executeQuery();
             rs.next();
 
-            if(!rs.getBoolean("exist")) {
+            st = conn.prepareStatement("SELECT EXISTS (SELECT dic FROM legal_person WHERE dic ILIKE '" + dic + "') AS exist;");
+            ResultSet rs2 = st.executeQuery();
+            rs2.next();
+
+            if(!rs.getBoolean("exist") && !rs2.getBoolean("exist")) {
                 st = conn.prepareStatement("INSERT INTO customer (customer_id,customer_type) VALUES (?,?::person_type)");
                 st.setString(1, customerId);
                 st.setString(2, "Právnická osoba");
@@ -111,12 +115,25 @@ public class PersonManager {
                 st.setString(6, phone);
                 st.executeUpdate();
 
-                return true;
+                return 3;
             }
-            else return false;
+
+            if(rs.getBoolean("exist") && rs2.getBoolean("exist")){
+                return 2;
+            }
+
+            if (rs.getBoolean("exist")){
+                return 0;
+            }
+
+            if (rs2.getBoolean("exist")) {
+                return 1;
+            }
+
+            return 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         } finally {
             st.close();
             if (conn != null)
@@ -135,7 +152,7 @@ public class PersonManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("SELECT EXISTS (SELECT customer_id FROM customer WHERE customer_id = '" + customerId + "') AS exist;");
+            st = conn.prepareStatement("SELECT EXISTS (SELECT customer_id FROM customer WHERE customer_id ILIKE '" + customerId + "') AS exist;");
             ResultSet rs = st.executeQuery();
             rs.next();
 

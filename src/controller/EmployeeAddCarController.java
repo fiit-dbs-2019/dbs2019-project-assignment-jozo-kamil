@@ -141,6 +141,14 @@ public class EmployeeAddCarController implements Initializable {
         return textFieldVin.getText();
     }
 
+    public boolean tooLongText() {
+        if(getSPZ().length() > 20 ||
+                getVIN().length() > 17){
+            return true;
+        }
+        return false;
+    }
+
     public boolean emptyFieldChecker() {
         if(getBrand() == null ||
             getModel() == null ||
@@ -162,6 +170,14 @@ public class EmployeeAddCarController implements Initializable {
     }
 
     public void btnConfirmPushed(ActionEvent actionEvent) throws SQLException, IOException {
+
+        if(tooLongText()) {
+            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Príliš dlhé údaje v kolonke ŠPZ/VIN! Max. počet znakov pre VIN je 17, pre ŠPZ 20.", ButtonType.CLOSE);
+            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+            alertEmptyField.setHeaderText("Varovanie!");
+            alertEmptyField.showAndWait();
+            return;
+        }
 
         if(emptyFieldChecker()) {
             Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Vypíšte správne všetky údaje!", ButtonType.CLOSE);
@@ -243,7 +259,7 @@ public class EmployeeAddCarController implements Initializable {
         try {
             EnumManager em = new EnumManager();
 
-            em.employeeTypeEnum(comboBoxBrand,"car_color");
+            em.employeeTypeEnum(comboBoxColor,"car_color");
         } catch (SQLException e) {
             e.printStackTrace();
         }
