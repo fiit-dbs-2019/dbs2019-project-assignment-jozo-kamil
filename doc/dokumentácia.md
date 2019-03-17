@@ -30,10 +30,10 @@ Druhý scenár umožní zamestnancovi aktualizovať rôzne údaje, napríklad:
 Tretí scenár pridá aplikácii funkcionalitu vymazávania záznamov o aute, zamestnancovi, zmluve , či vypožičiavateľovi.
 
 ## Diagram logického a fyzického  modelu
-![Fyzický model](https://prnt.sc/mz53n8)
+![Fyzický model](https://i.ibb.co/L034Gqw/LM.png)
 Každá tabuľka car obsahuje práve jeden FK z car_info. Car_info obsahuje atribúty enumerátorov. Tabuľka contract spája auto, zamestnanca a vypožičiavateľa a ďalšie špecifické atribúty. Nachádza sa tam taktiež väzobná tabuľka car_repair, ktorá slúži nato aby sme vedeli uložiť viacero opráv k jednému autu. Customer tabuľka sa vie odkazovať na 2 rôzne tabuľky podľa typu customera (právnická alebo fyzická osoba).
 
-![Logický model](https://prnt.sc/mz5bw5)
+![Logický model](https://i.ibb.co/j8wnGtw/FM.png)
 Logický model je abstraktnejší, neobsahuje väzobné tabuľky, čiže môže sa vyskytovať vzťah n:n. Obsahuje aj vyjadruje takmer totožné veci ako vo fyzickom modeli.
 
 ## Stručný opis návrhu a implementácie
