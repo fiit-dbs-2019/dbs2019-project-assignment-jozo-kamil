@@ -1,13 +1,19 @@
 package controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Employee;
+import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.EmployeeManager;
 import persistancemanagers.EnumManager;
 
@@ -25,21 +31,26 @@ public class AdminAddEmployeeController implements Initializable {
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
     @FXML private Label labelDate;
-    @FXML private TextField textFieldFirstName;
-    @FXML private TextField textFieldLastName;
-    @FXML private TextField textFieldLogin;
-    @FXML private TextField textFieldPassword;
-    @FXML private TextField textPhoneNumber;
-    @FXML private ComboBox comboBoxType;
+    @FXML private JFXTextField textFieldFirstName;
+    @FXML private JFXTextField textFieldLastName;
+    @FXML private JFXTextField textFieldLogin;
+    @FXML private JFXTextField textFieldPassword;
+    @FXML private JFXTextField textPhoneNumber;
+    @FXML private JFXComboBox comboBoxType;
+
+    private Employee admin;
 
     public void setHeader () {
-        EmployeeManager em = new EmployeeManager();
+//        EmployeeManager em = new EmployeeManager();
+//
+//        try {
+//            em.setHeader(labelFirstName,labelLastName);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-        try {
-            em.setHeader(labelFirstName,labelLastName);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        labelFirstName.setText(admin.getFirstName());
+        labelLastName.setText(admin.getLastName());
 
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
 
@@ -48,7 +59,7 @@ public class AdminAddEmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setHeader();
+        //setHeader();
         addItemsComboBox();
     }
 
@@ -60,6 +71,15 @@ public class AdminAddEmployeeController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Employee getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Employee admin) {
+        this.admin = admin;
+        setHeader();
     }
 
     public String getFirstName() {
@@ -135,8 +155,10 @@ public class AdminAddEmployeeController implements Initializable {
                 alertInfo.setHeaderText("Info!");
                 alertInfo.showAndWait();
 
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
-                rootPane.getChildren().setAll(pane);
+//                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
+//                rootPane.getChildren().setAll(pane);
+                backToMenu();
+
             } else {
                 Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login - " + getLogin() + " - už existuje!", ButtonType.CLOSE);
                 alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
@@ -147,7 +169,27 @@ public class AdminAddEmployeeController implements Initializable {
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
-        rootPane.getChildren().setAll(pane);
+        backToMenu();
+    }
+
+    public void backToMenu() {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/admin_menu.fxml"));
+            parent = (Parent) loaader.load();
+
+            AdminMenuController adminMenuController = loaader.getController();
+            adminMenuController.setAdmin(admin);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 }

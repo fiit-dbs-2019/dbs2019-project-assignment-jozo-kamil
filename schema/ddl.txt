@@ -52,7 +52,7 @@ engine_power SMALLINT NOT NULL DEFAULT '120',
 gear_box car_gear_box NOT NULL DEFAULT 'manuálna',
 fuel car_fuel NOT NULL DEFAULT 'diesel',
 color car_color NOT NULL DEFAULT 'biela',
-price_per_day SMALLINT NOT NULL DEFAULT '50'
+price_per_day FLOAT NOT NULL DEFAULT '50'
 );
 
 CREATE TABLE servis (
@@ -135,7 +135,7 @@ employee_id INT NOT NULL REFERENCES employee(employee_id),
 date_from DATE NOT NULL,
 date_to DATE NOT NULL,
 date_of_creating DATE NOT NULL,
-price INT NOT NULL,
+price FLOAT NOT NULL,
 harm_id INT REFERENCES harm(harm_id)
 );
 

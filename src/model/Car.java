@@ -14,7 +14,7 @@ public class Car {
     private String gear_box;
     private String fuel;
     private String color;
-    private int price_per_day;
+    private Float price_per_day;
     private Date year_of_production;
     private int mileage;
     private String spz;
@@ -27,7 +27,7 @@ public class Car {
     }
 
     public Car(String brand, String model, String body_style, float engine_capacity, int engine_power, String gear_box, String fuel,
-               String color, int price_per_day, Date year_of_production, String spz, int mileage, String car_vin) {
+               String color, Float price_per_day, Date year_of_production, String spz, int mileage, String car_vin) {
         this.brand=brand;
         this.model=model;
         this.body_style=body_style;
@@ -44,7 +44,7 @@ public class Car {
     }
 
     public Car(String car_vin, String brand, String model, String body_style, float engine_capacity, int engine_power, String gear_box,
-               String fuel, String color, int price_per_day, Date year_of_production, int mileage, String spz) {
+               String fuel, String color, Float price_per_day, Date year_of_production, int mileage, String spz) {
         this.car_vin = car_vin;
         this.brand = brand;
         this.model = model;
@@ -100,7 +100,7 @@ public class Car {
         this.model = model;
     }
 
-    public void setPrice_per_day(int price_per_day) {
+    public void setPrice_per_day(Float price_per_day) {
         this.price_per_day = price_per_day;
     }
 
@@ -124,7 +124,7 @@ public class Car {
         return mileage;
     }
 
-    public int getPrice_per_day() {
+    public Float getPrice_per_day() {
         return price_per_day;
     }
 

@@ -41,7 +41,7 @@ public class CarManager {
             String gear_box = rs.getString("gear_box");
             String fuel = rs.getString("fuel");
             String color = rs.getString("color");
-            Integer price_per_day = rs.getInt("price_per_day");
+            Float price_per_day = rs.getFloat("price_per_day");
 
             car = new Car(car_vin,model,brand,body_style,engine_capacity,engine_power,gear_box,fuel,color,price_per_day,year_of_production,mileage,SPZ);
 
@@ -89,7 +89,7 @@ public class CarManager {
 
     public boolean addNewCarToDatabase(String car_vin, String brand, String model, String body_style,
                                        Float engine_capacity, Integer engine_power, String gear_box,
-                                       String fuel, String color, Integer price_per_day,
+                                       String fuel, String color, Float price_per_day,
                                        Date year_of_production, Integer mileage, String SPZ) throws SQLException {
 
         AllTablesManager atm;
@@ -122,7 +122,7 @@ public class CarManager {
                 st.setString(6,gear_box);
                 st.setString(7,fuel);
                 st.setString(8,color);
-                st.setInt(9,price_per_day);
+                st.setFloat(9,price_per_day);
 
                 ResultSet rsID = st.executeQuery();
 

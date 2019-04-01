@@ -4,9 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.Employee;
 import persistancemanagers.EmployeeManager;
 
@@ -25,6 +28,8 @@ public class AdminSearchEmployeeController implements Initializable {
     @FXML private Label labelLastName;
     @FXML private Label labelDate;
     @FXML private ListView listView;
+
+    private Employee admin;
 
     public void setHeader () {
         EmployeeManager em = new EmployeeManager();
@@ -45,9 +50,33 @@ public class AdminSearchEmployeeController implements Initializable {
         setHeader();
     }
 
-    public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
-        rootPane.getChildren().setAll(pane);
+    public Employee getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Employee admin) {
+        this.admin = admin;
+    }
+
+    public void btnBackPushed(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/admin_menu.fxml"));
+            parent = (Parent) loaader.load();
+
+            AdminMenuController adminMenuController = loaader.getController();
+            adminMenuController.setAdmin(admin);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void btnDeleteEmployeePushed(ActionEvent actionEvent) {

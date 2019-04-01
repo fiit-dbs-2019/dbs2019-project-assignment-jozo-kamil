@@ -4,12 +4,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import model.*;
+import org.controlsfx.control.Notifications;
 import persistancemanagers.CarManager;
 import persistancemanagers.CreateContractManager;
 import persistancemanagers.EmployeeManager;
@@ -71,11 +76,20 @@ public class EmployeeConfirmContractController implements Initializable {
     private Date dateFROM = null;
     private Date dateTO = null;
 
+    private Employee employee;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setEmployeeLabels();
         setAnotherLabels();
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public void setEmployeeLabels() {
@@ -160,7 +174,7 @@ public class EmployeeConfirmContractController implements Initializable {
         setLabelGearBox(car.getGear_box());
         setLabelBodyStyle(car.getBody_style());
         setLabelColor(car.getColor());
-        setLabelPrice(String.valueOf(car.getPrice_per_day()));
+        setLabelPrice(car.getPrice_per_day() + "€");
 
         // add total price
         long diff = dateTO.getTime() - dateFROM.getTime();
@@ -306,13 +320,29 @@ public class EmployeeConfirmContractController implements Initializable {
         this.labelDateOfContract.setText(labelDateOfContract);
     }
 
-    public void setLabelTotalPrice(Integer labelTotalPrice) {
+    public void setLabelTotalPrice(Float labelTotalPrice) {
         this.labelTotalPrice.setText(String.valueOf(labelTotalPrice) + "€");
     }
 
-    public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_create_contract.fxml"));
-        rootPane.getChildren().setAll(pane);
+    public void btnBackPushed(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeCreateContractController employeeCreateContractController = loaader.getController();
+            employeeCreateContractController.setEmployee(employee);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void btnSubmitPushed(ActionEvent actionEvent) {
@@ -325,24 +355,33 @@ public class EmployeeConfirmContractController implements Initializable {
             try {
                 if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) person).getOp(),sqlDateFROM,sqlDateTO)) {
 
-                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
-                    alertInfo.initStyle(StageStyle.TRANSPARENT);
-                    alertInfo.setHeaderText("Info!");
-                    alertInfo.showAndWait();
+//                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
+//                    alertInfo.initStyle(StageStyle.TRANSPARENT);
+//                    alertInfo.setHeaderText("Info!");
+//                    alertInfo.showAndWait();
+                    Notifications notification = Notifications.create()
+                            .title("Zmluva bola úspešne vytvorená!")
+                            .hideAfter(Duration.seconds(4))
+                            .hideCloseButton();
+                    notification.showConfirm();
 
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                    rootPane.getChildren().setAll(pane);
+//                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+//                    rootPane.getChildren().setAll(pane);
+                    backToMenu();
 
                 } else {
-                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!", ButtonType.CLOSE);
-                    alertError.initStyle(StageStyle.TRANSPARENT);
-                    alertError.setHeaderText("Chyba!");
-                    alertError.showAndWait();
+//                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!", ButtonType.CLOSE);
+//                    alertError.initStyle(StageStyle.TRANSPARENT);
+//                    alertError.setHeaderText("Chyba!");
+//                    alertError.showAndWait();
+                    Notifications notification = Notifications.create()
+                            .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
+                            .hideAfter(Duration.seconds(4))
+                            .hideCloseButton();
+                    notification.showError();
                     return;
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -351,30 +390,56 @@ public class EmployeeConfirmContractController implements Initializable {
             try {
                 if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) person).getIco(),sqlDateFROM,sqlDateTO)) {
 
-                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
-                    alertInfo.initStyle(StageStyle.TRANSPARENT);
-                    alertInfo.setHeaderText("Info!");
-                    alertInfo.showAndWait();
+//                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
+//                    alertInfo.initStyle(StageStyle.TRANSPARENT);
+//                    alertInfo.setHeaderText("Info!");
+//                    alertInfo.showAndWait();
+                    Notifications notification = Notifications.create()
+                            .title("Zmluva bola úspešne vytvorená!")
+                            .hideAfter(Duration.seconds(4))
+                            .hideCloseButton();
+                    notification.showConfirm();
 
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                    rootPane.getChildren().setAll(pane);
+//                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+//                    rootPane.getChildren().setAll(pane);
+                    backToMenu();
 
                 } else {
-                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!", ButtonType.CLOSE);
-                    alertError.initStyle(StageStyle.TRANSPARENT);
-                    alertError.setHeaderText("Chyba!");
-                    alertError.showAndWait();
+//                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!", ButtonType.CLOSE);
+//                    alertError.initStyle(StageStyle.TRANSPARENT);
+//                    alertError.setHeaderText("Chyba!");
+//                    alertError.showAndWait();
+                    Notifications notification = Notifications.create()
+                            .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
+                            .hideAfter(Duration.seconds(4))
+                            .hideCloseButton();
+                    notification.showError();
                     return;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-
-
     }
 
+    public void backToMenu() {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_menu.fxml"));
+            parent = (Parent) loaader.load();
 
+            EmployeeMenuController employeeMenuController = loaader.getController();
+            employeeMenuController.setEmployee(employee);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
+    }
 }

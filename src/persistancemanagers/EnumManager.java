@@ -1,5 +1,6 @@
 package persistancemanagers;
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 
@@ -49,7 +50,7 @@ public class EnumManager {
         }
     }
 
-    public void employeeTypeEnum(ComboBox comboBox, String whichEnum) throws SQLException {
+    public void employeeTypeEnum(JFXComboBox comboBox, String whichEnum) throws SQLException {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -80,7 +81,7 @@ public class EnumManager {
         }
     }
 
-    public void setModelsForSpecificBrand(String brand, ComboBox comboBox) throws SQLException {
+    public void setModelsForSpecificBrand(String brand, JFXComboBox comboBox) throws SQLException {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;

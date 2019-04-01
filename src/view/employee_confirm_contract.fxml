@@ -9,18 +9,18 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeConfirmContractController">
    <children>
-      <Label alignment="CENTER" layoutX="12.0" layoutY="14.0" prefHeight="42.0" prefWidth="577.0" text="Zmluva o výpožičke motorového vozidla">
+      <Label alignment="CENTER" layoutX="12.0" layoutY="14.0" prefHeight="42.0" prefWidth="577.0" text="Zmluva o výpožičke motorového vozidla" textFill="WHITE">
          <font>
-            <Font name="Lucida Console" size="30.0" />
+            <Font name="Lucida Console" size="25.0" />
          </font>
       </Label>
-      <VBox layoutX="319.0" layoutY="63.0" prefHeight="280.0" prefWidth="270.0">
+      <VBox layoutX="312.0" layoutY="63.0" prefHeight="280.0" prefWidth="284.0">
          <children>
             <HBox prefHeight="42.0" prefWidth="250.0">
                <children>
-                  <Label prefHeight="42.0" prefWidth="300.0" text="Informácie o vypožičiavateľovi:" underline="true">
+                  <Label prefHeight="42.0" prefWidth="299.0" text="Informácie o vypožičiavateľovi:" textFill="WHITE" underline="true">
                      <font>
-                        <Font name="Lucida Console" size="16.0" />
+                        <Font name="Lucida Console" size="15.0" />
                      </font>
                   </Label>
                </children>
@@ -29,22 +29,22 @@
                <children>
                   <VBox prefHeight="235.0" prefWidth="135.0" spacing="3.0">
                      <children>
-                        <Label fx:id="labelCustomer1" prefHeight="35.0" prefWidth="125.0" text="Meno:" underline="true" />
-                        <Label fx:id="labelCustomer2" prefHeight="35.0" prefWidth="125.0" text="Meno:" underline="true" />
-                        <Label fx:id="labelCustomer3" prefHeight="35.0" prefWidth="125.0" text="Meno:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="125.0" text="Adresa:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="125.0" text="Číslo účtu:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="125.0" text="Telefónne číslo:" underline="true" />
+                        <Label fx:id="labelCustomer1" prefHeight="35.0" prefWidth="125.0" text="Meno:" textFill="WHITE" underline="true" />
+                        <Label fx:id="labelCustomer2" prefHeight="35.0" prefWidth="125.0" text="Meno:" textFill="WHITE" underline="true" />
+                        <Label fx:id="labelCustomer3" prefHeight="35.0" prefWidth="125.0" text="Meno:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="125.0" text="Adresa:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="125.0" text="Číslo účtu:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="125.0" text="Telefónne číslo:" textFill="WHITE" underline="true" />
                      </children>
                   </VBox>
                   <VBox prefHeight="235.0" prefWidth="177.0" spacing="3.0">
                      <children>
-                        <Label fx:id="fieldCustomer1" prefHeight="35.0" prefWidth="180.0" text="Label" />
-                        <Label fx:id="fieldCustomer2" prefHeight="35.0" prefWidth="180.0" text="Label" />
-                        <Label fx:id="fieldCustomer3" prefHeight="35.0" prefWidth="180.0" text="Label" />
-                        <Label fx:id="labelAdress" prefHeight="35.0" prefWidth="180.0" text="Label" />
-                        <Label fx:id="labelBankAccount" prefHeight="35.0" prefWidth="180.0" text="Label" />
-                        <Label fx:id="labelCustomerPhone" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                        <Label fx:id="fieldCustomer1" prefHeight="35.0" prefWidth="180.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="fieldCustomer2" prefHeight="35.0" prefWidth="180.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="fieldCustomer3" prefHeight="35.0" prefWidth="180.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelAdress" prefHeight="35.0" prefWidth="180.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelBankAccount" prefHeight="35.0" prefWidth="180.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelCustomerPhone" prefHeight="35.0" prefWidth="180.0" text="Label" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
@@ -55,9 +55,9 @@
          <children>
             <HBox prefHeight="42.0" prefWidth="250.0">
                <children>
-                  <Label prefHeight="39.0" prefWidth="300.0" text="Informácie o vozidle:" underline="true">
+                  <Label prefHeight="39.0" prefWidth="300.0" text="Informácie o vozidle:" textFill="WHITE" underline="true">
                      <font>
-                        <Font name="Lucida Console" size="16.0" />
+                        <Font name="Lucida Console" size="15.0" />
                      </font>
                   </Label>
                </children>
@@ -66,82 +66,82 @@
                <children>
                   <VBox prefHeight="467.0" prefWidth="146.0" spacing="3.0">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="145.0" text="VIN:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="ŠPZ:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Značka:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Model:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Rok výroby:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Stav tachometra:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Palivo" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Objem motora" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Výkon motora(kW):" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Typ prevodovky:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Karoséria:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Farba:" underline="true" />
-                        <Label prefHeight="35.0" prefWidth="145.0" text="Cena výpožičky/deň:" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="VIN:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="ŠPZ:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Značka:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Model:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Rok výroby:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Stav tachometra:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Palivo" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Objem motora" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Výkon motora(kW):" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Typ prevodovky:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Karoséria:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Farba:" textFill="WHITE" underline="true" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Cena výpožičky/deň:" textFill="WHITE" underline="true" />
                      </children>
                   </VBox>
                   <VBox prefHeight="467.0" prefWidth="158.0" spacing="3.0">
                      <children>
-                        <Label fx:id="labelVIN" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelSPZ" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelBrand" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelModel" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelYear" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelMileage" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelFuel" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelEngineCapacity" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelEnginePower" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelGearBox" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelBodyStyle" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelColor" prefHeight="35.0" prefWidth="160.0" text="Label" />
-                        <Label fx:id="labelPrice" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelVIN" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelSPZ" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelBrand" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelModel" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelYear" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelMileage" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelFuel" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelEngineCapacity" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelEnginePower" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelGearBox" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelBodyStyle" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelColor" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
+                        <Label fx:id="labelPrice" prefHeight="35.0" prefWidth="160.0" text="Label" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="319.0" layoutY="343.0" prefHeight="203.0" prefWidth="270.0">
+      <VBox layoutX="312.0" layoutY="343.0" prefHeight="203.0" prefWidth="270.0">
          <children>
             <HBox prefHeight="40.0" prefWidth="300.0">
                <children>
-                  <Label prefHeight="40.0" prefWidth="130.0" text="Vyhotovil:" underline="true">
+                  <Label prefHeight="40.0" prefWidth="130.0" text="Vyhotovil:" textFill="WHITE" underline="true">
                      <font>
                         <Font name="Lucida Console" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelEmployeeFirstName" prefHeight="40.0" prefWidth="170.0" text="Label" />
+                  <Label fx:id="labelEmployeeFirstName" prefHeight="40.0" prefWidth="170.0" text="Label" textFill="WHITE" />
                </children>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="300.0">
                <children>
-                  <Label fx:id="labelEmployeeLastName" prefHeight="40.0" prefWidth="155.0" text="Label" />
+                  <Label fx:id="labelEmployeeLastName" prefHeight="40.0" prefWidth="155.0" text="Label" textFill="WHITE" />
                </children>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="300.0">
                <children>
-                  <Label fx:id="labelDateFromTo" prefHeight="40.0" prefWidth="280.0" text="Label" />
+                  <Label fx:id="labelDateFromTo" prefHeight="40.0" prefWidth="280.0" text="Label" textFill="WHITE" />
                </children>
             </HBox>
             <HBox prefHeight="40.0" prefWidth="300.0">
                <children>
-                  <Label prefHeight="40.0" prefWidth="115.0" text="Dňa:" underline="true">
+                  <Label prefHeight="40.0" prefWidth="140.0" text="Dňa:" textFill="WHITE" underline="true">
                      <font>
                         <Font name="Lucida Console" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelDateOfContract" prefHeight="40.0" prefWidth="155.0" text="Label" />
+                  <Label fx:id="labelDateOfContract" prefHeight="40.0" prefWidth="155.0" text="Label" textFill="WHITE" />
                </children>
             </HBox>
             <HBox prefHeight="40.0" prefWidth="300.0">
                <children>
-                  <Label prefHeight="40.0" prefWidth="115.0" text="Celková suma:" underline="true">
+                  <Label prefHeight="40.0" prefWidth="140.0" text="Celková suma:" textFill="WHITE" underline="true">
                      <font>
                         <Font name="Lucida Console" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelTotalPrice" prefHeight="40.0" prefWidth="155.0" text="Label" />
+                  <Label fx:id="labelTotalPrice" prefHeight="40.0" prefWidth="155.0" text="Label" textFill="WHITE" />
                </children>
             </HBox>
          </children>
