@@ -50,6 +50,30 @@ public class EmployeeSearchMenuController implements Initializable {
     }
 
     public void btnSearchCustomerPushed(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_search_customer.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeSearchCustomerController employeeSearchCustomerController = loaader.getController();
+            employeeSearchCustomerController.setEmployee(employee);
+            employeeSearchCustomerController.addItemsToListNatural();
+            employeeSearchCustomerController.addItemsToTableNatural();
+            employeeSearchCustomerController.addItemsToListLegal();
+            employeeSearchCustomerController.addItemsToTableLegal();
+            employeeSearchCustomerController.setNewRangeOfDisplayedDataNatural();
+            employeeSearchCustomerController.setNewRangeOfDisplayedDataLegal();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void btnSearchCarPushed(ActionEvent actionEvent) {

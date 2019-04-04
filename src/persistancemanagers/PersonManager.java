@@ -1,5 +1,8 @@
 package persistancemanagers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Employee;
 import model.LegalPerson;
 import model.NaturalPerson;
 import model.Person;
@@ -14,6 +17,277 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class PersonManager {
+
+    public ObservableList<NaturalPerson> getNaturalPerson(Integer offset){
+        ObservableList<NaturalPerson> listOfNaturalPerson = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+
+
+            st = conn.prepareStatement("SELECT * FROM natural_person ORDER BY last_name,first_name LIMIT 500 OFFSET " + offset + ";");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String op = rs.getString("natural_person_id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String adress = rs.getString("adress");
+                String bankAccount = rs.getString("bank_account");
+                String phone = rs.getString("phone");
+                String type = rs.getString("customer_type");
+
+                listOfNaturalPerson.add(new NaturalPerson(op,firstName,lastName,adress,bankAccount,phone));
+            }
+
+            return listOfNaturalPerson;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<NaturalPerson> getNaturalPersonByFullName(String pattern, Integer offSet) {
+        ObservableList<NaturalPerson> listOfNaturalPerson = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+
+
+            st = conn.prepareStatement("select * " +
+                    "from natural_person " +
+                    "where ((first_name || ' ' || last_name) ILIKE '" + pattern + "%') OR ((last_name || ' ' || first_name) ILIKE '" + pattern + "%')" +
+                    "OR natural_person_id ILIKE '" + pattern + "%' OR phone ILIKE '" + pattern + "%' OR adress ILIKE '" + pattern + "%'" +
+                    "ORDER BY last_name,first_name " +
+                    "LIMIT 500" +
+                    "OFFSET " + offSet + ";"
+            );
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String op = rs.getString("natural_person_id");
+                String adress = rs.getString("adress");
+                String bankAccount = rs.getString("bank_account");
+                String phone = rs.getString("phone");
+                String type = rs.getString("customer_type");
+
+                listOfNaturalPerson.add(new NaturalPerson(op,firstName,lastName,adress,bankAccount,phone));
+            }
+
+            return listOfNaturalPerson;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public void updateNaturalPersonInfo(NaturalPerson naturalPerson) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("UPDATE natural_person " +
+                    "SET first_name = ?, last_name = ?, adress = ?, bank_account = ?, phone = ? " +
+                    "WHERE natural_person_id = ?;"
+            );
+            st.setString(1,naturalPerson.getFirstName());
+            st.setString(2,naturalPerson.getLastName());
+            st.setString(3,naturalPerson.getAdress());
+            st.setString(4,naturalPerson.getBankAccount());
+            st.setString(5,naturalPerson.getPhoneNumber());
+            st.setString(6,naturalPerson.getOp());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<LegalPerson> getLegalPerson(Integer offset){
+        ObservableList<LegalPerson> listOfLegalPerson = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+
+
+            st = conn.prepareStatement("SELECT * FROM legal_person ORDER BY dic,legal_person_ico LIMIT 500 OFFSET " + offset + ";");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String ico = rs.getString("legal_person_ico");
+                String dic = rs.getString("dic");
+                String name = rs.getString("name_of_organization");
+                String adress = rs.getString("adress");
+                String bankAccount = rs.getString("bank_account");
+                String phone = rs.getString("phone");
+                String type = rs.getString("customer_type");
+
+                listOfLegalPerson.add(new LegalPerson(ico,dic,name,adress,bankAccount,phone));
+            }
+
+            return listOfLegalPerson;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<LegalPerson> getLegalPersonByFullName(String pattern, Integer offSet) {
+        ObservableList<LegalPerson> listOfLegalPerson = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+
+
+            st = conn.prepareStatement("select * " +
+                    "from legal_person " +
+                    "where ((legal_person_ico || ' ' || dic) ILIKE '" + pattern + "%') OR ((dic || ' ' || legal_person_ico) ILIKE '" + pattern + "%')" +
+                    "OR name_of_organization ILIKE '" + pattern + "%' OR phone ILIKE '" + pattern + "%' OR adress ILIKE '" + pattern + "%'" +
+                    "ORDER BY legal_person_ico,dic " +
+                    "LIMIT 500" +
+                    "OFFSET " + offSet + ";"
+            );
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String ico = rs.getString("legal_person_ico");
+                String dic = rs.getString("dic");
+                String name = rs.getString("name_of_organization");
+                String adress = rs.getString("adress");
+                String bankAccount = rs.getString("bank_account");
+                String phone = rs.getString("phone");
+                String type = rs.getString("customer_type");
+
+                listOfLegalPerson.add(new LegalPerson(ico,dic,name,adress,bankAccount,phone));
+            }
+
+            return listOfLegalPerson;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public void updateLegalPersonInfo(LegalPerson legalPerson) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("UPDATE legal_person " +
+                    "SET name_of_organization = ?, adress = ?, bank_account = ?, phone = ? " +
+                    "WHERE legal_person_ico = ?;"
+            );
+            st.setString(1,legalPerson.getName());
+            st.setString(2,legalPerson.getAdress());
+            st.setString(3,legalPerson.getBankAccount());
+            st.setString(4,legalPerson.getPhoneNumber());
+            st.setString(5,legalPerson.getIco());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
 
     public Person getPersonFromDatabase(String personID) throws SQLException {
         Person person = null;

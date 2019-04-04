@@ -125,10 +125,13 @@ public class AdminSearchEmployeeController implements Initializable {
         setLabelOffset((offSet + " - " + range));
     }
 
-    public void addItemsToTableView() {
+    public void addItemsToList() {
         EmployeeManager employeeManager = new EmployeeManager();
 
         observableList = employeeManager.getEmployee(offSet);
+    }
+
+    public void addItemsToTable() {
         tableView.setItems(observableList);
 
         filer = new FilteredList(observableList,e->true);
@@ -399,12 +402,14 @@ public class AdminSearchEmployeeController implements Initializable {
             protected Object call() {
                 progressBar.setVisible(true);
 
-                addItemsToTableView();
+                addItemsToList();
                 return null;
             }
         };
 
         displayData.setOnSucceeded(event -> {
+            addItemsToTable();
+
             filer = new FilteredList(observableList,e->true);
 
             progressBar.setVisible(false);
