@@ -108,36 +108,36 @@ public class EmployeeCreateContractController implements Initializable {
                     notification.showError();
                 } else if (result ==3 ){
 
-                    Properties prop = new Properties();
-                    OutputStream output = null;
-
-                    FileInputStream input = new FileInputStream("src/contract_info");
-                    prop.load(input);
-
-//                    input = new FileInputStream("src/contract_info");
+//                    Properties prop = new Properties();
+//                    OutputStream output = null;
+//
+//                    FileInputStream input = new FileInputStream("src/contract_info");
 //                    prop.load(input);
-
-                    try {
-                        output = new FileOutputStream("src/contract_info");
-
-                        prop.setProperty("carVIN",getTextFieldVin());
-                        prop.setProperty("customerID",getTextFieldOp());
-                        prop.setProperty("dateFROM",getDateFrom().toString());
-                        prop.setProperty("dateTO",getDateTo().toString());
-
-                        prop.store(output, null);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (output != null) {
-                            try {
-                                output.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+//
+////                    input = new FileInputStream("src/contract_info");
+////                    prop.load(input);
+//
+//                    try {
+//                        output = new FileOutputStream("src/contract_info");
+//
+//                        prop.setProperty("carVIN",getTextFieldVin());
+//                        prop.setProperty("customerID",getTextFieldOp());
+//                        prop.setProperty("dateFROM",getDateFrom().toString());
+//                        prop.setProperty("dateTO",getDateTo().toString());
+//
+//                        prop.store(output, null);
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } finally {
+//                        if (output != null) {
+//                            try {
+//                                output.close();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
 
 //                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_confirm_contract.fxml"));
 //                    rootPane.getChildren().setAll(pane);
@@ -149,6 +149,11 @@ public class EmployeeCreateContractController implements Initializable {
 
                         EmployeeConfirmContractController employeeConfirmContractController = loaader.getController();
                         employeeConfirmContractController.setEmployee(employee);
+                        employeeConfirmContractController.setCustomerID(getTextFieldOp());
+                        employeeConfirmContractController.setCarVIN(getTextFieldVin());
+                        employeeConfirmContractController.setDateFROM(getDateFrom());
+                        employeeConfirmContractController.setDateTO(getDateTo());
+                        employeeConfirmContractController.setAll();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -165,7 +170,7 @@ public class EmployeeCreateContractController implements Initializable {
 
     }
 
-    public void btnBackPushed(ActionEvent actionEvent) throws IOException {
+    public void btnBackPushed(ActionEvent actionEvent) {
         backToMenu();
     }
 

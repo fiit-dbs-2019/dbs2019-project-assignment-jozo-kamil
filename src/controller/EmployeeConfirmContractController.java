@@ -77,9 +77,14 @@ public class EmployeeConfirmContractController implements Initializable {
     private Date dateTO = null;
 
     private Employee employee;
+    private String customerID;
+    private String carVIN;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    public void setAll() {
         setEmployeeLabels();
         setAnotherLabels();
     }
@@ -92,16 +97,39 @@ public class EmployeeConfirmContractController implements Initializable {
         this.employee = employee;
     }
 
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getCarVIN() {
+        return carVIN;
+    }
+
+    public void setCarVIN(String carVIN) {
+        this.carVIN = carVIN;
+    }
+
+    public Date getDateFROM() {
+        return dateFROM;
+    }
+
+    public void setDateFROM(Date dateFROM) {
+        this.dateFROM = dateFROM;
+    }
+
+    public Date getDateTO() {
+        return dateTO;
+    }
+
+    public void setDateTO(Date dateTO) {
+        this.dateTO = dateTO;
+    }
+
     public void setEmployeeLabels() {
-        EmployeeManager em = new EmployeeManager();
-        Employee employee = null;
-
-        try {
-            employee = em.getEmployeeFromDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         setLabelEmployeeFirstName(employee.getFirstName());
         setLabelEmployeeLastName(employee.getLastName());
     }
@@ -109,55 +137,58 @@ public class EmployeeConfirmContractController implements Initializable {
     public void setAnotherLabels() {
         setLabelDateOfContract(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 
-        Properties prop = new Properties();
-        String car_vin;
-        String customer_id;
+//        Properties prop = new Properties();
+//        String car_vin;
+//        String customer_id;
+//
+//        // input for contract_info
+//        FileInputStream input = null;
+//
+//        try {
+//            input = new FileInputStream("src/contract_info");
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            prop.load(input);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            try {
+//                String dateFromProperty = prop.getProperty("dateFROM");
+//                dateFROM = new SimpleDateFormat("yyyy-MM-dd").parse(dateFromProperty);
+//
+//                String dateToProperty = prop.getProperty("dateTO");
+//                dateTO = new SimpleDateFormat("yyyy-MM-dd").parse(dateToProperty);
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//            setLabelDateFromTo("OD: " + prop.getProperty("dateFROM") + " - DO: " + prop.getProperty("dateTO"));
+//
+//            car_vin = prop.getProperty("carVIN");
+//            customer_id = prop.getProperty("customerID");
+//        } finally {
+//            if (input != null) {
+//                try {
+//                    input.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
 
-        // input for contract_info
-        FileInputStream input = null;
 
-        try {
-            input = new FileInputStream("src/contract_info");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            prop.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            try {
-                String dateFromProperty = prop.getProperty("dateFROM");
-                dateFROM = new SimpleDateFormat("yyyy-MM-dd").parse(dateFromProperty);
-
-                String dateToProperty = prop.getProperty("dateTO");
-                dateTO = new SimpleDateFormat("yyyy-MM-dd").parse(dateToProperty);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            setLabelDateFromTo("OD: " + prop.getProperty("dateFROM") + " - DO: " + prop.getProperty("dateTO"));
-
-            car_vin = prop.getProperty("carVIN");
-            customer_id = prop.getProperty("customerID");
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        setLabelDateFromTo("OD: " + dateFROM + " DO: " + dateTO);
 
         CarManager cm = new CarManager();
 
         try {
-            car = cm.getCarFromDatabase(car_vin);
+            car = cm.getCarFromDatabase(carVIN);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -183,7 +214,7 @@ public class EmployeeConfirmContractController implements Initializable {
         PersonManager pm = new PersonManager();
 
         try {
-            person = pm.getPersonFromDatabase(customer_id);
+            person = pm.getPersonFromDatabase(customerID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -353,7 +384,7 @@ public class EmployeeConfirmContractController implements Initializable {
 
         if(person instanceof NaturalPerson) {
             try {
-                if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) person).getOp(),sqlDateFROM,sqlDateTO)) {
+                if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) person).getOp(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
 //                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
 //                    alertInfo.initStyle(StageStyle.TRANSPARENT);
@@ -388,7 +419,7 @@ public class EmployeeConfirmContractController implements Initializable {
 
         if(person instanceof LegalPerson) {
             try {
-                if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) person).getIco(),sqlDateFROM,sqlDateTO)) {
+                if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) person).getIco(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
 //                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
 //                    alertInfo.initStyle(StageStyle.TRANSPARENT);

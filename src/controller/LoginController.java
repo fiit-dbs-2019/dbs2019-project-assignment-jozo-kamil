@@ -96,57 +96,57 @@ public class LoginController implements Initializable {
                     .hideCloseButton();
             notification.showError();
             return;
-        } else {
-
-            // add logged employeeID to properties file
-            Properties prop = new Properties();
-            OutputStream output = null;
-
-            // input for properties
-            FileInputStream input = new FileInputStream("src/properties");
-            prop.load(input);
-
-            // input for contract_info
-            Properties prop_contract = new Properties();
-            input = new FileInputStream("src/contract_info");
-            prop_contract.load(input);
-
-//            input = new FileInputStream("src/properties");
-//            prop.load(input);
-
-            try {
-                // output for properties
-                output = new FileOutputStream("src/properties");
-
-                prop.setProperty("loggedID", String.valueOf(employee.getEmployeeID()));
-
-                prop.store(output, null);
-
-                // output for contract_info
-                output = new FileOutputStream("src/contract_info");
-
-                prop_contract.setProperty("employeeID", String.valueOf(employee.getEmployeeID()));
-
-                prop_contract.store(output,null);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (output != null) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
         }
+//        } else {
+//
+//            // add logged employeeID to properties file
+//            Properties prop = new Properties();
+//            OutputStream output = null;
+//
+//            // input for properties
+//            FileInputStream input = new FileInputStream("src/properties");
+//            prop.load(input);
+//
+//            // input for contract_info
+//            Properties prop_contract = new Properties();
+//            input = new FileInputStream("src/contract_info");
+//            prop_contract.load(input);
+//
+////            input = new FileInputStream("src/properties");
+////            prop.load(input);
+//
+//            try {
+//                // output for properties
+//                output = new FileOutputStream("src/properties");
+//
+//                prop.setProperty("loggedID", String.valueOf(employee.getEmployeeID()));
+//
+//                prop.store(output, null);
+//
+//                // output for contract_info
+//                output = new FileOutputStream("src/contract_info");
+//
+//                prop_contract.setProperty("employeeID", String.valueOf(employee.getEmployeeID()));
+//
+//                prop_contract.store(output,null);
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (output != null) {
+//                    try {
+//                        output.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
         if (employee.getType().equals("admin")) {
 //            AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
 //            rootPane.getChildren().setAll(pane);
 
-            fadeOutOfScene("../view/admin_menu.fxml",employee);
+            setNewScene("../view/admin_menu.fxml",employee);
 
             Notifications notification = Notifications.create()
                     .title("Prihlásenie bolo úspešné!")
@@ -157,7 +157,7 @@ public class LoginController implements Initializable {
 //            AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
 //            rootPane.getChildren().setAll(pane);
 
-            fadeOutOfScene("../view/employee_menu.fxml",employee);
+            setNewScene("../view/employee_menu.fxml",employee);
 
             Notifications notification = Notifications.create()
                     .title("Prihlásenie bolo úspešné!")
@@ -167,7 +167,7 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void fadeOutOfScene(String nextScene, Employee employee) {
+    public void setNewScene(String nextScene, Employee employee) {
 //        FadeTransition fadeTransition = new FadeTransition();
 //        fadeTransition.setDuration(Duration.millis(1000));
 //        fadeTransition.setNode(rootPane);

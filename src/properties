@@ -1,5 +1,5 @@
-#Mon Apr 01 15:08:29 CEST 2019
+#Wed Apr 03 16:32:46 CEST 2019
 user=postgres
 url=jdbc\:postgresql\://localhost\:5432/dbs_project
 password=assanatlv
-loggedID=1
+loggedID=2

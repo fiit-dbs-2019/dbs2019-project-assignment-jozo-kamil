@@ -11,34 +11,10 @@ import java.util.concurrent.TimeUnit;
 
 public class CreateContractManager {
 
-    public boolean createNewContract(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException {
+    public boolean createNewContract(String car_vin, String customer_id, Date date_from, Date date_to, Integer id) throws SQLException {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
-
-        Properties prop = new Properties();
-        InputStream input = null;
-        int id;
-
-        try {
-            input = new FileInputStream("src/properties");
-
-            prop.load(input);
-
-            id = Integer.parseInt(prop.getProperty("loggedID"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
 
         try {
             atm = new AllTablesManager();
@@ -60,14 +36,15 @@ public class CreateContractManager {
             //source: https://stackoverflow.com/questions/20165564/calculating-days-between-two-dates-with-java
             sum = price_per_day*(int)(TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS));
 
-            st = conn.prepareStatement("INSERT INTO contract (car_vin,customer_id,employee_id,date_from,date_to,date_of_creating,price) VALUES (?,?,?,?,?,?,?)");
+            st = conn.prepareStatement("INSERT INTO contract (car_vin,customer_id,employee_id,date_from,date_to,price,date_of_creating) VALUES (?,?,?,?,?,?,?)");
             st.setString(1, car_vin);
             st.setString(2, customer_id);
             st.setInt(3,id);
             st.setDate(4,date_from);
             st.setDate(5,date_to);
-            st.setDate(6,date);
-            st.setInt(7,sum);
+            st.setInt(6,sum);
+            st.setDate(7,date);
+
             st.executeUpdate();
 
             return true;

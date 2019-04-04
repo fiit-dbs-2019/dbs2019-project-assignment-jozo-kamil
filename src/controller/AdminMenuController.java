@@ -39,17 +39,8 @@ public class AdminMenuController implements Initializable {
     private Employee admin;
 
     public void setHeader () {
-//        EmployeeManager em = new EmployeeManager();
-//        try {
-//            em.setHeader(labelFirstName,labelLastName);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
         labelFirstName.setText(admin.getFirstName());
         labelLastName.setText(admin.getLastName());
-
-        //String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
 
         // https://stackoverflow.com/questions/38566638/javafx-displaying-time-and-refresh-in-every-second
         final DateFormat format = DateFormat.getInstance();
@@ -62,14 +53,10 @@ public class AdminMenuController implements Initializable {
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-
-        //labelDate.setText(time);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //setHeader();
-        btnSearchEmployee.setDisable(true);                             // will be able to click soon
     }
 
     public Employee getAdmin() {
@@ -110,6 +97,8 @@ public class AdminMenuController implements Initializable {
 
             AdminSearchEmployeeController adminSearchEmployeeController = loaader.getController();
             adminSearchEmployeeController.setAdmin(admin);
+            adminSearchEmployeeController.addItemsToTableView();
+            adminSearchEmployeeController.setNewRangeOfDisplayedData();
 
         } catch (IOException e) {
             e.printStackTrace();
