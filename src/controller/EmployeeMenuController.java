@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 
 public class EmployeeMenuController implements Initializable {
 
-    public Button ee;
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
@@ -38,13 +37,6 @@ public class EmployeeMenuController implements Initializable {
     private Employee employee;
 
     public void setHeader () {
-//        EmployeeManager em = new EmployeeManager();
-//        try {
-//            em.setHeader(labelFirstName,labelLastName);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
         labelFirstName.setText(employee.getFirstName());
         labelLastName.setText(employee.getLastName());
 
@@ -55,8 +47,7 @@ public class EmployeeMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //setHeader();
-        ee.setDisable(true);
+
     }
 
     public Employee getEmployee() {
@@ -69,7 +60,25 @@ public class EmployeeMenuController implements Initializable {
     }
 
     public void btnSearchingPushed(ActionEvent actionEvent) throws IOException {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_search_menu.fxml"));
+            parent = (Parent) loaader.load();
 
+            EmployeeSearchMenuController employeeSearchMenuController = loaader.getController();
+            employeeSearchMenuController.setEmployee(employee);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void btnCreateCarPushed(ActionEvent actionEvent) {
