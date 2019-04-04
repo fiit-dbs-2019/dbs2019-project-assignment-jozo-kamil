@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="300.0" prefWidth="1000.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeCarDetailController">
+   <children>
+      <TableView fx:id="tableNonEditable" layoutX="21.0" layoutY="96.0" prefHeight="80.0" prefWidth="959.0">
+        <columns>
+          <TableColumn fx:id="collumnVIN" prefWidth="149.0" text="VIN" />
+            <TableColumn fx:id="collumnYearOfProduction" prefWidth="106.0" text="Rok výroby" />
+            <TableColumn fx:id="collumnBrand" prefWidth="120.0" text="Značka" />
+            <TableColumn fx:id="collumnModel" prefWidth="101.0" text="Model" />
+            <TableColumn fx:id="collumnBodyStyle" prefWidth="77.0" text="Typ" />
+            <TableColumn fx:id="collumnEngineCapacity" prefWidth="69.0" text="Kapacita" />
+            <TableColumn fx:id="collumnGearBox" prefWidth="94.0" text="Prevodovka" />
+            <TableColumn fx:id="collumnsFuel" prefWidth="87.0" text="Palivo" />
+            <TableColumn fx:id="collumnColor" prefWidth="142.0" text="Farba" />
+        </columns>
+      </TableView>
+      <Label layoutX="344.0" layoutY="14.0" text="Informácie o vozidle" textFill="WHITE">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tableEditable" layoutX="201.0" layoutY="197.0" prefHeight="80.0" prefWidth="599.0">
+        <columns>
+          <TableColumn fx:id="collumnSPZ" onEditCommit="#changeSPZCell" prefWidth="150.0" text="ŠPZ" />
+            <TableColumn fx:id="collumnMileAge" onEditCommit="#changeMileAgeCell" prefWidth="150.0" text="Stav tachometra" />
+            <TableColumn fx:id="collumnEnginePower" minWidth="0.0" onEditCommit="#changeEnginePowerCell" prefWidth="133.0" text="Výkon" />
+          <TableColumn fx:id="collumnPricePerDay" minWidth="0.0" onEditCommit="#changePricePerDayCell" prefWidth="151.0" text="Cena za deň" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

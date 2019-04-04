@@ -1,7 +1,6 @@
 package controller;
 
 import com.jfoenix.controls.JFXProgressBar;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -18,28 +17,23 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Car;
 import model.Employee;
-import model.Person;
 import org.controlsfx.control.Notifications;
+import persistancemanagers.CarManager;
 import persistancemanagers.EmployeeManager;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-public class AdminSearchEmployeeController implements Initializable {
+public class EmployeeSearchCarController implements Initializable {
 
     @FXML private AnchorPane rootPane;
 
@@ -49,19 +43,19 @@ public class AdminSearchEmployeeController implements Initializable {
     @FXML private Label labelDate;
 
     // table view and collumns
-    @FXML private TableView<Employee> tableView;
-    @FXML private TableColumn<Employee,String> collumnFirstName;
-    @FXML private TableColumn<Employee,String> collumnLastName;
-    @FXML private TableColumn<Employee,String> collumnLogin;
-    @FXML private TableColumn<Employee,String> collumnPhone;
+    @FXML private TableView<Car> tableView;
+    @FXML private TableColumn<Car, String> collumnVIN;
+    @FXML private TableColumn<Car, String> collumnSPZ;
+    @FXML private TableColumn<Car, Date> collumnYearOfProduction;
+    @FXML private TableColumn<Car, Integer> collumnMileage;
 
     // textfields for search
     @FXML private TextField textFieldSearchInTables;
     @FXML private TextField textFieldSearchInDatabase;
 
-    private ObservableList<Employee> observableList;
+    private ObservableList<Car> observableList;
 
-    private FilteredList filer;
+    private FilteredList filter;
 
     @FXML private Button buttonNextData;
     @FXML private Button buttonPreviousData;
@@ -69,15 +63,15 @@ public class AdminSearchEmployeeController implements Initializable {
 
     @FXML private JFXProgressBar progressBar;
 
-    private Employee admin;
+    private Employee employee;
 
     private Integer offSet = 0;
 
-    private Boolean isbuttonSearchInDatabasePushed = false;
+    private Boolean isButtonSearchInDatabasePushed = false;
 
     public void setHeader () {
-        labelFirstName.setText(admin.getFirstName());
-        labelLastName.setText(admin.getLastName());
+        labelFirstName.setText(employee.getFirstName());
+        labelLastName.setText(employee.getLastName());
 
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
 
@@ -86,21 +80,21 @@ public class AdminSearchEmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        collumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        collumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        collumnLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
-        collumnPhone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        collumnVIN.setCellValueFactory(new PropertyValueFactory<>("car_vin"));
+        collumnSPZ.setCellValueFactory(new PropertyValueFactory<>("spz"));
+        collumnYearOfProduction.setCellValueFactory(new PropertyValueFactory<>("year_of_production"));
+        collumnMileage.setCellValueFactory(new PropertyValueFactory<>("mileage"));
 
         // enable funcionality of ordering the collumns by click on it
-        collumnFirstName.setSortType(TableColumn.SortType.ASCENDING);
-        collumnLastName.setSortType(TableColumn.SortType.ASCENDING);
-        collumnLogin.setSortType(TableColumn.SortType.ASCENDING);
-        collumnPhone.setSortType(TableColumn.SortType.ASCENDING);
+        collumnVIN.setSortType(TableColumn.SortType.ASCENDING);
+        collumnSPZ.setSortType(TableColumn.SortType.ASCENDING);
+        collumnYearOfProduction.setSortType(TableColumn.SortType.ASCENDING);
+        collumnMileage.setSortType(TableColumn.SortType.ASCENDING);
 
-        tableView.getSortOrder().add(collumnFirstName);
-        tableView.getSortOrder().add(collumnLastName);
-        tableView.getSortOrder().add(collumnLogin);
-        tableView.getSortOrder().add(collumnPhone);
+        tableView.getSortOrder().add(collumnVIN);
+        tableView.getSortOrder().add(collumnSPZ);
+        tableView.getSortOrder().add(collumnYearOfProduction);
+        tableView.getSortOrder().add(collumnMileage);
 
         buttonNextData.setDisable(true);
         buttonPreviousData.setDisable(true);
@@ -116,8 +110,8 @@ public class AdminSearchEmployeeController implements Initializable {
         this.labelOffset.setText(labelOffset);
     }
 
-    public void setAdmin(Employee admin) {
-        this.admin = admin;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
         setHeader();
     }
 
@@ -126,27 +120,30 @@ public class AdminSearchEmployeeController implements Initializable {
         setLabelOffset(((offSet + 1) + " - " + range));
     }
 
-    public void addItemsToTableView() {
-        EmployeeManager employeeManager = new EmployeeManager();
+    public void addItemsToList() {
+        CarManager carManager = new CarManager();
+        observableList = carManager.getCars(offSet);
+    }
 
-        observableList = employeeManager.getEmployee(offSet);
+    public void addItemsToTable() {
         tableView.setItems(observableList);
 
-        filer = new FilteredList(observableList,e->true);
+        filter = new FilteredList(observableList,e->true);
 
         if(observableList.size() == 500) {
             buttonNextData.setDisable(false);
         }
     }
 
-    public void btnBackPushed(ActionEvent actionEvent) {
+    @FXML
+    public void btnBackPushed(ActionEvent event) {
         Parent parent = null;
         try {
-            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/admin_menu.fxml"));
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_search_menu.fxml"));
             parent = (Parent) loaader.load();
 
-            AdminMenuController adminMenuController = loaader.getController();
-            adminMenuController.setAdmin(admin);
+            EmployeeSearchMenuController employeeSearchMenuController = loaader.getController();
+            employeeSearchMenuController.setEmployee(employee);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,7 +157,8 @@ public class AdminSearchEmployeeController implements Initializable {
         currentStage.show();
     }
 
-    public void loadNext(ActionEvent actionEvent) {
+    @FXML
+    public void loadNext(ActionEvent event) {
         offSet += 500;
 
         if(offSet > 0) {
@@ -169,22 +167,22 @@ public class AdminSearchEmployeeController implements Initializable {
 
         Task loadNext = new Task() {
             @Override
-            protected ObservableList<Employee> call() throws Exception {
+            protected Object call() throws Exception {
                 progressBar.setVisible(true);
 
-                EmployeeManager employeeManager = new EmployeeManager();
+                CarManager carManager = new CarManager();
 
-                if(isbuttonSearchInDatabasePushed) {
-                    observableList = employeeManager.getEmployeeByFullName(getTextFieldSearchInDatabase(),offSet);
+                if(isButtonSearchInDatabasePushed) {
+                    observableList = carManager.getCarsByVINorSPZ(getTextFieldSearchInDatabase(),offSet);
                 } else {
-                    observableList = employeeManager.getEmployee(offSet);
+                    observableList = carManager.getCars(offSet);
                 }
 
                 return observableList;
             }
         };
 
-        loadNext.setOnSucceeded(event -> {
+        loadNext.setOnSucceeded(event1 -> {
             tableView.setItems(observableList);
 
             progressBar.setVisible(false);
@@ -193,7 +191,7 @@ public class AdminSearchEmployeeController implements Initializable {
                 buttonNextData.setDisable(true);
             }
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             textFieldSearchInTables.setText("");
 
@@ -205,7 +203,8 @@ public class AdminSearchEmployeeController implements Initializable {
         thread.start();
     }
 
-    public void loadPrevious(ActionEvent actionEvent) {
+    @FXML
+    public void loadPrevious(ActionEvent event) {
 
         if(offSet > 0) {
             buttonNextData.setDisable(false);
@@ -219,28 +218,28 @@ public class AdminSearchEmployeeController implements Initializable {
 
         Task loadPrevious = new Task() {
             @Override
-            protected ObservableList<Employee> call() throws Exception {
+            protected Object call() {
 
                 progressBar.setVisible(true);
 
-                EmployeeManager employeeManager = new EmployeeManager();
+                CarManager carManager = new CarManager();
 
-                if(isbuttonSearchInDatabasePushed) {
-                    observableList = employeeManager.getEmployeeByFullName(getTextFieldSearchInDatabase(),offSet);
+                if(isButtonSearchInDatabasePushed) {
+                    observableList = carManager.getCarsByVINorSPZ(getTextFieldSearchInDatabase(),offSet);
                 } else {
-                    observableList = employeeManager.getEmployee(offSet);
+                    observableList = carManager.getCars(offSet);
                 }
 
                 return observableList;
             }
         };
 
-        loadPrevious.setOnSucceeded(event -> {
+        loadPrevious.setOnSucceeded(event1 -> {
             tableView.setItems(observableList);
 
             progressBar.setVisible(false);
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             textFieldSearchInTables.setText("");
 
@@ -252,27 +251,23 @@ public class AdminSearchEmployeeController implements Initializable {
         thread.start();
     }
 
-    public void searchInTable(KeyEvent keyEvent) {
+    @FXML
+    public void searchInTable(KeyEvent event) {
 
         if(observableList == null) {
             return;
         }
 
-        textFieldSearchInTables.textProperty().addListener((observable, oldValue, newValue) -> {
-            filer.setPredicate((Predicate<? super Employee>) employee ->{
-
+        textFieldSearchInTables.textProperty().addListener((observable, oldvalue, newValue) -> {
+            filter.setPredicate((Predicate<? super Car>) car ->{
                 if(newValue == null ||  newValue.isEmpty()) {
                     return true;
                 }
 
-                String lowerCaseFiler = newValue.toLowerCase();
-                if(employee.getFirstName().toLowerCase().contains(lowerCaseFiler)) {
+                String lowerCaseFilter = newValue.toLowerCase();
+                if(car.getCar_vin().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if(employee.getLastName().toLowerCase().contains(lowerCaseFiler)) {
-                    return true;
-                } else if(employee.getLogin().toLowerCase().contains(lowerCaseFiler)) {
-                    return true;
-                } else if(employee.getPhoneNumber().toLowerCase().contains(lowerCaseFiler)) {
+                } else if(car.getSpz().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
 
@@ -280,32 +275,33 @@ public class AdminSearchEmployeeController implements Initializable {
             });
         });
 
-        SortedList<Employee> sortedList = new SortedList<>(filer);
+        SortedList<Car> sortedList = new SortedList<>(filter);
         sortedList.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(sortedList);
 
         setNewRangeOfDisplayedData();
     }
 
-    public void buttonSearchInDatabasePushed(ActionEvent actionEvent) {
-
+    @FXML
+    public void buttonSearchInDatabasePushed(ActionEvent event) {
         buttonPreviousData.setDisable(true);
-        isbuttonSearchInDatabasePushed = true;
+        isButtonSearchInDatabasePushed = true;
         offSet = 0;
 
         Task addDataFromDatabase = new Task() {
             @Override
-            protected ObservableList<Employee> call() {
+            protected Object call() throws Exception {
 
                 progressBar.setVisible(true);
 
-                EmployeeManager employeeManager = new EmployeeManager();
-                observableList = employeeManager.getEmployeeByFullName(getTextFieldSearchInDatabase(),offSet);
+                CarManager carManager = new CarManager();
+                observableList = carManager.getCarsByVINorSPZ(getTextFieldSearchInDatabase(),offSet);
+
                 return observableList;
             }
         };
 
-        addDataFromDatabase.setOnSucceeded(event -> {
+        addDataFromDatabase.setOnSucceeded(event1 -> {
             tableView.setItems(observableList);
 
             progressBar.setVisible(false);
@@ -322,7 +318,7 @@ public class AdminSearchEmployeeController implements Initializable {
                 buttonNextData.setDisable(true);
             }
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             textFieldSearchInTables.setText("");
 
@@ -334,17 +330,22 @@ public class AdminSearchEmployeeController implements Initializable {
         thread.start();
     }
 
-    public void detailMenuSelected(ActionEvent actionEvent) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/admin_employee_detail.fxml"));
+    @FXML
+    public void detailMenuSelected(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_car_detail.fxml"));
 
-        AdminEmployeeDetailController adminEmployeeDetailController;
+        EmployeeCarDetailController employeeCarDetailController;
 
         try {
             Parent detailWindow = (Parent) loader.load();
 
-            adminEmployeeDetailController = loader.getController();
-            Employee employeeForDetail = tableView.getSelectionModel().getSelectedItem();
-            adminEmployeeDetailController.setEmployee(employeeForDetail);
+            employeeCarDetailController = loader.getController();
+            Car selectedCar = tableView.getSelectionModel().getSelectedItem();
+
+            CarManager carManager = new CarManager();
+            carManager.getCarInfo(selectedCar);
+
+            employeeCarDetailController.setCar(selectedCar);
 
             Stage stage = new Stage();
             stage.setResizable(false);
@@ -352,21 +353,21 @@ public class AdminSearchEmployeeController implements Initializable {
             stage.setScene(new Scene(detailWindow));
 
             // on hiding, there is a funcionality to add changes into database, if they were set
-            stage.setOnHiding(event -> {
+            stage.setOnHiding(event1 -> {
                 Task updateInfo = new Task() {
                     @Override
-                    protected Object call() {
+                    protected Object call() throws Exception {
 
-                        if(adminEmployeeDetailController.getDataChanged()) {
-                            EmployeeManager employeeManager = new EmployeeManager();
-                            employeeManager.updateEmployeeInfo(employeeForDetail);
+                        if(employeeCarDetailController.getDataChanged()) {
+                            carManager.updateCarInfo(selectedCar);
                         }
+
                         return null;
                     }
                 };
 
-                updateInfo.setOnSucceeded(event1 -> {
-                    if(adminEmployeeDetailController.getDataChanged()) {
+                updateInfo.setOnSucceeded(event2 -> {
+                    if(employeeCarDetailController.getDataChanged()) {
                         Notifications notification = Notifications.create()
                                 .title("Informácie boli úspešne aktualizované!")
                                 .hideAfter(Duration.seconds(4))
@@ -385,11 +386,11 @@ public class AdminSearchEmployeeController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void buttonDisplayDataPushed(ActionEvent actionEvent) {
-        isbuttonSearchInDatabasePushed = false;
+    @FXML
+    public void buttonDisplayDataPushed(ActionEvent event) {
+        isButtonSearchInDatabasePushed = false;
 
         offSet = 0;
 
@@ -397,16 +398,19 @@ public class AdminSearchEmployeeController implements Initializable {
 
         Task displayData = new Task() {
             @Override
-            protected Object call() {
+            protected Object call() throws Exception {
                 progressBar.setVisible(true);
 
-                addItemsToTableView();
+                addItemsToList();
+
                 return null;
             }
         };
 
-        displayData.setOnSucceeded(event -> {
-            filer = new FilteredList(observableList,e->true);
+        displayData.setOnSucceeded(event1 -> {
+            addItemsToTable();
+
+            filter = new FilteredList(observableList,e->true);
 
             progressBar.setVisible(false);
 
@@ -422,5 +426,34 @@ public class AdminSearchEmployeeController implements Initializable {
         Thread thread = new Thread(displayData);
         thread.setDaemon(true);
         thread.start();
+    }
+
+    public void createContractMenuSelected(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeCreateContractController employeeCreateContractController= loaader.getController();
+            employeeCreateContractController.setEmployee(employee);
+
+            Car selectedCar = tableView.getSelectionModel().getSelectedItem();
+
+            // get car info, because there is not all attributes set
+            CarManager carManager = new CarManager();
+            carManager.getCarInfo(selectedCar);
+
+            employeeCreateContractController.setCar(selectedCar);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 }

@@ -119,8 +119,6 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-
-
             st = conn.prepareStatement("SELECT * FROM employee ORDER BY last_name,first_name LIMIT 500 OFFSET " + offset + ";");
             ResultSet rs = st.executeQuery();
 

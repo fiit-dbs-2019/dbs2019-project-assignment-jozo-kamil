@@ -1,10 +1,202 @@
 package persistancemanagers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Car;
+import model.Employee;
 
 import java.sql.*;
 
 public class CarManager {
+
+    public void updateCarInfo(Car car) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("UPDATE car " +
+                    "SET spz = ?, mileage = ?" +
+                    "WHERE car_vin = ?;"
+            );
+            st.setString(1,car.getSpz());
+            st.setInt(2,car.getMileage());
+            st.setString(3,car.getCar_vin());
+
+            st.executeUpdate();
+
+            st = conn.prepareStatement("UPDATE car_info " +
+                    "SET engine_power = ?, price_per_day = ? " +
+                    "WHERE car_info_id = ?"
+            );
+            st.setInt(1,car.getEngine_power());
+            st.setFloat(2,car.getPrice_per_day());
+            st.setInt(3,car.getCarInfoID());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public void getCarInfo(Car car) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT brand, model, body_style, engine_capacity, engine_power, gear_box, fuel, color, price_per_day FROM car_info WHERE car_info_id = ?;"
+            );
+            st.setInt(1,car.getCarInfoID());
+
+            ResultSet rs = st.executeQuery();
+
+            rs.next();
+
+            String brand = rs.getString("brand");
+            String model = rs.getString("model");
+            String body_style = rs.getString("body_style");
+            Float engine_capacity = rs.getFloat("engine_capacity");
+            Integer engine_power = rs.getInt("engine_power");
+            String gear_box = rs.getString("gear_box");
+            String fuel = rs.getString("fuel");
+            String color = rs.getString("color");
+            Float price = rs.getFloat("price_per_day");
+
+            car.setBrand(brand);
+            car.setModel(model);
+            car.setBody_style(body_style);
+            car.setEngine_capacity(engine_capacity);
+            car.setEngine_power(engine_power);
+            car.setGear_box(gear_box);
+            car.setFuel(fuel);
+            car.setColor(color);
+            car.setPrice_per_day(price);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<Car> getCarsByVINorSPZ(String pattern, Integer offSet) {
+        ObservableList<Car> listOfCars = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT * " +
+                    "FROM car " +
+                    "WHERE car_vin ILIKE '" + pattern + "%' OR spz ILIKE '" + pattern + "%'" +
+                    "ORDER BY car_vin, spz " +
+                    "LIMIT 500 " +
+                    "OFFSET " + offSet + ";");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String carVIN = rs.getString("car_vin");
+                Integer carInfoID = rs.getInt("car_info_id");
+                Date yearOfProduction = rs.getDate("year_of_production");
+                Integer mileAge = rs.getInt("mileage");
+                String SPZ = rs.getString("spz");
+
+                listOfCars.add(new Car(carVIN,carInfoID,yearOfProduction,mileAge,SPZ));
+            }
+
+            return listOfCars;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<Car> getCars(Integer offSet) {
+        ObservableList<Car> listOfCars = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT * " +
+                    "FROM car " +
+                    "ORDER BY car_vin, spz " +
+                    "LIMIT 500 " +
+                    "OFFSET " + offSet + ";");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String carVIN = rs.getString("car_vin");
+                Integer carInfoID = rs.getInt("car_info_id");
+                Date yearOfProduction = rs.getDate("year_of_production");
+                Integer mileAge = rs.getInt("mileage");
+                String SPZ = rs.getString("spz");
+
+                listOfCars.add(new Car(carVIN,carInfoID,yearOfProduction,mileAge,SPZ));
+            }
+
+            return listOfCars;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
 
     public Car getCarFromDatabase(String car_vin) throws SQLException {
         Car car = null;

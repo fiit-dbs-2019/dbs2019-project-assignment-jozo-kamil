@@ -66,9 +66,6 @@ public class CreateContractManager {
         Connection conn = null;
         PreparedStatement st = null;
 
-        Properties prop = new Properties();
-        InputStream input = null;
-
         try {
             atm = new AllTablesManager();
             conn = atm.connect();
