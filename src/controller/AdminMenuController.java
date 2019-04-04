@@ -97,7 +97,8 @@ public class AdminMenuController implements Initializable {
 
             AdminSearchEmployeeController adminSearchEmployeeController = loaader.getController();
             adminSearchEmployeeController.setAdmin(admin);
-            adminSearchEmployeeController.addItemsToTableView();
+            adminSearchEmployeeController.addItemsToList();
+            adminSearchEmployeeController.addItemsToTable();
             adminSearchEmployeeController.setNewRangeOfDisplayedData();
 
         } catch (IOException e) {

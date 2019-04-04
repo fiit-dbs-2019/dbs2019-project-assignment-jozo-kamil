@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="200.0" prefWidth="800.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeNaturalPersonDetailController">
+    <children>
+        <TableView fx:id="tableView" layoutX="13.0" layoutY="76.0" prefHeight="75.0" prefWidth="775.0">
+            <columns>
+                <TableColumn fx:id="collumnID" editable="false" prefWidth="95.0" text="Číslo OP" />
+                <TableColumn fx:id="collumnFirstName" onEditCommit="#changeFirstNameCell" prefWidth="122.33331298828125" text="Meno" />
+                <TableColumn fx:id="collumnLastName" onEditCommit="#changeLastNameCell" prefWidth="123.6666259765625" text="Priezvisko" />
+                <TableColumn fx:id="collumnAdress" onEditCommit="#changeAdressCell" minWidth="5.0" prefWidth="161.33331298828125" text="Adresa" />
+                <TableColumn fx:id="collumnBankAccount" onEditCommit="#changeBankAccountCell" prefWidth="135.0" text="Číslo účtu" />
+                <TableColumn fx:id="collumnPhone" onEditCommit="#changePhoneCell" prefWidth="143.0" text="Telefónne číslo" />
+            </columns>
+        </TableView>
+        <Label layoutX="246.0" layoutY="14.0" text="Detail výpožičiavateľa" textFill="WHITE">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

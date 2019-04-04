@@ -210,7 +210,7 @@ public class EmployeeConfirmContractController implements Initializable {
 
             setFieldCustomer1(((NaturalPerson) customer).getFirstName());
             setFieldCustomer2(((NaturalPerson) customer).getLastName());
-            setFieldCustomer3(((NaturalPerson) customer).getOp());
+            setFieldCustomer3(((NaturalPerson) customer).getID());
 
             setLabelAdress(((NaturalPerson) customer).getAdress());
             setLabelBankAccount(((NaturalPerson) customer).getBankAccount());
@@ -221,7 +221,7 @@ public class EmployeeConfirmContractController implements Initializable {
             setLabelCustomer2("DIČ:");
             setLabelCustomer3("Názov firmy:");
 
-            setFieldCustomer1(((LegalPerson) customer).getIco());
+            setFieldCustomer1(((LegalPerson) customer).getID());
             setFieldCustomer2(((LegalPerson) customer).getDic());
             setFieldCustomer3(((LegalPerson) customer).getName());
 
@@ -377,7 +377,7 @@ public class EmployeeConfirmContractController implements Initializable {
 
         if(customer instanceof NaturalPerson) {
             try {
-                if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) customer).getOp(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
+                if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
                     Notifications notification = Notifications.create()
                             .title("Zmluva bola úspešne vytvorená!")
@@ -403,7 +403,7 @@ public class EmployeeConfirmContractController implements Initializable {
 
         if(customer instanceof LegalPerson) {
             try {
-                if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) customer).getIco(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
+                if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
                     Notifications notification = Notifications.create()
                             .title("Zmluva bola úspešne vytvorená!")

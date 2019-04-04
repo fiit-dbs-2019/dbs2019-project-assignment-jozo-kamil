@@ -78,6 +78,7 @@ public class EmployeeCreateContractController implements Initializable {
 
     public void setCustomer(Person customer) {
         this.customer = customer;
+        setCustomerID();
     }
 
     public void setCarVin() {
@@ -85,9 +86,15 @@ public class EmployeeCreateContractController implements Initializable {
     }
 
     public void setCustomerID() {
-        //textFieldID.setText(customer);
+        textFieldID.setText(customer.getID());
+    }
 
-        // treba zmenit aby mal Person nejaky getter na ICO/ID
+    public void setSelectedCarVIN(String VIN) {
+        textFieldVIN.setText(VIN);
+    }
+
+    public void setSelectedCustomerID(String ID) {
+        textFieldID.setText(ID);
     }
 
     // SETTERS AND GETTERS FOR LABELS
@@ -266,9 +273,39 @@ public class EmployeeCreateContractController implements Initializable {
     }
 
     public void buttonSearchCustomerPushed(ActionEvent actionEvent) {
-        /////////////////////////////////////////////////////////////////////////////
-        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-        /////////////////////////////////////////////////////////////////////////////
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_search_customer.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeSearchCustomerController employeeSearchCustomerController = loaader.getController();
+            employeeSearchCustomerController.setEmployee(employee);
+
+            if(car != null) {
+                employeeSearchCustomerController.setCar(car);
+            } else if (!getTextFieldVin().trim().isEmpty()) {
+                employeeSearchCustomerController.setCarVIN(getTextFieldVin());
+            }
+
+            employeeSearchCustomerController.addItemsToListNatural();
+            employeeSearchCustomerController.addItemsToTableNatural();
+
+            employeeSearchCustomerController.addItemsToListLegal();
+            employeeSearchCustomerController.addItemsToTableLegal();
+
+            employeeSearchCustomerController.setNewRangeOfDisplayedDataNatural();
+            employeeSearchCustomerController.setNewRangeOfDisplayedDataLegal();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void buttonSearchCarPushed(ActionEvent actionEvent) {
@@ -279,8 +316,16 @@ public class EmployeeCreateContractController implements Initializable {
 
             EmployeeSearchCarController employeeSearchCarController = loader.getController();
             employeeSearchCarController.setEmployee(employee);
+
+            if(customer != null) {
+                employeeSearchCarController.setCustomer(customer);
+            } else if (!getTextFieldID().trim().isEmpty()) {
+                employeeSearchCarController.setCustomerID(getTextFieldID());
+            }
+
             employeeSearchCarController.addItemsToList();
             employeeSearchCarController.addItemsToTable();
+
             employeeSearchCarController.setNewRangeOfDisplayedData();
 
         } catch (IOException e) {

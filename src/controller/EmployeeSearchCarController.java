@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Car;
 import model.Employee;
+import model.Person;
 import org.controlsfx.control.Notifications;
 import persistancemanagers.CarManager;
 import persistancemanagers.EmployeeManager;
@@ -64,6 +65,9 @@ public class EmployeeSearchCarController implements Initializable {
     @FXML private JFXProgressBar progressBar;
 
     private Employee employee;
+
+    private Person customer = null;
+    private String customerID = null;
 
     private Integer offSet = 0;
 
@@ -115,10 +119,20 @@ public class EmployeeSearchCarController implements Initializable {
         setHeader();
     }
 
+    public void setCustomer(Person customer) {
+        this.customer = customer;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
     public void setNewRangeOfDisplayedData() {
         int range = offSet + observableList.size();
         setLabelOffset(((offSet + 1) + " - " + range));
     }
+
+    // add items
 
     public void addItemsToList() {
         CarManager carManager = new CarManager();
@@ -442,6 +456,13 @@ public class EmployeeSearchCarController implements Initializable {
             // get car info, because there is not all attributes set
             CarManager carManager = new CarManager();
             carManager.getCarInfo(selectedCar);
+
+            if(customer != null) {
+                employeeCreateContractController.setCustomer(customer);
+                employeeCreateContractController.setCustomerID();
+            } else if (customerID != null) {
+                employeeCreateContractController.setSelectedCustomerID(customerID);
+            }
 
             employeeCreateContractController.setCar(selectedCar);
 
