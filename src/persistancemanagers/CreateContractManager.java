@@ -60,7 +60,7 @@ public class CreateContractManager {
         }
     }
 
-    public int checkInfo(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException{
+    public int checkInfo(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException {
 
         AllTablesManager atm;
         Connection conn = null;

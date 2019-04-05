@@ -1,13 +1,88 @@
 package persistancemanagers;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Car;
 import model.Employee;
+import model.ServiceRecord;
 
 import java.sql.*;
 
 public class CarManager {
+
+    public Boolean addNewServisToSpecificCar(Car car, String servisNameAndLocation, Date dateOfService,
+                                             Float priceOfService) {
+        ServiceRecord serviceRecord;
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        Integer servisID;
+        Integer repairID;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT s.servis_id, s.servis_name, s.servis_location " +
+                    "FROM servis s " +
+                    "WHERE (s.servis_name || ', ' || s.servis_location) = '" + servisNameAndLocation + "';"
+            );
+            ResultSet rs = st.executeQuery();
+
+            rs.next();
+
+            servisID = rs.getInt("servis_id");
+            String serviceName = rs.getString("servis_name");
+            String serviceLocation = rs.getString("servis_location");
+
+            if(servisID == null) {
+                return false;
+            }
+
+            st = conn.prepareStatement("INSERT INTO repair(date, price, servis_id) VALUES(?,?,?) RETURNING repair_id, type;"
+            );
+            st.setDate(1,dateOfService);
+            st.setFloat(2,priceOfService);
+            st.setInt(3,servisID);
+
+            rs = st.executeQuery();
+
+            rs.next();
+
+            repairID = rs.getInt("repair_id");
+            String typeOfService = rs.getString("type");
+
+            st = conn.prepareStatement("INSERT INTO car_repair(car_vin, repair_id) VALUES(?,?)"
+            );
+            st.setString(1,car.getCar_vin());
+            st.setInt(2,repairID);
+
+            st.executeUpdate();
+
+            serviceRecord = new ServiceRecord(serviceName,serviceLocation,typeOfService,dateOfService,priceOfService);
+
+            car.addServiceRecord(serviceRecord);
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
 
     public void updateCarInfo(Car car) {
         AllTablesManager atm;
@@ -19,7 +94,7 @@ public class CarManager {
             conn = atm.connect();
 
             st = conn.prepareStatement("UPDATE car " +
-                    "SET spz = ?, mileage = ?" +
+                    "SET spz = ?, mileage = ? " +
                     "WHERE car_vin = ?;"
             );
             st.setString(1,car.getSpz());
@@ -54,6 +129,8 @@ public class CarManager {
     }
 
     public void getCarInfo(Car car) {
+        ObservableList<ServiceRecord> serviceRecords = FXCollections.observableArrayList();
+
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -62,6 +139,7 @@ public class CarManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
+            // get car info for specific car
             st = conn.prepareStatement("SELECT brand, model, body_style, engine_capacity, engine_power, gear_box, fuel, color, price_per_day FROM car_info WHERE car_info_id = ?;"
             );
             st.setInt(1,car.getCarInfoID());
@@ -89,6 +167,28 @@ public class CarManager {
             car.setFuel(fuel);
             car.setColor(color);
             car.setPrice_per_day(price);
+
+
+            // get all service records for specific car
+            st = conn.prepareStatement("select s.servis_name, s.servis_location, r.type, r.date, r.price " +
+                    "from repair r " +
+                    "join car_repair cr on r.repair_id = cr.repair_id " +
+                    "join servis s on r.servis_id = s.servis_id " +
+                    "where cr.car_vin = '" + car.getCar_vin() + "';"
+            );
+            rs = st.executeQuery();
+
+            while(rs.next()) {
+                String serviceName = rs.getString("servis_name");
+                String serviceLocation = rs.getString("servis_location");
+                String repairType = rs.getString("type");
+                Date dateOfService = rs.getDate("date");
+                Float priceOfService = rs.getFloat("price");
+
+                serviceRecords.add(new ServiceRecord(serviceName,serviceLocation,repairType,dateOfService,priceOfService));
+            }
+
+            car.setServiceRecords(serviceRecords);
 
         } catch (SQLException e) {
             e.printStackTrace();

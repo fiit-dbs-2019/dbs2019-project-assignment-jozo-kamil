@@ -19,7 +19,7 @@ CREATE TYPE car_brand AS ENUM (
 );
 
 CREATE TYPE type_of_harm AS ENUM (
-'defekt','havária','vykradnutie vozidla','odcudzenie vozidla','rozbité sklo','odbité spätné zrkadlo','vypálená žiarovka','poškodený interiér vozidla'
+'servis','defekt','havária','vykradnutie vozidla','odcudzenie vozidla','rozbité sklo','odbité spätné zrkadlo','vypálená žiarovka','poškodený interiér vozidla'
 );
 
 CREATE TYPE car_model AS ENUM (
@@ -63,6 +63,7 @@ servis_location VARCHAR(255) NOT NULL
 
 CREATE TABLE repair (
 repair_id SERIAL NOT NULL PRIMARY KEY,
+type type_of_harm NOT NULL DEFAULT 'servis',
 date DATE NOT NULL,
 price FLOAT NOT NULL,
 servis_id INT NOT NULL REFERENCES servis(servis_id)
@@ -85,6 +86,7 @@ repair_id INT NOT NULL REFERENCES repair(repair_id)
 CREATE TABLE harm (
 harm_id SERIAL NOT NULL PRIMARY KEY,
 type type_of_harm NOT NULL,
+date DATE NOT NULL,
 repair_id INT REFERENCES repair(repair_id),
 description TEXT
 );

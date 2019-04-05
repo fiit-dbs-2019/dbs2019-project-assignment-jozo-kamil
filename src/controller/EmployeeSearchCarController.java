@@ -442,6 +442,7 @@ public class EmployeeSearchCarController implements Initializable {
         thread.start();
     }
 
+    @FXML
     public void createContractMenuSelected(ActionEvent actionEvent) {
         Parent parent = null;
         try {

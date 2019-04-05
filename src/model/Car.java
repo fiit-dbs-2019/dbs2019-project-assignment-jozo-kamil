@@ -1,6 +1,7 @@
 package model;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class Car {
     private Date year_of_production;
     private Integer mileage;
     private SimpleStringProperty spz;
+    private ObservableList<ServiceRecord> serviceRecords;
 
     public Car(String car_vin, Integer carInfoID, Date year_of_production, Integer mileage, String spz) {
         this.car_vin = new SimpleStringProperty(car_vin);
@@ -214,5 +216,17 @@ public class Car {
 
     public void setSpz(String spz) {
         this.spz = new SimpleStringProperty(spz);
+    }
+
+    public ObservableList<ServiceRecord> getServiceRecords() {
+        return serviceRecords;
+    }
+
+    public void setServiceRecords(ObservableList<ServiceRecord> serviceRecords) {
+        this.serviceRecords = serviceRecords;
+    }
+
+    public void addServiceRecord(ServiceRecord serviceRecord) {
+        this.serviceRecords.add(serviceRecord);
     }
 }
