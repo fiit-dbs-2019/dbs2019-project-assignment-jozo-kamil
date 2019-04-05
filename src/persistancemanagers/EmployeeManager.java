@@ -152,7 +152,7 @@ public class EmployeeManager {
         }
     }
 
-    public Employee getEmployeeFromDatabase() throws SQLException {
+    public Employee getEmployeeFromDatabase(int id) throws SQLException {
         Employee employee = null;
 
         AllTablesManager atm;
@@ -163,17 +163,8 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            Properties prop = new Properties();
-            InputStream input = new FileInputStream("src/properties");
-
-            prop.load(input);
-
-            Integer employee_id = Integer.valueOf(prop.getProperty("loggedID"));                       // get employee_id from properties file
-
-            input.close();
-
             st = conn.prepareStatement("SELECT first_name,last_name,phone FROM employee " +
-                    "WHERE employee_id = '" + employee_id + "';"
+                    "WHERE employee_id = '" + id + "';"
             );
             ResultSet rs = st.executeQuery();
 
@@ -187,9 +178,6 @@ public class EmployeeManager {
 
             return employee;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
             e.printStackTrace();
             return null;
         } finally {

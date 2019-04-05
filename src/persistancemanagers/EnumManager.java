@@ -1,6 +1,8 @@
 package persistancemanagers;
 
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 
@@ -10,6 +12,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EnumManager {
+
+    public ObservableList<String> getTypeOfHarm(){
+        ObservableList<String> typesOfHarm = FXCollections.observableArrayList();
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT unnest(enum_range(NULL::type_of_harm))::text AS type ORDER BY type");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+               String type = rs.getString("type");
+               typesOfHarm.add(type);
+            }
+
+            return typesOfHarm;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+
+    }
 
     public boolean addToEnum(String newValue, String operator) throws SQLException {
         AllTablesManager atm;

@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class EmployeeNaturalPersonDetailController implements Initializable {
 
-    @FXML private TableColumn<NaturalPerson, String> collumnID;
+    @FXML private TableColumn collumnID;
     @FXML private AnchorPane rootPane;
     @FXML private TableView<NaturalPerson> tableView;
     @FXML private TableColumn<NaturalPerson, String> collumnFirstName;

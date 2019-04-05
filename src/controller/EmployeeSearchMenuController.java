@@ -101,6 +101,27 @@ public class EmployeeSearchMenuController implements Initializable {
     }
 
     public void btnSearchContractPushed(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_search_contract.fxml"));
+            parent = (Parent) loader.load();
+
+            EmployeeSearchContractController employeeSearchContractController = loader.getController();
+            employeeSearchContractController.setEmployee(employee);
+            employeeSearchContractController.addItemsToList();
+            employeeSearchContractController.addItemsToTable();
+            employeeSearchContractController.setNewRangeOfDisplayedData();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void backToMenu() {
