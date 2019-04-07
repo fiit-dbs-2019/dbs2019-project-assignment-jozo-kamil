@@ -1,0 +1,144 @@
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+
+CREATE TYPE car_body_style as enum(
+'Coupe','Sedan','Hatchback','Kabrio','Kombi','Van/Minivan','Pickup','SUV'
+);
+
+CREATE TYPE employee_type AS ENUM (
+'admin','zamestnanec'
+);
+
+CREATE TYPE car_brand AS ENUM (
+'Fisker','Dodge','Oldsmobile','Tesla','Honda','Subaru','Lexus','Geo','Jaguar','Maserati','Mercedes-Benz','Panoz','FIAT','SRT','Suzuki','Eagle','McLaren','Acura','Cadillac','Mitsubishi','Mercury','Buick','Ford','smart','BMW','Land Rover','Audi','Plymouth','Nissan','Genesis','GMC','Chevrolet','Porsche','Chrysler','Maybach','Toyota','Mazda','Pontiac','MINI','HUMMER','Lincoln','Ram','Volvo','Volkswagen','Aston Martin','Bentley','Isuzu','Rolls-Royce','Jeep','Lotus','Saab','Daewoo','Hyundai','INFINITI','Ferrari','Scion','Daihatsu','Saturn','Freightliner','Alfa Romeo','Kia','Lamborghini'
+);
+
+CREATE TYPE type_of_harm AS ENUM (
+'defekt','havária','vykradnutie vozidla','odcudzenie vozidla','rozbité sklo','odbité spätné zrkadlo','vypálená žiarovka','poškodený interiér vozidla'
+);
+
+CREATE TYPE car_model AS ENUM (
+'Suburban 2500','Touareg 2','Cherokee','Regal','Grand Am','G5','Countryman','Sportvan G20','MAZDA2','Navigator L','TITAN XD King Cab','Levante','Q40','XC90','500c Abarth','M4','X-90','Colorado Regular Cab','Econoline E350 Cargo','Ram 1500 Regular Cab','Sprinter 2500 Cargo','599 GTO','Giulia','Crossfire','Azera','Kizashi','F350 Super Duty Super Cab','MKS','Eldorado','Eurovan','FJ Cruiser','G-Class','Clarity Electric','Vandura 3500','Silverado (Classic) 3500 Crew Cab','M2','Metris WORKER Cargo','Escalade','Encore','ATS','Yaris','JUKE','Charade','E350 Super Duty Cargo','MDX','XG350','Civic Type R','300 CE','Range Rover','X5','New Beetle','500','Vitara','MX-3','ES','Edge','Pathfinder Armada','JX','Carrera GT','Taurus','Sundance','Transit 150 Combi','Sierra 2500 Extended Cab','Tahoe','Suburban 1500','Passat','Sonata Plug-in Hybrid','Journey','D250 Club Cab','Mercedes-AMG SLC','Shadow','Sierra 3500 Crew Cab','Transit Connect Cargo','LaCrosse','Cascada','Ram 2500 Crew Cab','E250 Cargo','FR-S','Ram 1500 Quad Cab','2500 HD Club Coupe','Suburban','Malibu Limited','Spark EV','RX-8','Raider Double Cab','Acadia Limited','Sonoma Club Cab','Silhouette','M','Uplander Cargo','Stylus','V60','Cruze Limited','DTS','GLA-Class','488 Spider','Eos','G6','Spider','300','GT-R','Defender 110','Golf III','Tundra CrewMax','NV200 Taxi','Sephia','Caprice','Terrain','CL-Class','Envoy','Spark','124 Spider','D150 Regular Cab','S80','Solara','Axiom','Mercedes-AMG GLA','Cobalt','S6','Pilot','MKZ','Legend','86','RX','Roadster','GLA','Versa Note','Storm','BRZ','Transit 350 Combi','F250 Super Cab','Sequoia','900','C70','Toronado','Corolla iM','XL-7','Leganza','Metris Cargo','Mercedes-AMG G-Class','Cabriolet','Avalanche','CX-5','A4 allroad','R8','Sierra 3500 HD Extended Cab','RDX','Eclipse Cross','Skylark','Genesis Coupe','Sierra 2500 HD Extended Cab','xD','Verona','B-Series Extended Cab','Roadmaster','MKC','LFA','Freestar Passenger','Econoline E350 Super Duty Passenger','Tacoma Regular Cab','Aventador','Model X','i-350 Crew Cab','SVX','Regal TourX','Ram 3500 Regular Cab','Golf Alltrack','Civic','Marauder','Enclave','Eclipse','Protege5','Q70','Sprinter 2500 Passenger','Transit 350 HD Van','Savana 3500 Cargo','Jetta SportWagen','Sierra 3500 HD Double Cab','400 SE','MX-6','Express 1500 Cargo','LSS','Rally Combi 3500','3000GT','GTI','RL','Reno','88','Accord','Beretta','ELR','Avalon Hybrid','A4','Mark VII','Vandura 2500','Ram Combi 2500','XL7','F350 Super Duty Regular Cab','Spectra','Ram 3500 Club Cab','Golf SportWagen','Armada','Avalanche 2500','Xtra Cab','Previa','RS 3','Sprinter 3500 XD Cargo','Yukon XL 1500','500e','RS 6','Frontier King Cab','WRX','Quattroporte','Challenger','Mercedes-Maybach S-Class','Ram 2500 Regular Cab','Cayenne','H1','GT','Sebring','4C','300 TE','Swift','S-Class','C-MAX Hybrid','XF','Range Rover Evoque','ProMaster 2500 Cargo','Rondo','Prius','Arnage','IS F','Sierra (Classic) 2500 HD Regular Cab','Optima (2006.5)','I','Focus','F430','Premier','D250 Regular Cab','Silverado 1500 Double Cab','Sierra (Classic) 3500 Regular Cab','Transit 350 Van','F250 Crew Cab','488 GTB','Silverado (Classic) 2500 HD Extended Cab','Mariner','Discovery','Ghost','Santa Fe','500 SEL','Voyager','Navigator','Optima','Renegade','200','Compass','Mighty Max Macro Cab','164','Mercedes-AMG CLS','Rally Combi G2500','57','Tribeca','1500 Extended Cab','V90','Expo','Jimmy','Accord Hybrid','Panamera','Mercedes-AMG GT','Niro','500 Abarth','Raider Extended Cab','Regency','Mark VIII','Silverado 3500 Extended Cab','Envoy XL','Supra','Vandura G3500','Yukon XL 2500','TITAN Single Cab','Murano','Golf R','Maxima','Mirage G4','300 D','Virage','Tacoma Xtracab','9000','E150 Cargo','612 Scaglietti','Escalade ESV','Ram Van B150','M3','CX-9','CT','Q3','F12berlinetta','CTS-V','Range Rover Sport','QX60','Expedition','G80','240','E-Class','Odyssey','Express 3500 Passenger','Astro Passenger','Prius Prime','Mulsanne','Focus ST','Forte','G-Series G20','350Z','LeSabre','Range Rover Velar','S10 Extended Cab','SLR McLaren','TT','iQ','Lumina Cargo','Sonata','Sportvan G30','Crosstour','Evora','G-Series 3500','Stratus','Lancer','CR-V','LeMans','CT6','Echo','Z3','Rogue','Amigo','MKT','A6','Sonic','458 Italia','Commander','Econoline E150 Passenger','Cabrio','Coupe','ProMaster Cargo Van','Ram Van 3500','Sportvan G10','XV Crosstrek','NV3500 HD Cargo','QX','430 Scuderia','H3','E-PACE','200SX','600 SEC','A5 Sport','Silverado 3500 Crew Cab','Passat (New)','Cressida','X6 M','T100 Xtracab','Escalade EXT','Caliber','S70','Dart','Rally Combi G3500','ATS-V','E150 Super Duty Passenger','Terraza','Passport','Mighty Max Regular Cab','Model S','Ram 3500 Quad Cab','M6','L-Series','XK','Z4','Atlas','8 Series','Capri','Ram 2500 Quad Cab','Grand Voyager','Probe','QX80','K900','Mercedes-AMG GLS','Ram Van 1500','718 Cayman','B9 Tribeca','QX50','Econoline E250 Cargo','RSX','3500 HD Extended Cab','Brougham','NV1500 Cargo','V70','3500 HD Regular Cab','Avalanche 1500','Astro Cargo','Fox','Sierra (Classic) 1500 Crew Cab','Tracker','Elantra GT','Montana','Mercedes-AMG S-Class','Paseo','Ram 1500 Crew Cab','Silverado 2500 Extended Cab','Rio','LR2','626','Silverado 1500 Crew Cab','Gallardo','DB9','Aspen','Transit 150 Van','Outlander Sport','Clarity Plug-in Hybrid','Colorado Extended Cab','S90','400 SEL','Magnum','E150 Passenger','Vantage','Yukon XL','Sierra 1500 HD Crew Cab','Ram Combi B150','TL','C-Class','MAZDA6','Mark LT','GLC Coupe','Sierra 3500 HD Crew Cab','Vibe','Sierra 2500 Crew Cab','Cadenza','RC','Murcielago','Wraith','Borrego','Viper','458 Speciale','Spacecab','Lancer Evolution','Lumina','Sierra (Classic) 3500 Crew Cab','Club Combi','Escape','A8','Jetta (New)','Highlander Hybrid','GranSport','SRX','968','Sierra (Classic) 2500 HD Extended Cab','300 E','Escort','Equus','SS','GLE Coupe','APV Cargo','Accent','Loyale','RX-7','Paceman','ZDX','Macan','Prius Plug-in Hybrid','Wrangler','Fiesta','Relay','DBS','MPV','F350 Super Cab','E150 Super Duty Cargo','Kona','Metro','X5 M','Outlander PHEV','Ram Van B350','Town & Country','600 SL','VehiCROSS','del Sol','Ram 3500 Crew Cab','Silverado 2500 Regular Cab','Dakota Quad Cab','SX4','Corsica','Venza','C/V','GTI (New)','Breeze','Sierra 2500 HD Regular Cab','Ion','Entourage','Catera','300 SL','911','Phantom','Boxster','LR4','XJ','i-280 Extended Cab','VUE','Astra','HR-V','SKY','Tundra Access Cab','Fifth Ave','LS','XG300','323','500L','Trooper','Ram Combi B350','2500 Extended Cab','ProMaster 3500 Cargo','Rodeo Sport','G-Series G30','Bolt EV','Clarity Fuel Cell','Classic','SC','Sierra (Classic) 1500 Regular Cab','Monte Carlo','A3','GranTurismo','Sierra 2500 HD Double Cab','Sienna','Impreza','Camaro','Custom Cruiser','Vandura 1500','Sprinter 3500XD Cargo','Impala Limited','Forester','MP4-12C','Karma','Transit 250 Van','Express 2500 Passenger','Ram Combi 1500','Monterey','Mercedes-AMG C-Class','Malibu (Classic)','New Yorker','Transit Connect Passenger','Explorer Sport','4 Series','Aura','NX','S2000','LHS','XTS','H2','Rapide','XT5','X2','Achieva','C30','90','Summit','Veracruz','Express 3500 Cargo','Dakota Extended Cab','Patriot','9.3','cube','Ioniq Electric','Tundra Double Cab','Lumina APV','Rocky','Sierra 2500 HD Crew Cab','Touareg','G3','CLA','Silverado 3500 HD Regular Cab','Durango','Azure','Montego','DB11','SLK-Class','Tahoe (New)','Suburban 3500HD','Sable','Metris Passenger','MKX','SLX','Tiguan Limited','Titan Crew Cab','HS','Murcielago LP640','Econoline E150 Cargo','6 Series','Sunfire','Envoy XUV','Frontier Regular Cab','Crosstrek','Rodeo','Cirrus','Sprinter 2500 Crew','Silverado 3500 Regular Cab','3500 Club Coupe','Mustang','Tacoma Access Cab','Ioniq Plug-in Hybrid','Sierra (Classic) 3500 Extended Cab','G-Series 2500','F250 Regular Cab','A7','fortwo electric drive cabrio','RS 4','Silverado 1500 Regular Cab','Outback','Sunbird','Land Cruiser','570GT','Taurus X','240SX','Silverado 1500 HD Crew Cab','Bravada','600 SEL','Versa','fortwo','C-MAX Energi','i-290 Extended Cab','Dynasty','F150 Regular Cab','S7','X3','A5','300M','GTO','Lucerne','MX-5 Miata RF','Z4 M','Zephyr','Exige','Hombre Regular Cab','Yukon Denali','Fusion','B-Series Cab Plus','Impala','M5','Grand Cherokee','Sonoma Extended Cab','740','Solstice','Daytona','Alpina B7','718 Boxster','B-Class','ZX2','H3T','xA','Tucson Fuel Cell','Ram Combi 3500','Stelvio','400 E','3500 Regular Cab','Prizm','CLS','Navajo','Blazer','Caravan Passenger','Sierra 1500 Regular Cab','Firebird','Stinger','Canyon Regular Cab','Q7','Q','XC60','Cutlass Ciera','tC','F350 Regular Cab','Mercedes-AMG E-Class','i-MiEV','Montero','Rally Combi 1500','Pathfinder','S60','Aztek','Dakota Crew Cab','Sonoma Crew Cab','RLX','Uplander Passenger','Cabrio (New)','Ramcharger','MAZDA3','Azure T','2500 Crew Cab','Vision','SCoupe','Elantra','Century','Captiva Sport','F450 Super Duty Crew Cab','EcoSport','1500 Regular Cab','Vanquish S','ProMaster Window Van','Silverado 2500 HD Crew Cab','Genesis','G','F250 Super Duty Super Cab','Galant','Outlander','A4 (2005.5)','STS','G90','Festiva','CX-7','F150 (Heritage) Regular Cab','ProMaster City','E350 Super Duty Passenger','Cruze','C-HR','Venture Passenger','Neon','1500 Crew Cab','F350 Crew Cab','Kicks','500 SEC','300 SE','Silverado 3500 HD Double Cab','Fusion Energi','Aveo','Bronco','1500 Club Coupe','Ram 2500 Mega Cab','9-2X','Sprinter WORKER Passenger','S40','Montero Sport','Integra','Jetta III','Brooklands','M-Class','Golf','Amanti','Accord Crosstour','2500 HD Extended Cab','Golf GTI','Sidekick','Baja','Hardtop 4 Door','3500 Extended Cab','NV3500 HD Passenger','Savana 2500 Cargo','Windstar Passenger','Justy','Avalon','Sierra 3500 Regular Cab','Cougar','Kabrio','Forte Koup','Explorer','Fit','Ram 1500 Mega Cab','GX','F350 Super Duty Crew Cab','Allante','1500 Quad Cab','Venture Cargo','Villager','Sierra (Classic) 2500 Crew Cab','MX-5 Miata','62','2500 Club Coupe','D350 Regular Cab','Park Avenue','Ascender','Lumina Passenger','GTC4Lusso','Equator Crew Cab','GLI','650S','E250 Super Duty Cargo','Discovery Series II','City Express','Diamante','3500 Mega Cab','Exige S','Sprinter WORKER Cargo','Camry','Silverado 2500 HD Regular Cab','S10 Crew Cab','Matrix','Rapide S','Ranger Super Cab','SQ5','V40','S-Series','Model 3','Ranger Regular Cab','MR2','CLK-Class','D150 Club Cab','Element','Riviera','Excursion','9-7X','Imperial','F250 Super Duty Regular Cab','Defender 90','Wrangler Unlimited','King Cab','Forte5','Prowler','J','Bentayga','Silverado (Classic) 2500 HD Crew Cab','SL','3500 Crew Cab','Xterra','Soul','Verano','TITAN XD Crew Cab','Outlook','Ridgeline','i-370 Extended Cab','Vandura G2500','100','Mountaineer','Routan','Sentra','Corolla','G-Series G10','Stanza','Silverado 2500 HD Extended Cab','Silverado 2500 HD Double Cab','Jetta','Z8','Bonneville','Silverado (Classic) 1500 Regular Cab','GL-Class','928','CLS-Class','Caravan Cargo','Spirit','Sonata Hybrid','80','GLC','Comanche Regular Cab','Econoline E350 Super Duty Cargo','PT Cruiser','Sierra (Classic) 1500 HD Crew Cab','Aurora','Vigor','Sierra 3500 Extended Cab','Yaris iA','Colt','Equinox','F150 (Heritage) Super Cab','Ghibli','Pacifica','Avenger','Dakota Regular Cab','Quattro','Silverado 1500 Extended Cab','Protege','Sierra (Classic) 2500 HD Crew Cab','Savana 3500 Passenger','Ram 2500 Club Cab','370Z','Talon','Intrigue','IS','98','2500 Mega Cab','V50','CR-Z','Windstar Cargo','Q5','Phaeton','Oasis','T100 Regular Cab','Torrent','Niro Plug-in Hybrid','Forenza','ILX','Ram Van 2500','SL-Class','iA','Dawn','LEAF','Freestar Cargo','Seville','LX','Silverado (Classic) 1500 Crew Cab','Sierra 2500 Regular Cab','G-Series 1500','570S','Silverado (Classic) 1500 HD Crew Cab','Quest','Huracan','Crown Victoria','Altima','Dakota Club Cab','Aerio','Rainier','Evora 400','Trax','Sprinter 3500 Cargo','X1','NSX','GLE','929','Esperante','Blackwood','Sedona','i3','300 SD','RLX Sport Hybrid','Prelude','S5','SLC','1 Series','Clubman','i8','Fleetwood','Grand Caravan Cargo','X6','X-Type','D350 Club Cab','S8','Mercedes-AMG SL','R-Class','Optima Hybrid','SSR','MDX Sport Hybrid','Samurai','Cutlass Supreme','Expedition EL','RS 5','Laser','Mirage','LR3','F-PACE','Liberty','Grand Caravan Passenger','S10 Blazer','Q50','Monaco','Tempo','Express 2500 Cargo','Colt Vista','GS','300ZX','Aviator','G8','Silverado (Classic) 3500 Regular Cab','Elise','Golf (New)','XC70','850','Optima Plug-in Hybrid','Thunderbird','Acadia','500 SL','Precis','Mercedes-AMG CLA','5 Series','RAV4','Ioniq Hybrid','Freelander','GLS','X4','TLX','LeBaron','NV200','Savana 1500 Cargo','Endeavor','QX70','Celica','Cooper','Envision','R32','Sixty Special','Ram Combi B250','Ram 1500 Club Cab','Flex','xB','Safari Cargo','Five Hundred','S-Type','Tracer','Town Car','Lanos','S3','F250 Super Duty Crew Cab','allroad','fortwo electric drive','Ram Van B250','Grand Marquis','Regular Cab','Yukon','Sportage','Insight','Rogue Sport','Acclaim','LC','DeVille','940','9-4X','TSX','MAZDA5','Rogue Select','Canyon Extended Cab','Expedition MAX','960','CC','Santa Fe Sport','Nubira','Mystique','B-Series Regular Cab','Tiguan','Equator Extended Cab','CX-3','Traverse','Mercedes-AMG SLK','Excel','Aerostar Cargo','Mercedes-Maybach S 600','Tacoma Double Cab','Discovery Sport','190 E','Camry Hybrid','Grand Vitara','HHR','Mercedes-AMG GLE','F-TYPE','Alero','XLR','DB9 GT','CL','Charger','Rally Combi 2500','Freestyle','Cayman','SLS-Class','Sierra 1500 Crew Cab','Tercel','Mercedes-AMG GLC Coupe','G6 (2009.5)','Ciera','Silverado 3500 HD Extended Cab','500 E','EX','Tiburon','Silverado 2500 Crew Cab','Aerostar Passenger','FF','Grand Prix','Prius v','Regal Sportback','Ram 50 Regular Cab','F150 SuperCrew Cab','Nitro','Savana 2500 Passenger','Sierra 3500 HD Regular Cab','7 Series','Hombre Spacecab','Beetle','Mirai','Milan','Cutlass','Explorer Sport Trac','2 Series','A3 Sportback e-tron','QX30','i-370 Crew Cab','Prius c','FX','Express 1500 Passenger','Highlander','S4 (2005.5)','C/V Tradesman','CLA-Class','Topaz','California','RAV4 Hybrid','Mercedes-AMG GLC','iM','Sierra 1500 Extended Cab','599 GTB Fiorano','2500 HD Regular Cab','S4','4Runner','XE','Continental','S10 Regular Cab','Silverado (Classic) 2500 HD Regular Cab','SLK','Vandura G1500','TITAN XD Single Cab','Savana 1500 Passenger','Tribute','Q60','Canyon Crew Cab','4C Spider','Sonoma Regular Cab','Safari Passenger','500c','Colorado Crew Cab','Cavalier','NV2500 HD Cargo','Caprice Classic','Soul EV','Hardtop','Malibu','Metris WORKER Passenger','Intrepid','Legacy','2500 Regular Cab','500X','fortwo cabrio','Veloster','Ram 3500 Mega Cab','RS 7','Titan King Cab','GLK-Class','Trans Sport','Pacifica Hybrid','Contour','Corrado','Concorde','Silverado 3500 HD Crew Cab','Corvette','Stealth','Hardtop 2 Door','Sierra (Classic) 1500 Extended Cab','675LT','9.5','Tundra Regular Cab','Sorento','Cutlass Cruiser','Volt','e-Golf','Silverado (Classic) 1500 Extended Cab','Sonoma Club Coupe Cab','F150 Super Cab','CTS','Vanquish','Rabbit','Montana SV6','S40 (New)','Aspire','Frontier Crew Cab','TrailBlazer','Esteem','Flying Spur','Sierra 1500 Double Cab','ProMaster 1500 Cargo','Impulse','Mercedes-AMG GLE Coupe','Tucson','3 Series','Rendezvous','Millenia','458 Spider','Silverado (Classic) 3500 Extended Cab'
+);
+
+CREATE TYPE car_gear_box AS ENUM (
+'automatická','manuálna'
+);
+
+CREATE TYPE person_type AS ENUM (
+'Fyzická osoba', 'Právnická osoba'
+);
+
+CREATE TYPE car_fuel AS ENUM (
+'benzín','diesel','LPG'
+);
+
+CREATE TYPE car_color AS ENUM (
+'èervená','žltá','èierna','biela','oranžová','zlatá','strieborná','bronzová','modrá','zelená','tmavomodrá','tyrkysová','hnedá','bordová','sivá','karbónová'
+);
+
+CREATE TABLE car_info (
+car_info_id SERIAL NOT NULL PRIMARY KEY,
+brand car_brand NOT NULL,
+model car_model NOT NULL,
+body_style car_body_style NOT NULL DEFAULT 'Sedan',
+engine_capacity FLOAT NOT NULL DEFAULT '2.0',
+engine_power SMALLINT NOT NULL DEFAULT '120',
+gear_box car_gear_box NOT NULL DEFAULT 'manuálna',
+fuel car_fuel NOT NULL DEFAULT 'diesel',
+color car_color NOT NULL DEFAULT 'biela',
+price_per_day SMALLINT NOT NULL DEFAULT '50'
+);
+
+CREATE TABLE servis (
+servis_id SERIAL NOT NULL PRIMARY KEY,
+servis_name VARCHAR(255) NOT NULL,
+servis_location VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE repair (
+repair_id SERIAL NOT NULL PRIMARY KEY,
+date DATE NOT NULL,
+price INT NOT NULL,
+servis_id INT NOT NULL REFERENCES servis(servis_id)
+);
+
+CREATE TABLE car (
+car_vin VARCHAR(17) NOT NULL PRIMARY KEY,
+car_info_id INT NOT NULL REFERENCES car_info(car_info_id),
+year_of_production DATE NOT NULL,
+mileage INT NOT NULL,
+spz VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE car_repair (
+car_repair_id SERIAL NOT NULL PRIMARY KEY,
+car_vin VARCHAR(17) NOT NULL REFERENCES car(car_vin),
+repair_id INT NOT NULL REFERENCES repair(repair_id)
+);
+
+CREATE TABLE harm (
+harm_id SERIAL NOT NULL PRIMARY KEY,
+type type_of_harm NOT NULL,
+repair_id INT REFERENCES repair(repair_id),
+description TEXT
+);
+
+CREATE TABLE employee (
+employee_id SERIAL NOT NULL PRIMARY KEY,
+first_name VARCHAR(255) NOT NULL,
+last_name VARCHAR(255) NOT NULL,
+login VARCHAR(255) UNIQUE NOT NULL,
+password VARCHAR(255) NOT NULL,
+phone VARCHAR (255) NOT NULL,
+type employee_type NOT NULL
+);
+
+CREATE TABLE customer (
+customer_id VARCHAR(8) NOT NULL PRIMARY KEY,
+customer_type person_type NOT NULL DEFAULT 'Fyzická osoba' CHECK (customer_type IN ('Fyzická osoba','Právnická osoba')),
+UNIQUE (customer_id,customer_type)
+);
+
+CREATE TABLE natural_person (
+natural_person_id VARCHAR(8) NOT NULL PRIMARY KEY REFERENCES customer(customer_id),
+first_name VARCHAR(255) NOT NULL,
+last_name VARCHAR(255) NOT NULL,
+adress VARCHAR(255) NOT NULL,
+bank_account VARCHAR(30) NOT NULL,
+phone VARCHAR(255) NOT NULL,
+customer_type person_type DEFAULT 'Fyzická osoba' CHECK (customer_type = 'Fyzická osoba'),
+FOREIGN KEY (natural_person_id, customer_type) REFERENCES customer(customer_id, customer_type)
+);
+
+CREATE TABLE legal_person (
+legal_person_ico VARCHAR(8) NOT NULL PRIMARY KEY REFERENCES customer(customer_id),
+dic VARCHAR(10) UNIQUE NOT NULL,
+name_of_organization VARCHAR(255) NOT NULL,
+adress VARCHAR(255) NOT NULL,
+bank_account VARCHAR(30) NOT NULL,
+phone VARCHAR(255) NOT NULL,
+customer_type person_type DEFAULT 'Právnická osoba' CHECK (customer_type = 'Právnická osoba'),
+FOREIGN KEY (legal_person_ico, customer_type) REFERENCES customer(customer_id, customer_type)
+);
+
+CREATE TABLE contract (
+contract_id SERIAL NOT NULL PRIMARY KEY,
+car_vin VARCHAR(17) NOT NULL REFERENCES car(car_vin),
+customer_id VARCHAR(8) NOT NULL REFERENCES customer(customer_id),
+employee_id INT NOT NULL REFERENCES employee(employee_id),
+date_from DATE NOT NULL,
+date_to DATE NOT NULL,
+date_of_creating DATE NOT NULL,
+price INT NOT NULL,
+harm_id INT REFERENCES harm(harm_id)
+);
+
+insert into employee(first_name,last_name,login,password,phone,type) values
+('Admin','Admin','admin','admin','0000','admin'),
+('Zamestnanec','Zamestnanec','zamestnanec','zamestnanec','0000','zamestnanec');

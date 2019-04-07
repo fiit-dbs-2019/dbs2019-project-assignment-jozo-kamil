@@ -1,0 +1,66 @@
+* {
+    black: #000000;
+    blue: #3B6EA5;
+    orange: #FFA500;
+    white: #f2f2f2;
+
+}
+
+.root {
+    -fx-background-color: blue;
+}
+
+.button {
+    -fx-font: 16px "Italic";
+    -fx-text-fill: black;
+    -fx-padding: 5;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+}
+
+.label {
+    -fx-font-family: "Italic";
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+}
+
+.combo-box {
+    -fx-font: 16px "Italic";
+    -fx-text-fill: black;             // pozor pri vybere
+    -fx-text-alignment: left;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup > .list-view {
+    -fx-pref-width: 185;
+    -fx-pref-height: 250;
+}
+
+.text-field {
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.spinner {
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.date-picker {
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}

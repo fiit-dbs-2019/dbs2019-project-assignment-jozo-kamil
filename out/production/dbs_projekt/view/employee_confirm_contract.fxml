@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeConfirmContractController">
+   <children>
+      <Label alignment="CENTER" layoutX="12.0" layoutY="14.0" prefHeight="42.0" prefWidth="577.0" text="Zmluva o výpožičke motorového vozidla">
+         <font>
+            <Font name="Lucida Console" size="30.0" />
+         </font>
+      </Label>
+      <VBox layoutX="319.0" layoutY="63.0" prefHeight="280.0" prefWidth="270.0">
+         <children>
+            <HBox prefHeight="42.0" prefWidth="250.0">
+               <children>
+                  <Label prefHeight="42.0" prefWidth="300.0" text="Informácie o vypožičiavateľovi:">
+                     <font>
+                        <Font name="Lucida Console" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="235.0" prefWidth="278.0">
+               <children>
+                  <VBox prefHeight="235.0" prefWidth="135.0" spacing="3.0">
+                     <children>
+                        <Label fx:id="labelCustomer1" prefHeight="35.0" prefWidth="125.0" text="Meno:" />
+                        <Label fx:id="labelCustomer2" prefHeight="35.0" prefWidth="125.0" text="Meno:" />
+                        <Label fx:id="labelCustomer3" prefHeight="35.0" prefWidth="125.0" text="Meno:" />
+                        <Label prefHeight="35.0" prefWidth="125.0" text="Adresa:" />
+                        <Label prefHeight="35.0" prefWidth="125.0" text="Číslo účtu:" />
+                        <Label prefHeight="35.0" prefWidth="125.0" text="Telefónne číslo:" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="235.0" prefWidth="177.0" spacing="3.0">
+                     <children>
+                        <Label fx:id="fieldCustomer1" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                        <Label fx:id="fieldCustomer2" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                        <Label fx:id="fieldCustomer3" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                        <Label fx:id="labelAdress" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                        <Label fx:id="labelBankAccount" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                        <Label fx:id="labelCustomerPhone" prefHeight="35.0" prefWidth="180.0" text="Label" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="14.0" layoutY="63.0" prefHeight="520.0" prefWidth="300.0">
+         <children>
+            <HBox prefHeight="42.0" prefWidth="250.0">
+               <children>
+                  <Label prefHeight="39.0" prefWidth="300.0" text="Informácie o vozidle:">
+                     <font>
+                        <Font name="Lucida Console" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="470.0" prefWidth="250.0">
+               <children>
+                  <VBox prefHeight="467.0" prefWidth="146.0" spacing="3.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="145.0" text="VIN:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="ŠPZ:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Značka:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Model:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Rok výroby:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Stav tachometra:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Palivo" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Objem motora" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Výkon motora(kW):" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Typ prevodovky:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Karoséria:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Farba:" />
+                        <Label prefHeight="35.0" prefWidth="145.0" text="Cena výpožičky/deň:" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="467.0" prefWidth="158.0" spacing="3.0">
+                     <children>
+                        <Label fx:id="labelVIN" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelSPZ" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelBrand" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelModel" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelYear" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelMileage" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelFuel" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelEngineCapacity" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelEnginePower" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelGearBox" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelBodyStyle" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelColor" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                        <Label fx:id="labelPrice" prefHeight="35.0" prefWidth="160.0" text="Label" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="319.0" layoutY="343.0" prefHeight="203.0" prefWidth="270.0">
+         <children>
+            <HBox prefHeight="40.0" prefWidth="300.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="130.0" text="Vyhotovil:">
+                     <font>
+                        <Font name="Lucida Console" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelEmployeeFirstName" prefHeight="40.0" prefWidth="170.0" text="Label" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="300.0">
+               <children>
+                  <Label fx:id="labelEmployeeLastName" prefHeight="40.0" prefWidth="155.0" text="Label" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="300.0">
+               <children>
+                  <Label fx:id="labelDateFromTo" prefHeight="40.0" prefWidth="280.0" text="Label" />
+               </children>
+            </HBox>
+            <HBox prefHeight="40.0" prefWidth="300.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="115.0" text="Dňa:">
+                     <font>
+                        <Font name="Lucida Console" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelDateOfContract" prefHeight="40.0" prefWidth="155.0" text="Label" />
+               </children>
+            </HBox>
+            <HBox prefHeight="40.0" prefWidth="300.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="115.0" text="Celková suma:">
+                     <font>
+                        <Font name="Lucida Console" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelTotalPrice" prefHeight="40.0" prefWidth="155.0" text="Label" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Button layoutX="399.0" layoutY="551.0" mnemonicParsing="false" onAction="#btnSubmitPushed" text="Potvrdiť údaje" />
+      <Button layoutX="542.0" layoutY="551.0" mnemonicParsing="false" onAction="#btnBackPushed" text="Späť" />
+   </children>
+</AnchorPane>

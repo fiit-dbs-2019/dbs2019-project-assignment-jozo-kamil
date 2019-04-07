@@ -1,0 +1,135 @@
+package controller;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.StageStyle;
+import persistancemanagers.AllTablesManager;
+import persistancemanagers.CreateContractManager;
+
+import java.io.*;
+import java.net.URL;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.ResourceBundle;
+
+public class EmployeeCreateContractController implements Initializable {
+    @FXML private DatePicker datePickerFrom;
+    @FXML private DatePicker datePickerTo;
+    @FXML private AnchorPane rootPane;
+    @FXML private TextField textFieldOp;
+    @FXML private TextField textFieldVin;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    public void btnCreateContractPushed(ActionEvent actionEvent) throws SQLException,IOException {
+
+        if (getDateTo() == null || getDateFrom() == null || getDateTo().before(getDateFrom())) {
+            Alert alertError = new Alert(Alert.AlertType.WARNING,"Zadajte správne dobu trvania.",ButtonType.CLOSE);
+            alertError.initStyle(StageStyle.TRANSPARENT);
+            alertError.setHeaderText("Varovanie!");
+            alertError.showAndWait();
+        } else if(getTextFieldOp().trim().isEmpty() || getTextFieldVin().trim().isEmpty()) {
+            Alert alertError = new Alert(Alert.AlertType.WARNING,"Zadajte údaje.",ButtonType.CLOSE);
+            alertError.initStyle(StageStyle.TRANSPARENT);
+            alertError.setHeaderText("Varovanie!");
+            alertError.showAndWait();
+        }
+        else {
+                CreateContractManager ccm = new CreateContractManager();
+
+                int result = ccm.checkInfo(getTextFieldVin(),getTextFieldOp(),getDateFrom(),getDateTo());
+
+                if (result == 0) {
+                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané VIN číslo: "+getTextFieldVin()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+                    alertError.initStyle(StageStyle.TRANSPARENT);
+                    alertError.setHeaderText("Chyba!");
+                    alertError.showAndWait();
+                } else if (result ==1) {
+                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané OP číslo žiadateľa: "+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+                    alertError.initStyle(StageStyle.TRANSPARENT);
+                    alertError.setHeaderText("Chyba!");
+                    alertError.showAndWait();
+                } else if (result ==2){
+                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Zadané VIN číslo: "+getTextFieldVin()+" a OP číslo žiadateľa: "+getTextFieldOp()+ " sa v databáze nevyskytuje.",ButtonType.CLOSE);
+                    alertError.initStyle(StageStyle.TRANSPARENT);
+                    alertError.setHeaderText("Chyba!");
+                    alertError.showAndWait();
+                } else if (result ==3 ){
+
+                    Properties prop = new Properties();
+                    OutputStream output = null;
+
+                    FileInputStream input = new FileInputStream("src/contract_info");
+                    prop.load(input);
+
+//                    input = new FileInputStream("src/contract_info");
+//                    prop.load(input);
+
+                    try {
+                        output = new FileOutputStream("src/contract_info");
+
+                        prop.setProperty("carVIN",getTextFieldVin());
+                        prop.setProperty("customerID",getTextFieldOp());
+                        prop.setProperty("dateFROM",getDateFrom().toString());
+                        prop.setProperty("dateTO",getDateTo().toString());
+
+                        prop.store(output, null);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (output != null) {
+                            try {
+                                output.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_confirm_contract.fxml"));
+                    rootPane.getChildren().setAll(pane);
+                }
+            }
+
+    }
+
+    public void btnBackPushed(ActionEvent actionEvent) throws IOException {
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
+        rootPane.getChildren().setAll(pane);
+    }
+
+    public String getTextFieldOp() {
+        return textFieldOp.getText();
+    }
+
+    public String getTextFieldVin() {
+        return textFieldVin.getText();
+    }
+
+    public Date getDateFrom() {
+        if (datePickerFrom.getValue()==null){
+            return null;
+        }
+        Date date = Date.valueOf(datePickerFrom.getValue());
+
+        return date;
+    }
+
+    public Date getDateTo() {
+        if (datePickerTo.getValue()==null){
+            return null;
+        }
+        Date date = Date.valueOf(datePickerTo.getValue());
+
+        return date;
+    }
+}
