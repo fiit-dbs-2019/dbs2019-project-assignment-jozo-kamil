@@ -82,6 +82,8 @@ public class EmployeeSearchCustomerController implements Initializable {
     private Boolean isbuttonSearchInDatabasePushedNatural = false;
     private Boolean isbuttonSearchInDatabasePushedLegal = false;
 
+    private Boolean openedFromContractScene = false;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         collumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -134,6 +136,10 @@ public class EmployeeSearchCustomerController implements Initializable {
 
     public void setCarVIN(String carVIN) {
         this.carVIN = carVIN;
+    }
+
+    public void setOpenedFromContractScene(Boolean openedFromContractScene) {
+        this.openedFromContractScene = openedFromContractScene;
     }
 
     public void detailForNaturalPersonSelected(ActionEvent actionEvent) {
@@ -600,6 +606,11 @@ public class EmployeeSearchCustomerController implements Initializable {
 
     @FXML
     public void btnBackPushed(ActionEvent actionEvent) {
+        if(openedFromContractScene) {
+            backToCreateContract(false,false);
+            return;
+        }
+
         backToMenu();
     }
 
@@ -625,6 +636,42 @@ public class EmployeeSearchCustomerController implements Initializable {
 
             EmployeeSearchMenuController employeeSearchMenuController = loaader.getController();
             employeeSearchMenuController.setEmployee(employee);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
+    }
+
+    public void backToCreateContract(Boolean isNaturalPerson, Boolean isPersonSelected) {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeCreateContractController employeeCreateContractController= loaader.getController();
+            employeeCreateContractController.setEmployee(employee);
+
+            if(isPersonSelected) {
+                if(isNaturalPerson) {
+                    employeeCreateContractController.setCustomer(tableViewNatural.getSelectionModel().getSelectedItem());
+                } else {
+                    employeeCreateContractController.setCustomer(tableViewLegal.getSelectionModel().getSelectedItem());
+                }
+            }
+
+            if(car != null) {
+                employeeCreateContractController.setCar(car);
+                employeeCreateContractController.setCarVin();
+            } else if(carVIN != null) {
+                employeeCreateContractController.setSelectedCarVIN(carVIN);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -769,11 +816,13 @@ public class EmployeeSearchCustomerController implements Initializable {
     }
 
     public void createContractNaturalPersonSelected(ActionEvent actionEvent) {
-       displayCreateContractScene(true);
+       //displayCreateContractScene(true);
+        backToCreateContract(true,true);
     }
 
     public void createContractLegalPersonSelected(ActionEvent actionEvent) {
-        displayCreateContractScene(false);
+        //displayCreateContractScene(false);
+        backToCreateContract(false,true);
     }
 
     public void displayCreateContractScene(Boolean naturalPersonSelected) {

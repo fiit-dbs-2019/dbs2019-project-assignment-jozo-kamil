@@ -280,6 +280,7 @@ public class EmployeeCreateContractController implements Initializable {
 
             EmployeeSearchCustomerController employeeSearchCustomerController = loaader.getController();
             employeeSearchCustomerController.setEmployee(employee);
+            employeeSearchCustomerController.setOpenedFromContractScene(true);
 
             if(car != null) {
                 employeeSearchCustomerController.setCar(car);
@@ -316,6 +317,7 @@ public class EmployeeCreateContractController implements Initializable {
 
             EmployeeSearchCarController employeeSearchCarController = loader.getController();
             employeeSearchCarController.setEmployee(employee);
+            employeeSearchCarController.setOpenedFromContractScene(true);
 
             if(customer != null) {
                 employeeSearchCarController.setCustomer(customer);

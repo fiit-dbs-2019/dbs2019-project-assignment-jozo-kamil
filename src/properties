@@ -2,4 +2,3 @@
 user=postgres
 url=jdbc\:postgresql\://localhost\:5432/dbs_project
 password=assanatlv
-loggedID=2

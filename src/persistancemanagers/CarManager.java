@@ -1,18 +1,16 @@
 package persistancemanagers;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Car;
-import model.Employee;
 import model.ServiceRecord;
 
 import java.sql.*;
 
 public class CarManager {
 
-    public Boolean addNewServisToSpecificCar(Car car, String servisNameAndLocation, Date dateOfService,
-                                             Float priceOfService) {
+    public Boolean addNewServisToSpecificCar(Car car, Integer harmID, String servisNameAndLocation, String type,
+                                             Date dateOfService, Float priceOfService) {
         ServiceRecord serviceRecord;
 
         AllTablesManager atm;
@@ -26,6 +24,7 @@ public class CarManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
+            //////////////////////////////////////////////////////////////////////////
             st = conn.prepareStatement("SELECT s.servis_id, s.servis_name, s.servis_location " +
                     "FROM servis s " +
                     "WHERE (s.servis_name || ', ' || s.servis_location) = '" + servisNameAndLocation + "';"
@@ -42,11 +41,21 @@ public class CarManager {
                 return false;
             }
 
-            st = conn.prepareStatement("INSERT INTO repair(date, price, servis_id) VALUES(?,?,?) RETURNING repair_id, type;"
+            //////////////////////////////////////////////////////////////////////////
+
+            st = conn.prepareStatement("INSERT INTO repair(type, date, price, servis_id) " +
+                    "VALUES(?::type_of_harm,?,?,?) RETURNING repair_id, type;"
             );
-            st.setDate(1,dateOfService);
-            st.setFloat(2,priceOfService);
-            st.setInt(3,servisID);
+
+            if(type != null) {
+                st.setString(1,type);
+            } else {
+                st.setString(1, "servis");
+            }
+
+            st.setDate(2,dateOfService);
+            st.setFloat(3,priceOfService);
+            st.setInt(4,servisID);
 
             rs = st.executeQuery();
 
@@ -55,12 +64,25 @@ public class CarManager {
             repairID = rs.getInt("repair_id");
             String typeOfService = rs.getString("type");
 
+            //////////////////////////////////////////////////////////////////////////
             st = conn.prepareStatement("INSERT INTO car_repair(car_vin, repair_id) VALUES(?,?)"
             );
             st.setString(1,car.getCar_vin());
             st.setInt(2,repairID);
 
             st.executeUpdate();
+
+            //////////////////////////////////////////////////////////////////////////
+            if(harmID != null) {
+                st = conn.prepareStatement("UPDATE harm " +
+                        "SET repair_id = " + repairID + " " +
+                        "WHERE harm_id = " + harmID + ";"
+                );
+                st.executeUpdate();
+
+                return true;
+            }
+            //////////////////////////////////////////////////////////////////////////
 
             serviceRecord = new ServiceRecord(serviceName,serviceLocation,typeOfService,dateOfService,priceOfService);
 
@@ -167,7 +189,6 @@ public class CarManager {
             car.setFuel(fuel);
             car.setColor(color);
             car.setPrice_per_day(price);
-
 
             // get all service records for specific car
             st = conn.prepareStatement("select s.servis_name, s.servis_location, r.type, r.date, r.price " +
@@ -316,6 +337,7 @@ public class CarManager {
 
             Integer car_info_id = rs.getInt("car_info_id");
             Date year_of_production = rs.getDate("year_of_production");
+            //String date = new SimpleDateFormat("yyyy-MM-dd").format(rs.getTimestamp("year_of_production"));
             Integer mileage = rs.getInt("mileage");
             String SPZ = rs.getString("spz");
 
@@ -335,7 +357,10 @@ public class CarManager {
             String color = rs.getString("color");
             Float price_per_day = rs.getFloat("price_per_day");
 
-            car = new Car(car_vin,model,brand,body_style,engine_capacity,engine_power,gear_box,fuel,color,price_per_day,year_of_production,mileage,SPZ);
+            car = new Car(car_vin,brand,model,body_style,engine_capacity,engine_power,gear_box,fuel,color,
+                    price_per_day,year_of_production,mileage,SPZ);
+
+            car.setCarInfoID(car_info_id);
 
             return car;
 

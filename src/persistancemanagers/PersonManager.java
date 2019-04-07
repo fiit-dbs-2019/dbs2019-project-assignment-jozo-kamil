@@ -80,7 +80,7 @@ public class PersonManager {
             st = conn.prepareStatement("select * " +
                     "from natural_person " +
                     "where ((first_name || ' ' || last_name) ILIKE '" + pattern + "%') OR ((last_name || ' ' || first_name) ILIKE '" + pattern + "%')" +
-                    "OR natural_person_id ILIKE '" + pattern + "%' OR phone ILIKE '" + pattern + "%' OR adress ILIKE '" + pattern + "%'" +
+                    "OR natural_person_id ILIKE '" + pattern + "%' " +
                     "ORDER BY last_name,first_name " +
                     "LIMIT 500" +
                     "OFFSET " + offSet + ";"
@@ -216,7 +216,7 @@ public class PersonManager {
             st = conn.prepareStatement("select * " +
                     "from legal_person " +
                     "where ((legal_person_ico || ' ' || dic) ILIKE '" + pattern + "%') OR ((dic || ' ' || legal_person_ico) ILIKE '" + pattern + "%')" +
-                    "OR name_of_organization ILIKE '" + pattern + "%' OR phone ILIKE '" + pattern + "%' OR adress ILIKE '" + pattern + "%'" +
+                    "OR name_of_organization ILIKE '" + pattern + "%' " +
                     "ORDER BY legal_person_ico,dic " +
                     "LIMIT 500" +
                     "OFFSET " + offSet + ";"

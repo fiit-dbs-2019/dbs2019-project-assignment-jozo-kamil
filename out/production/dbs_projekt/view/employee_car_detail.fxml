@@ -54,7 +54,8 @@
       <JFXTextField fx:id="textFieldPriceOfService" layoutX="778.0" layoutY="482.0" promptText="Cena" />
       <JFXDatePicker fx:id="datePickerDateOfService" editable="false" layoutX="778.0" layoutY="431.0" prefHeight="39.0" prefWidth="202.0" promptText="Dátum servisu" />
       <Button layoutX="791.0" layoutY="535.0" mnemonicParsing="false" onAction="#buttonAddNewServiceRecord" text="Pridať záznam o servise" />
-      <JFXTextField fx:id="textFieldServiceName" layoutX="778.0" layoutY="370.0" prefHeight="39.0" prefWidth="202.0" promptText="Servis" />
+      <JFXTextField fx:id="textFieldServiceName" layoutX="636.0" layoutY="318.0" prefHeight="39.0" prefWidth="345.0" promptText="Servis" />
       <Label fx:id="labelNumberOfServices" alignment="CENTER_RIGHT" layoutX="574.0" layoutY="576.0" prefHeight="21.0" prefWidth="177.0" text="Label" />
+      <JFXTextField fx:id="textFieldTypeOfRepair" layoutX="778.0" layoutY="377.0" promptText="Typ opravy" />
    </children>
 </AnchorPane>

@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 
 public class EmployeeCarDetailController implements Initializable {
 
+
     // noneditable attributes
     @FXML private TableView<Car> tableNonEditable;
     @FXML private TableColumn<Car, String> collumnVIN;
@@ -63,6 +64,7 @@ public class EmployeeCarDetailController implements Initializable {
 
     // field for adding new service record
     @FXML private JFXTextField textFieldServiceName;
+    @FXML private JFXTextField textFieldTypeOfRepair;
     @FXML private JFXDatePicker datePickerDateOfService;
     @FXML private JFXTextField textFieldPriceOfService;
 
@@ -70,6 +72,9 @@ public class EmployeeCarDetailController implements Initializable {
 
     // name and loction of all services
     ObservableList<String> allServices = null;
+
+    // type of repair
+    ObservableList<String> allRepairs = null;
 
     private Boolean dataChanged = false;
 
@@ -108,10 +113,13 @@ public class EmployeeCarDetailController implements Initializable {
 
     public void setCar(Car car) {
         this.car = car;
+
         tableNonEditable.setItems(FXCollections.observableArrayList(car));
         tableEditable.setItems(FXCollections.observableArrayList(car));
         tableServiceRecords.setItems(car.getServiceRecords());
+
         setServiceNamesAndLocations();
+        setRepairTypes();
         setNumberOfServices();
     }
 
@@ -122,6 +130,17 @@ public class EmployeeCarDetailController implements Initializable {
         TextFields.bindAutoCompletion(textFieldServiceName,allServices);
     }
 
+    public void setRepairTypes() {
+        EnumManager enumManager = new EnumManager();
+        allRepairs = enumManager.getTypeOfHarm();
+
+        TextFields.bindAutoCompletion(textFieldTypeOfRepair,allRepairs);
+    }
+
+    public void setEditation(Boolean editationEnabled) {
+        tableEditable.setEditable(editationEnabled);
+    }
+
     // if data were changed
     public Boolean getDataChanged() {
         return dataChanged;
@@ -130,6 +149,8 @@ public class EmployeeCarDetailController implements Initializable {
     public String getServiceName() {
         return textFieldServiceName.getText();
     }
+
+    public String getTypeOfRepair() { return textFieldTypeOfRepair.getText(); }
 
     public Date getDateOfService() {
         if(datePickerDateOfService.getValue() == null) {
@@ -145,6 +166,7 @@ public class EmployeeCarDetailController implements Initializable {
 
     public void removeTypedInfo() {
         textFieldServiceName.setText("");
+        textFieldTypeOfRepair.setText("");
         datePickerDateOfService.getEditor().clear();
         textFieldPriceOfService.setText("");
     }
@@ -155,6 +177,7 @@ public class EmployeeCarDetailController implements Initializable {
 
     public Boolean checkFieldsBeforeSubmittingNewRepair() {
         if(getServiceName().trim().isEmpty() ||
+                getTypeOfRepair().trim().isEmpty() ||
                 getDateOfService() == null) {
             return true;
         } else {
@@ -192,7 +215,8 @@ public class EmployeeCarDetailController implements Initializable {
     @FXML
     void buttonAddNewServiceRecord(ActionEvent event) {
 
-        if(checkFieldsBeforeSubmittingNewRepair() || !allServices.contains(getServiceName())) {
+        if(checkFieldsBeforeSubmittingNewRepair() || !allServices.contains(getServiceName()) ||
+            !allRepairs.contains(getTypeOfRepair())) {
             Notifications notification = Notifications.create()
                     .title("Nesprávne vyplnené údaje!")
                     .hideAfter(Duration.seconds(4))
@@ -202,7 +226,8 @@ public class EmployeeCarDetailController implements Initializable {
 
             CarManager carManager = new CarManager();
 
-            if(!carManager.addNewServisToSpecificCar(car,getServiceName(),getDateOfService(),getPriceOfService())) {
+            if(!carManager.addNewServisToSpecificCar(car,null,getServiceName(),
+                    getTypeOfRepair(),getDateOfService(),getPriceOfService())) {
                 Notifications notification = Notifications.create()
                         .title("Nesprávny servis!")
                         .hideAfter(Duration.seconds(4))

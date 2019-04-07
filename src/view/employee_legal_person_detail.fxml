@@ -8,17 +8,17 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="200.0" prefWidth="800.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeLegalPersonDetailController">
     <children>
-        <TableView fx:id="tableView" layoutX="13.0" layoutY="76.0" prefHeight="75.0" prefWidth="775.0">
+        <TableView fx:id="tableView" layoutX="13.0" layoutY="76.0" prefHeight="80.0" prefWidth="775.0">
             <columns>
                 <TableColumn fx:id="collumnIco" editable="false" prefWidth="95.0" text="IČO" />
                 <TableColumn fx:id="collumnDic" prefWidth="122.33331298828125" text="DIČ" />
-                <TableColumn fx:id="collumnName" onEditCommit="#changeNameCell" prefWidth="123.6666259765625" text="Názov firmyo" />
+                <TableColumn fx:id="collumnName" onEditCommit="#changeNameCell" prefWidth="123.6666259765625" text="Názov firmy" />
                 <TableColumn fx:id="collumnAdress" minWidth="5.0" onEditCommit="#changeAdressCell" prefWidth="161.33331298828125" text="Adresa" />
-                <TableColumn fx:id="collumnBankAccount" onEditCommit="#changeBankAccountCell" prefWidth="162.33331298828125" text="Číslo účtu" />
-                <TableColumn fx:id="collumnPhoneNumber" onEditCommit="#changePhoneNumberCell" prefWidth="115.66668701171875" text="Telefónne číslo" />
+                <TableColumn fx:id="collumnBankAccount" onEditCommit="#changeBankAccountCell" prefWidth="155.0" text="Číslo účtu" />
+                <TableColumn fx:id="collumnPhoneNumber" onEditCommit="#changePhoneNumberCell" prefWidth="115.0" text="Telefónne číslo" />
             </columns>
         </TableView>
-        <Label layoutX="246.0" layoutY="14.0" text="Detail výpožičiavateľa" textFill="WHITE">
+        <Label layoutX="229.0" layoutY="14.0" text="Detail výpožičiavateľa" textFill="WHITE">
             <font>
                 <Font size="36.0" />
             </font>

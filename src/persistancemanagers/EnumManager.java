@@ -28,7 +28,7 @@ public class EnumManager {
             st = conn.prepareStatement("select servis_name, servis_location from servis;");
             ResultSet rs = st.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 String nameAndLocation = rs.getString("servis_name") + ", " + rs.getString("servis_location");
                 allServices.add(nameAndLocation);
 
@@ -40,6 +40,43 @@ public class EnumManager {
             }
 
             return allServices;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<String> getTypeOfHarm(){
+        ObservableList<String> typesOfHarm = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try{
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT unnest(enum_range(NULL::type_of_harm))::text AS type ORDER BY type");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+               String type = rs.getString("type");
+               typesOfHarm.add(type);
+            }
+
+            return typesOfHarm;
 
         } catch (SQLException e) {
             e.printStackTrace();
