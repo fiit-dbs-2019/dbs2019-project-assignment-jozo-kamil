@@ -3,6 +3,7 @@ package persistancemanagers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Contract;
+import model.Employee;
 import model.Harm;
 import model.NaturalPerson;
 
@@ -67,11 +68,12 @@ public class CreateContractManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
+            Date date = Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 
-
-            st = conn.prepareStatement("INSERT INTO harm(type,description) values (?::type_of_harm,?) returning harm_id;");
+            st = conn.prepareStatement("INSERT INTO harm(type,date,description) values (?::type_of_harm,?,?) returning harm_id;");
             st.setString(1,typeOfHarm);
-            st.setString(2,description);
+            st.setDate(2,date);
+            st.setString(3,description);
 
             ResultSet rs = st.executeQuery();
 
@@ -138,7 +140,61 @@ public class CreateContractManager {
         }
     }
 
-    public ObservableList<Contract> getContract(Integer offset){
+    public ObservableList<Contract> getContractForSpecificEmployee(Employee employee, Integer offSet) {
+        ObservableList<Contract> listOfContract = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT * " +
+                    "FROM contract " +
+                    "WHERE employee_id = " + employee.getEmployeeID() + " " +
+                    "ORDER BY contract_id " +
+                    "LIMIT 500 " +
+                    "OFFSET " + offSet + ";"
+            );
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                int contract_id = rs.getInt("contract_id");
+                String car_vin = rs.getString("car_vin");
+                String customer_id = rs.getString("customer_id");
+                int employee_id = rs.getInt("employee_id");
+                Date date_from = rs.getDate("date_from");
+                Date date_to = rs.getDate("date_to");
+                float price = rs.getFloat("price");
+                Date date_of_creating = rs.getDate("date_of_creating");
+                int harm_id = rs.getInt("harm_id");
+
+                if (date_of_creating == null) date_of_creating = date_from;
+
+                listOfContract.add(new Contract(contract_id,car_vin,customer_id,employee_id,date_from,date_to,price,date_of_creating,harm_id));
+            }
+
+            return listOfContract;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<Contract> getContract(Integer offSet){
         ObservableList<Contract> listOfContract = FXCollections.observableArrayList();
 
         AllTablesManager atm;
@@ -151,7 +207,7 @@ public class CreateContractManager {
 
 
 
-            st = conn.prepareStatement("SELECT * FROM contract ORDER BY contract_id LIMIT 500 OFFSET " + offset + ";");
+            st = conn.prepareStatement("SELECT * FROM contract ORDER BY contract_id LIMIT 500 OFFSET " + offSet + ";");
             ResultSet rs = st.executeQuery();
 
             while(rs.next()) {
@@ -294,7 +350,7 @@ public class CreateContractManager {
         }
     }
 
-    public int checkInfo(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException{
+    public int checkInfo(String car_vin, String customer_id, Date date_from, Date date_to) throws SQLException {
 
         AllTablesManager atm;
         Connection conn = null;

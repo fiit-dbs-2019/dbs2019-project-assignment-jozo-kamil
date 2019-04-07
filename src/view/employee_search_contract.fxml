@@ -16,7 +16,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="800.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeSearchContractController">
    <children>
-      <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="800.0">
+      <VBox layoutX="-6.0" prefHeight="80.0" prefWidth="800.0">
          <children>
             <HBox prefHeight="38.0" prefWidth="600.0">
                <children>
@@ -71,7 +71,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="118.0" layoutY="50.0" prefHeight="556.0" prefWidth="601.0">
+      <VBox layoutX="85.0" layoutY="80.0" prefHeight="584.0" prefWidth="637.0">
          <children>
             <HBox alignment="CENTER" prefHeight="47.0" prefWidth="538.0">
                <children>
@@ -82,13 +82,13 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
-            <TableView fx:id="tableView" prefHeight="496.0" prefWidth="538.0">
+            <HBox alignment="CENTER" prefHeight="3.0" prefWidth="637.0" />
+            <TableView fx:id="tableView" prefHeight="530.0" prefWidth="637.0">
                <columns>
-                  <TableColumn fx:id="collumnNumberOfContract" prefWidth="138.0" text="Číslo zmluvy" />
-                  <TableColumn fx:id="collumnID" prefWidth="152.0" text="ID" />
-                  <TableColumn fx:id="collumnDateOfCreating" prefWidth="158.0" text="Dátum vyhotovenia" />
-                  <TableColumn fx:id="collumnVIN" prefWidth="152.33331298828125" text="VIN číslo vozidla" />
+                  <TableColumn fx:id="collumnNumberOfContract" prefWidth="116.0" text="Číslo zmluvy" />
+                  <TableColumn fx:id="collumnID" prefWidth="142.0" text="ID zákazníka" />
+                  <TableColumn fx:id="collumnDateOfCreating" prefWidth="150.0" text="Dátum vyhotovenia" />
+                  <TableColumn fx:id="collumnVIN" prefWidth="213.0" text="VIN číslo vozidla" />
                </columns>
                <contextMenu>
                   <ContextMenu>
@@ -100,13 +100,14 @@
             </TableView>
          </children>
       </VBox>
-      <TextField fx:id="textFieldSearchInTables" layoutX="73.0" layoutY="598.0" onKeyReleased="#searchInTable" prefHeight="31.0" prefWidth="215.0" promptText="Filtruj nájdené položky" />
-      <Button layoutX="73.0" layoutY="640.0" mnemonicParsing="false" onAction="#buttonDisplayDataPushed" text="Zobraz údaje" />
-      <Button fx:id="buttonPreviousData" layoutX="360.0" layoutY="606.0" mnemonicParsing="false" onAction="#loadPrevious" text="&lt;-" />
-      <Button fx:id="buttonNextData" layoutX="405.0" layoutY="606.0" mnemonicParsing="false" onAction="#loadNext" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
-      <Label fx:id="labelOffset" alignment="CENTER" layoutX="308.0" layoutY="647.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
-      <TextField fx:id="textFieldSearchInDatabase" layoutX="504.0" layoutY="598.0" onKeyReleased="#searchInTable" prefHeight="31.0" prefWidth="226.0" promptText="Číslo OP/IČO, VIN, Číslo zmluvy, Dátum" />
-      <Button layoutX="497.0" layoutY="640.0" mnemonicParsing="false" onAction="#buttonSearchInDatabasePushed" prefHeight="35.0" prefWidth="215.0" text="Vyhľadávanie v databáze" />
-      <JFXProgressBar fx:id="progressBar" layoutX="497.0" layoutY="684.0" />
+      <TextField fx:id="textFieldSearchInTables" layoutX="84.0" layoutY="673.0" onKeyReleased="#searchInTable" prefHeight="31.0" prefWidth="215.0" promptText="Filtruj nájdené položky" />
+      <Button layoutX="84.0" layoutY="762.0" mnemonicParsing="false" onAction="#buttonDisplayDataPushed" text="Zobraz všetky zmluvy" />
+      <Button fx:id="buttonPreviousData" layoutX="372.0" layoutY="671.0" mnemonicParsing="false" onAction="#loadPrevious" text="&lt;-" />
+      <Button fx:id="buttonNextData" layoutX="403.0" layoutY="671.0" mnemonicParsing="false" onAction="#loadNext" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
+      <Label fx:id="labelOffset" alignment="CENTER" layoutX="321.0" layoutY="712.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
+      <TextField fx:id="textFieldSearchInDatabase" layoutX="490.0" layoutY="673.0" onKeyReleased="#searchInTable" prefHeight="31.0" prefWidth="232.0" promptText="Číslo OP/IČO, VIN" />
+      <Button layoutX="499.0" layoutY="716.0" mnemonicParsing="false" onAction="#buttonSearchInDatabasePushed" prefHeight="35.0" prefWidth="215.0" text="Vyhľadávanie v databáze" />
+      <JFXProgressBar fx:id="progressBar" layoutX="506.0" layoutY="760.0" />
+      <Button layoutX="84.0" layoutY="716.0" mnemonicParsing="false" onAction="#buttonDisplayMyContractsPushed" text="Zobraz moje zmluvy" />
    </children>
 </AnchorPane>

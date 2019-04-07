@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import model.*;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.textfield.TextFields;
+import persistancemanagers.CarManager;
 import persistancemanagers.CreateContractManager;
 import persistancemanagers.EnumManager;
 import persistancemanagers.PersonManager;
@@ -32,78 +33,51 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 public class EmployeeContractDetailController implements Initializable {
-    @FXML private MenuItem menuItem;
-
-    @FXML private ContextMenu contextMenu;
-
-    @FXML private TableView<Harm> tableViewHarm;
-
-    @FXML private TableColumn<Harm, String> collumnType;
-
-    @FXML private TableColumn<Harm, String> collumnDescription;
-
-    @FXML private JFXTextField textFieldTypeOfHarm;
-
-    @FXML private JFXTextField textFieldDescriptionOfHarm;
-
-    @FXML private JFXButton buttonAddHarm;
-
-    @FXML private Label title;
 
     @FXML private AnchorPane rootPane;
 
+    // menu (hiding when need)
+    @FXML private MenuItem menuItem;
+    @FXML private ContextMenu contextMenu;
+
+    // table for harm
+    @FXML private TableView<Harm> tableViewHarm;
+    @FXML private TableColumn<Harm, String> collumnType;
+    @FXML private TableColumn<Harm, String> collumnDescription;
+
+    // fields and button for adding harm
+    @FXML private JFXTextField textFieldTypeOfHarm;
+    @FXML private JFXTextField textFieldDescriptionOfHarm;
+    @FXML private JFXButton buttonAddHarm;
+
+    // labels to set
+    @FXML private Label title;
     @FXML private Label labelCustomer1;
-
     @FXML private Label labelCustomer2;
-
     @FXML private Label labelCustomer3;
-
     @FXML private Label fieldCustomer1;
-
     @FXML private Label fieldCustomer2;
-
     @FXML private Label fieldCustomer3;
-
     @FXML private Label labelAdress;
-
     @FXML private Label labelBankAccount;
-
     @FXML private Label labelCustomerPhone;
-
     @FXML private Label labelVIN;
-
     @FXML private Label labelSPZ;
-
     @FXML private Label labelBrand;
-
     @FXML private Label labelModel;
-
     @FXML private Label labelYear;
-
     @FXML private Label labelMileage;
-
     @FXML private Label labelFuel;
-
     @FXML private Label labelEngineCapacity;
-
     @FXML private Label labelEnginePower;
-
     @FXML private Label labelGearBox;
-
     @FXML private Label labelBodyStyle;
-
     @FXML private Label labelColor;
-
     @FXML private Label labelPrice;
-
     @FXML private Label labelEmployeeFirstName;
-
     @FXML private Label labelEmployeeLastName;
-
     @FXML private Label labelDateFromTo;
-
     @FXML private Label labelDateOfContract;
-
     @FXML private Label labelTotalPrice;
 
     private Contract contract;
@@ -121,12 +95,17 @@ public class EmployeeContractDetailController implements Initializable {
         collumnDescription.setCellValueFactory(new PropertyValueFactory<>("harmDescription"));
     }
 
+    // setters for data
     public void setContract(Contract contract) {
         this.contract = contract;
     }
 
     public Boolean getDataChanged() {
         return dataChanged;
+    }
+
+    public void setPerson(Person person) {
+        this.customer = person;
     }
 
     public void setRootPane(AnchorPane rootPane) {
@@ -139,6 +118,10 @@ public class EmployeeContractDetailController implements Initializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    // set labels and more
+    public void setInfo() {
         setLabels();
 
         if (contract.getHarm_id() != 0){
@@ -164,10 +147,11 @@ public class EmployeeContractDetailController implements Initializable {
             menuItem.setVisible(false);
 
             TextFields.bindAutoCompletion(textFieldTypeOfHarm,typeOfHarm);
-
         }
     }
 
+
+    // get input and validate
     public String getTypeOfHarm() {
         return textFieldTypeOfHarm.getText();
     }
@@ -184,11 +168,8 @@ public class EmployeeContractDetailController implements Initializable {
         return false;
     }
 
-    public void setPerson(Person person) {
-        this.customer = person;
-    }
 
-
+    // adding data to labels
     public void setLabels(){
         setTitle("Zmluva o výpožičke motorového vozidla č."+ contract.getContract_id());
 
@@ -244,6 +225,9 @@ public class EmployeeContractDetailController implements Initializable {
             setLabelCustomerPhone(((LegalPerson) customer).getPhoneNumber());
         }
     }
+
+
+    // so much setters for labels
 
     public void setLabelCustomer1(String labelCustomer1) {
         this.labelCustomer1.setText(labelCustomer1);
@@ -357,6 +341,8 @@ public class EmployeeContractDetailController implements Initializable {
         this.labelTotalPrice.setText(String.valueOf(labelTotalPrice) + "€");
     }
 
+
+    // buttons
     public void btnAddHarmPushed(ActionEvent actionEvent) {
         if (checkFields()){
             Notifications notification = Notifications.create()
@@ -397,10 +383,50 @@ public class EmployeeContractDetailController implements Initializable {
             Parent detailWindow = (Parent) loader.load();
 
             employeeAddHarmRepairController = loader.getController();
+            employeeAddHarmRepairController.setContract(contract);
+            employeeAddHarmRepairController.setTypeOfHarm(contract.getHarm().getTypeOfHarm());
 
             Stage stage = new Stage();
             stage.setResizable(false);
             stage.setTitle("Pridanie opravy");
+            stage.setScene(new Scene(detailWindow));
+
+            stage.setOnHiding(event -> {
+                setContract(employeeAddHarmRepairController.getContract());
+
+                if(employeeAddHarmRepairController.isRepairAdded()) {
+                    menuItem.setVisible(false);
+                }
+
+            });
+
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void btnCarDetailPushed(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_car_detail.fxml"));
+
+        EmployeeCarDetailController employeeCarDetailController;
+
+        try {
+            Parent detailWindow = (Parent) loader.load();
+
+            employeeCarDetailController = loader.getController();
+
+            CarManager carManager = new CarManager();
+            carManager.getCarInfo(car);
+
+            employeeCarDetailController.setCar(car);
+            employeeCarDetailController.setEditation(false);
+
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Detail");
             stage.setScene(new Scene(detailWindow));
 
             stage.show();

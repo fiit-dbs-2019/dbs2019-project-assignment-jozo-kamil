@@ -189,51 +189,6 @@ public class EmployeeManager {
         }
     }
 
-    public void setHeader(Label labelFirstName, Label labelLastName) throws SQLException {
-        Employee employee = null;
-
-        AllTablesManager atm;
-        Connection conn = null;
-        PreparedStatement st = null;
-
-        try {
-            atm = new AllTablesManager();
-            conn = atm.connect();
-
-            Properties prop = new Properties();
-            InputStream input = new FileInputStream("src/properties");
-
-            prop.load(input);
-
-
-            Integer employee_id = Integer.valueOf(prop.getProperty("loggedID"));                       // get employee_id from properties file
-
-            input.close();
-
-            st = conn.prepareStatement("SELECT first_name,last_name FROM employee " +
-                    "WHERE employee_id = '" + employee_id + "';");
-            ResultSet rs = st.executeQuery();
-
-            rs.next();
-
-            labelFirstName.setText(rs.getString("first_name"));
-            labelLastName.setText(rs.getString("last_name"));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            st.close();
-            if (conn != null)
-            {
-                try { conn.close(); } catch (SQLException e) {}
-            }
-        }
-    }
-
     public boolean AddNewEmployeeToDatabase(String firstName, String lastName, String login, String password, String phone, String type) throws SQLException {
         AllTablesManager atm;
         Connection conn = null;

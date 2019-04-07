@@ -60,6 +60,8 @@ public class EmployeeSearchContractController implements Initializable {
 
     private Boolean isButtonSearchInDatabasePushed = false;
 
+    private Boolean isButtonSearchEmployeeContractsPushed = false;
+
     public void setHeader () {
         labelFirstName.setText(employee.getFirstName());
         labelLastName.setText(employee.getLastName());
@@ -156,60 +158,49 @@ public class EmployeeSearchContractController implements Initializable {
             Parent detailWindow = (Parent) loader.load();
 
             employeeContractDetailController = loader.getController();
-            Contract contractDetail = tableView.getSelectionModel().getSelectedItem();
-            employeeContractDetailController.setContract(contractDetail);
-
-            PersonManager personManager = new PersonManager();
-            Person personFromContract = personManager.getPersonFromDatabase(contractDetail.getCustomer_id());
-            employeeContractDetailController.setPerson(personFromContract);
-
-            CarManager carManager = new CarManager();
-            Car carFromContract = carManager.getCarFromDatabase(contractDetail.getCar_vin());
-            employeeContractDetailController.setCar(carFromContract);
-
-            EmployeeManager employeeManager = new EmployeeManager();
-            Employee employeeFromContract = employeeManager.getEmployeeFromDatabase(contractDetail.getEmployee_id());
-            employeeContractDetailController.setEmployee(employeeFromContract);
 
             Stage stage = new Stage();
             stage.setResizable(false);
             stage.setTitle("Detail");
             stage.setScene(new Scene(detailWindow));
 
-            // on hiding, there is a funcionality to add changes into database, if they were set
-            stage.setOnHiding(event -> {
-                Task updateInfo = new Task() {
-                    @Override
-                    protected Object call() {
+            Task getFromDatabase = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    progressBar.setVisible(true);
 
-                        if(employeeContractDetailController.getDataChanged()) {
-                            CreateContractManager contractManager = new CreateContractManager();
-                            //contractManager.updateLegalPersonInfo(contractDetail);
-                        }
-                        return null;
-                    }
-                };
+                    Contract contractDetail = tableView.getSelectionModel().getSelectedItem();
+                    employeeContractDetailController.setContract(contractDetail);
 
-                updateInfo.setOnSucceeded(event1 -> {
-                    if(employeeContractDetailController.getDataChanged()) {
-                        Notifications notification = Notifications.create()
-                                .title("Informácie boli úspešne aktualizované!")
-                                .hideAfter(Duration.seconds(4))
-                                .hideCloseButton();
-                        notification.showConfirm();
-                    }
-                });
+                    PersonManager personManager = new PersonManager();
+                    Person personFromContract = personManager.getPersonFromDatabase(contractDetail.getCustomer_id());
+                    employeeContractDetailController.setPerson(personFromContract);
 
-                Thread thread = new Thread(updateInfo);
-                thread.setDaemon(true);
-                thread.start();
+                    CarManager carManager = new CarManager();
+                    Car carFromContract = carManager.getCarFromDatabase(contractDetail.getCar_vin());
+                    //carManager.getCarInfo(carFromContract);
+                    employeeContractDetailController.setCar(carFromContract);
+
+                    EmployeeManager employeeManager = new EmployeeManager();
+                    Employee employeeFromContract = employeeManager.getEmployeeFromDatabase(contractDetail.getEmployee_id());
+                    employeeContractDetailController.setEmployee(employeeFromContract);
+
+                    return null;
+                }
+            };
+
+            getFromDatabase.setOnSucceeded(event -> {
+                progressBar.setVisible(false);
+
+                employeeContractDetailController.setInfo();
+                stage.show();
             });
 
-            stage.show();
+            Thread thread = new Thread(getFromDatabase);
+            thread.setDaemon(true);
+            thread.start();
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -245,6 +236,7 @@ public class EmployeeSearchContractController implements Initializable {
 
     public void buttonDisplayDataPushed(ActionEvent actionEvent) {
         isButtonSearchInDatabasePushed = false;
+        isButtonSearchEmployeeContractsPushed = false;
 
         offSet = 0;
 
@@ -298,6 +290,8 @@ public class EmployeeSearchContractController implements Initializable {
 
                 if(isButtonSearchInDatabasePushed) {
                     observableList = contractManager.getContractByAtributes(getTextFieldSearchInDatabase(),offSet);
+                } else if(isButtonSearchEmployeeContractsPushed) {
+                    observableList = contractManager.getContractForSpecificEmployee(employee,offSet);
                 } else {
                     observableList = contractManager.getContract(offSet);
                 }
@@ -348,7 +342,9 @@ public class EmployeeSearchContractController implements Initializable {
 
                 if(isButtonSearchInDatabasePushed) {
                     observableList = contractManager.getContractByAtributes(getTextFieldSearchInDatabase(),offSet);
-                } else {
+                } else if(isButtonSearchEmployeeContractsPushed) {
+                    observableList = contractManager.getContractForSpecificEmployee(employee,offSet);
+                }else {
                     observableList = contractManager.getContract(offSet);
                 }
 
@@ -420,5 +416,50 @@ public class EmployeeSearchContractController implements Initializable {
         thread.start();
     }
 
+    public void buttonDisplayMyContractsPushed(ActionEvent actionEvent) {
+        buttonPreviousData.setDisable(true);
+        isButtonSearchEmployeeContractsPushed = true;
+        offSet = 0;
 
+        Task addDataFromDatabase = new Task() {
+            @Override
+            protected Object call() throws Exception {
+
+                progressBar.setVisible(true);
+
+                CreateContractManager contractManager = new CreateContractManager();
+                observableList = contractManager.getContractForSpecificEmployee(employee,offSet);
+
+                return observableList;
+            }
+        };
+
+        addDataFromDatabase.setOnSucceeded(event1 -> {
+            tableView.setItems(observableList);
+
+            progressBar.setVisible(false);
+
+            if(observableList.size() == 500) {
+                Notifications notification = Notifications.create()
+                        .title("Počet nájdených záznamov je väčší ako " + observableList.size() + ".")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showInformation();
+
+                buttonNextData.setDisable(false);
+            } else {
+                buttonNextData.setDisable(true);
+            }
+
+            filter = new FilteredList(observableList,e->true);
+
+            textFieldSearchInTables.setText("");
+
+            setNewRangeOfDisplayedData();
+        });
+
+        Thread thread = new Thread(addDataFromDatabase);
+        thread.setDaemon(true);
+        thread.start();
+    }
 }

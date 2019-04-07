@@ -85,10 +85,10 @@
                 <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
                 <TableView fx:id="tableViewNatural" prefHeight="496.0" prefWidth="424.0">
                     <columns>
-                        <TableColumn fx:id="collumnFirstName" prefWidth="138.0" text="Meno" />
-                        <TableColumn fx:id="collumnLastName" prefWidth="132.0" text="Priezvisko" />
-                        <TableColumn fx:id="collumnID" prefWidth="145.0" text="Číslo OP" />
-                        <TableColumn fx:id="collumnPhone" prefWidth="185.0" text="Telefónne číslo" />
+                        <TableColumn fx:id="collumnFirstName" prefWidth="129.0" text="Meno" />
+                        <TableColumn fx:id="collumnLastName" prefWidth="139.0" text="Priezvisko" />
+                        <TableColumn fx:id="collumnID" prefWidth="147.0" text="Číslo OP" />
+                        <TableColumn fx:id="collumnPhone" prefWidth="162.0" text="Telefónne číslo" />
                     </columns>
                     <contextMenu>
                         <ContextMenu>
@@ -105,10 +105,10 @@
         <Button fx:id="buttonPreviousDataNatural" layoutX="331.0" layoutY="379.0" mnemonicParsing="false" onAction="#loadPreviousNatural" text="&lt;-" />
         <TextField fx:id="textFieldSearchInTablesNatural" layoutX="70.0" layoutY="379.0" onKeyReleased="#searchInTableNatural" prefHeight="30.0" prefWidth="215.0" promptText="Filtruj nájdené položky" />
         <TextField fx:id="textFieldSearchInDatabaseNatural" layoutX="431.0" layoutY="379.0" onKeyReleased="#searchInTableNatural" prefHeight="31.0" prefWidth="215.0" promptText="Meno, Priezvisko, OP, Číslo" />
-        <Button layoutX="431.0" layoutY="416.0" mnemonicParsing="false" onAction="#buttonSearchInDatabaseNaturalPushed" prefHeight="35.0" prefWidth="215.0" text="Vyhľadávanie v databáze" />
-        <Button layoutX="70.0" layoutY="416.0" mnemonicParsing="false" onAction="#buttonDisplayDataNaturalPushed" text="Zobraz údaje" />
-        <Label fx:id="labelOffsetNatural" alignment="CENTER" layoutX="285.0" layoutY="423.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
-        <JFXProgressBar fx:id="progressBarNatural" layoutX="439.0" layoutY="459.0" />
+        <Button layoutX="431.0" layoutY="420.0" mnemonicParsing="false" onAction="#buttonSearchInDatabaseNaturalPushed" prefHeight="35.0" prefWidth="215.0" text="Vyhľadávanie v databáze" />
+        <Button layoutX="70.0" layoutY="420.0" mnemonicParsing="false" onAction="#buttonDisplayDataNaturalPushed" text="Zobraz údaje" />
+        <Label fx:id="labelOffsetNatural" alignment="CENTER" layoutX="279.0" layoutY="416.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
+        <JFXProgressBar fx:id="progressBarNatural" layoutX="439.0" layoutY="462.0" />
       <Label layoutX="177.0" layoutY="80.0" text="Zoznam výpožičiavateľov" textFill="WHITE">
          <font>
             <Font size="34.0" />
@@ -128,10 +128,10 @@
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
             <TableView fx:id="tableViewLegal" prefHeight="496.0" prefWidth="424.0">
                <columns>
-                  <TableColumn fx:id="collumnIco" prefWidth="138.0" text="IČO" />
-                  <TableColumn fx:id="collumnDic" prefWidth="132.0" text="DIČ" />
-                  <TableColumn fx:id="collumnName" prefWidth="145.0" text="Názov firmy" />
-                  <TableColumn fx:id="collumnPhoneNumber" prefWidth="185.0" text="Telefónne číslo" />
+                  <TableColumn fx:id="collumnIco" prefWidth="127.0" text="IČO" />
+                  <TableColumn fx:id="collumnDic" prefWidth="126.0" text="DIČ" />
+                  <TableColumn fx:id="collumnName" prefWidth="175.0" text="Názov firmy" />
+                  <TableColumn fx:id="collumnPhoneNumber" prefWidth="149.0" text="Telefónne číslo" />
                </columns>
                <contextMenu>
                   <ContextMenu>
@@ -146,11 +146,11 @@
       </VBox>
       <TextField fx:id="textFieldSearchInTablesLegal" layoutX="70.0" layoutY="747.0" onKeyReleased="#searchInTableLegal" prefHeight="31.0" prefWidth="215.0" promptText="Filtruj nájdené položky" />
       <Button layoutX="70.0" layoutY="788.0" mnemonicParsing="false" onAction="#buttonDisplayDataLegalPushed" text="Zobraz údaje" />
-      <TextField fx:id="textFieldSearchInDatabaseLegal" layoutX="432.0" layoutY="747.0" onKeyReleased="#searchInTableLegal" prefHeight="31.0" prefWidth="215.0" promptText="Meno, Priezvisko, Názov firmy, Číslo" />
+      <TextField fx:id="textFieldSearchInDatabaseLegal" layoutX="432.0" layoutY="747.0" onKeyReleased="#searchInTableLegal" prefHeight="31.0" prefWidth="215.0" promptText="ICO, DIČ, Názov firmy" />
       <Button fx:id="buttonPreviousDataLegal" layoutX="331.0" layoutY="747.0" mnemonicParsing="false" onAction="#loadPreviousLegalPerson" text="&lt;-" />
       <Button fx:id="buttonNextDataLegal" layoutX="365.0" layoutY="747.0" mnemonicParsing="false" onAction="#loadNextLegalPerson" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
-      <Label fx:id="labelOffsetLegal" alignment="CENTER" layoutX="285.0" layoutY="784.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
+      <Label fx:id="labelOffsetLegal" alignment="CENTER" layoutX="279.0" layoutY="782.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
       <Button layoutX="431.0" layoutY="788.0" mnemonicParsing="false" onAction="#buttonSearchInDatabaseLegalPushed" prefHeight="35.0" prefWidth="215.0" text="Vyhľadávanie v databáze" />
-      <JFXProgressBar fx:id="progressBarLegal" layoutX="439.0" layoutY="828.0" />
+      <JFXProgressBar fx:id="progressBarLegal" layoutX="439.0" layoutY="831.0" />
     </children>
 </AnchorPane>

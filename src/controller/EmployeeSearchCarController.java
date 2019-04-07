@@ -58,6 +58,7 @@ public class EmployeeSearchCarController implements Initializable {
 
     private FilteredList filter;
 
+    // for load next and previous data
     @FXML private Button buttonNextData;
     @FXML private Button buttonPreviousData;
     @FXML private Label labelOffset;
@@ -72,6 +73,8 @@ public class EmployeeSearchCarController implements Initializable {
     private Integer offSet = 0;
 
     private Boolean isButtonSearchInDatabasePushed = false;
+
+    private Boolean openedFromContractScene = false;
 
     public void setHeader () {
         labelFirstName.setText(employee.getFirstName());
@@ -127,6 +130,10 @@ public class EmployeeSearchCarController implements Initializable {
         this.customerID = customerID;
     }
 
+    public void setOpenedFromContractScene(Boolean openedFromContractScene) {
+        this.openedFromContractScene = openedFromContractScene;
+    }
+
     public void setNewRangeOfDisplayedData() {
         int range = offSet + observableList.size();
         setLabelOffset(((offSet + 1) + " - " + range));
@@ -151,6 +158,12 @@ public class EmployeeSearchCarController implements Initializable {
 
     @FXML
     public void btnBackPushed(ActionEvent event) {
+
+        if(openedFromContractScene) {
+            backToCreateContract(false);
+            return;
+        }
+
         Parent parent = null;
         try {
             FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_search_menu.fxml"));
@@ -374,6 +387,8 @@ public class EmployeeSearchCarController implements Initializable {
 
                         if(employeeCarDetailController.getDataChanged()) {
                             carManager.updateCarInfo(selectedCar);
+
+                            tableView.refresh();            // if changes were set, this will update table
                         }
 
                         return null;
@@ -442,20 +457,62 @@ public class EmployeeSearchCarController implements Initializable {
         thread.start();
     }
 
+    @FXML
     public void createContractMenuSelected(ActionEvent actionEvent) {
+        backToCreateContract(true);
+//        Parent parent = null;
+//        try {
+//            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
+//            parent = (Parent) loaader.load();
+//
+//            EmployeeCreateContractController employeeCreateContractController= loaader.getController();
+//            employeeCreateContractController.setEmployee(employee);
+//
+//            Car selectedCar = tableView.getSelectionModel().getSelectedItem();
+//
+//            // get car info, because there is not all attributes set
+//            CarManager carManager = new CarManager();
+//            carManager.getCarInfo(selectedCar);
+//
+//            if(customer != null) {
+//                employeeCreateContractController.setCustomer(customer);
+//                employeeCreateContractController.setCustomerID();
+//            } else if (customerID != null) {
+//                employeeCreateContractController.setSelectedCustomerID(customerID);
+//            }
+//
+//            employeeCreateContractController.setCar(selectedCar);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Scene newScene = new Scene(parent);
+//
+//        //This line gets the Stage information
+//        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+//
+//        currentStage.setScene(newScene);
+//        currentStage.show();
+    }
+
+    public void backToCreateContract(Boolean isCarSelected) {
         Parent parent = null;
         try {
-            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
-            parent = (Parent) loaader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
+            parent = (Parent) loader.load();
 
-            EmployeeCreateContractController employeeCreateContractController= loaader.getController();
+            EmployeeCreateContractController employeeCreateContractController = loader.getController();
             employeeCreateContractController.setEmployee(employee);
 
-            Car selectedCar = tableView.getSelectionModel().getSelectedItem();
+            if(isCarSelected) {
+                Car selectedCar = tableView.getSelectionModel().getSelectedItem();
 
-            // get car info, because there is not all attributes set
-            CarManager carManager = new CarManager();
-            carManager.getCarInfo(selectedCar);
+                // get car info, because there is not all attributes set
+                CarManager carManager = new CarManager();
+                carManager.getCarInfo(selectedCar);
+
+                employeeCreateContractController.setCar(selectedCar);
+            }
 
             if(customer != null) {
                 employeeCreateContractController.setCustomer(customer);
@@ -463,8 +520,6 @@ public class EmployeeSearchCarController implements Initializable {
             } else if (customerID != null) {
                 employeeCreateContractController.setSelectedCustomerID(customerID);
             }
-
-            employeeCreateContractController.setCar(selectedCar);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -43,20 +43,33 @@ import java.util.ResourceBundle;
 public class EmployeeAddCarController implements Initializable {
 
     @FXML private AnchorPane rootPane;
+
     @FXML private JFXComboBox comboBoxBrand;
+
     @FXML private JFXComboBox comboBoxModel;
     @FXML private Button buttonAddModel;
+
     @FXML private JFXDatePicker datePickerYear;
+
     @FXML private Spinner spinnerMileage;
+
     @FXML private JFXComboBox comboBoxFuel;
+
     @FXML private Spinner spinnerEngineCapacity;
+
     @FXML private Spinner spinnerEnginePower;
+
     @FXML private JFXComboBox comboBoxGearBox;
+
     @FXML private JFXComboBox comboBoxCarBody;
+
     @FXML private JFXComboBox comboBoxColor;
     @FXML private Button buttonAddColor;
+
     @FXML private JFXTextField textFieldSPZ;
+
     @FXML private JFXTextField textFieldVIN;
+
     @FXML private JFXTextField textFieldPrice;
 
     private Employee employee;
@@ -65,6 +78,7 @@ public class EmployeeAddCarController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         spinnerConfig();
         addItemsComboBox();
+
         comboBoxModel.setDisable(true);
         buttonAddModel.setDisable(true);
         comboBoxCarBody.setDisable(true);
@@ -86,38 +100,18 @@ public class EmployeeAddCarController implements Initializable {
             EnumManager em = new EnumManager();
 
             em.employeeTypeEnum(comboBoxBrand,"car_brand");
-//            comboBoxBrand.setEditable(true);
-//            TextFields.bindAutoCompletion(comboBoxBrand.getEditor(),comboBoxBrand.getItems());
-
-//            comboBoxBrand.getEditor().focusedProperty().addListener(observable -> {
-//                if (comboBoxBrand.getSelectionModel().getSelectedIndex() < 0) {
-//                    comboBoxBrand.getEditor().setText(null);
-//                }
-//            });
-//
-//            comboBoxBrand.addEventHandler(KeyEvent.KEY_PRESSED, t -> comboBoxBrand.hide());
 
             em.employeeTypeEnum(comboBoxCarBody,"car_body_style");
-//            comboBoxCarBody.setEditable(true);
-//            TextFields.bindAutoCompletion(comboBoxCarBody.getEditor(),comboBoxCarBody.getItems());
 
             em.employeeTypeEnum(comboBoxGearBox,"car_gear_box");
-//            comboBoxGearBox.setEditable(true);
-//            TextFields.bindAutoCompletion(comboBoxGearBox.getEditor(),comboBoxGearBox.getItems());
 
             em.employeeTypeEnum(comboBoxFuel,"car_fuel");
-//            comboBoxFuel.setEditable(true);
-//            TextFields.bindAutoCompletion(comboBoxFuel.getEditor(),comboBoxFuel.getItems());
 
             em.employeeTypeEnum(comboBoxColor,"car_color");
-//            comboBoxColor.setEditable(true);
-//            TextFields.bindAutoCompletion(comboBoxColor.getEditor(),comboBoxColor.getItems());
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void spinnerConfig() {
@@ -245,10 +239,6 @@ public class EmployeeAddCarController implements Initializable {
     public void btnConfirmPushed(ActionEvent actionEvent) throws SQLException, IOException {
 
         if(tooLongText()) {
-//            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Príliš dlhé údaje v kolonke ŠPZ/VIN! Max. počet znakov pre VIN je 17, pre ŠPZ 20.", ButtonType.CLOSE);
-//            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-//            alertEmptyField.setHeaderText("Varovanie!");
-//            alertEmptyField.showAndWait();
             Notifications notification = Notifications.create()
                     .title("Príliš dlhé údaje v kolonke ŠPZ/VIN! Max. počet znakov pre VIN je 17, pre ŠPZ 20.")
                     .hideAfter(Duration.seconds(4))
@@ -258,10 +248,7 @@ public class EmployeeAddCarController implements Initializable {
         }
 
         if(emptyFieldChecker()) {
-//            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Vypíšte správne všetky údaje!", ButtonType.CLOSE);
-//            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-//            alertEmptyField.setHeaderText("Varovanie!");
-//            alertEmptyField.showAndWait();
+
             Notifications notification = Notifications.create()
                     .title("Vypíšte správne všetky údaje!")
                     .hideAfter(Duration.seconds(4))
@@ -271,10 +258,7 @@ public class EmployeeAddCarController implements Initializable {
         }
 
         if(!getYear().before(Calendar.getInstance().getTime())){
-//            Alert alertBadDate = new Alert(Alert.AlertType.ERROR,"Rok výroby auta je neplatný!", ButtonType.CLOSE);
-////            alertBadDate.initStyle(StageStyle.TRANSPARENT);
-////            alertBadDate.setHeaderText("Chyba!");
-////            alertBadDate.showAndWait();
+
             Notifications notification = Notifications.create()
                     .title("Rok výroby auta je neplatný!")
                     .hideAfter(Duration.seconds(4))
@@ -286,24 +270,15 @@ public class EmployeeAddCarController implements Initializable {
             if(cm.addNewCarToDatabase(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
                     getPrice(),getYear(),getMileAge(),getSPZ())) {
 
-//                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Auto s VIN číslom " + getVIN() + " bolo pridané!", ButtonType.CLOSE);
-//                alertInfo.initStyle(StageStyle.TRANSPARENT);
-//                alertInfo.setHeaderText("Info!");
-//                alertInfo.showAndWait();
                 Notifications notification = Notifications.create()
                         .title("Auto s VIN číslom " + getVIN() + " bolo pridané!")
                         .hideAfter(Duration.seconds(4))
                         .hideCloseButton();
                 notification.showConfirm();
 
-//                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-//                rootPane.getChildren().setAll(pane);
                     backToMenu();
             } else {
-//                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Záznam o aute s VIN číslom " + getVIN() + " už existuje!", ButtonType.CLOSE);
-//                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
-//                alertLoginAlreadyExist.setHeaderText("Chyba!");
-//                alertLoginAlreadyExist.showAndWait();
+
                 Notifications notification = Notifications.create()
                         .title("Záznam o aute s VIN číslom " + getVIN() + " už existuje!")
                         .hideAfter(Duration.seconds(4))
@@ -345,8 +320,6 @@ public class EmployeeAddCarController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//            comboBoxModel.setEditable(true);
-//            TextFields.bindAutoCompletion(comboBoxModel.getEditor(),comboBoxModel.getItems());
         }
     }
 
@@ -366,18 +339,11 @@ public class EmployeeAddCarController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//            comboBoxModel.getItems().removeAll();
-//            comboBoxModel.getSelectionModel().clearSelection();
-//            comboBoxModel.setDisable(true);
         }
     }
 
     public void btnAddModelPushed(ActionEvent actionEvent) {
         if(getBrand() == null) {
-//            Alert alertEmptyBrand = new Alert(Alert.AlertType.ERROR,"Pre pridanie modelu vyber príslušnú značku!", ButtonType.CLOSE);
-//            alertEmptyBrand.initStyle(StageStyle.TRANSPARENT);
-//            alertEmptyBrand.setHeaderText("Chyba!");
-//            alertEmptyBrand.showAndWait();
             Notifications notification = Notifications.create()
                     .title("Pre pridanie modelu vyber príslušnú značku!")
                     .hideAfter(Duration.seconds(4))
@@ -394,8 +360,6 @@ public class EmployeeAddCarController implements Initializable {
                 EnumManager em = new EnumManager();
 
                 em.employeeTypeEnum(comboBoxModel, "car_model");
-//                comboBoxModel.setEditable(true);
-//                TextFields.bindAutoCompletion(comboBoxModel.getEditor(),comboBoxModel.getItems());
 
                 comboBoxModel.setValue(newItem);
             } catch (SQLException e) {
@@ -414,8 +378,6 @@ public class EmployeeAddCarController implements Initializable {
                 EnumManager em = new EnumManager();
 
                 em.employeeTypeEnum(comboBoxColor,"car_color");
-//                comboBoxColor.setEditable(true);
-//                TextFields.bindAutoCompletion(comboBoxColor.getEditor(),comboBoxColor.getItems());
 
                 comboBoxColor.setValue(newItem);
             } catch (SQLException e) {
