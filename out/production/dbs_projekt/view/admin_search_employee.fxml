@@ -84,6 +84,9 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
             <TableView fx:id="tableView" prefHeight="496.0" prefWidth="538.0">
+               <placeholder>
+                  <Label text="Nenašli sa žiadne záznamy"/>
+               </placeholder>
               <columns>
                 <TableColumn fx:id="collumnFirstName" prefWidth="138.0" text="Meno" />
                 <TableColumn fx:id="collumnLastName" prefWidth="132.0" text="Priezvisko" />
@@ -94,6 +97,7 @@
                   <ContextMenu>
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#detailMenuSelected" text="Zobraziť detail" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteMenuSelected" text="Zmazať" />
                     </items>
                   </ContextMenu>
                </contextMenu>

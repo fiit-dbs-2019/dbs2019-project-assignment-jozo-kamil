@@ -532,4 +532,27 @@ public class EmployeeSearchCarController implements Initializable {
         currentStage.setScene(newScene);
         currentStage.show();
     }
+
+    public void deleteMenuSelected(ActionEvent actionEvent) {
+        Car selectedCar = tableView.getSelectionModel().getSelectedItem();
+
+        CarManager carManager = new CarManager();
+
+        if(carManager.deleteCar(selectedCar)) {
+
+            Notifications notification = Notifications.create()
+                    .title("Záznam bol úspešne odstránený!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showConfirm();
+
+            tableView.getItems().remove(selectedCar);
+        } else {
+            Notifications notification = Notifications.create()
+                    .title("Záznam sa nepodarilo odstrániť!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
+        }
+    }
 }

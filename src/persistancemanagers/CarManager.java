@@ -9,6 +9,43 @@ import java.sql.*;
 
 public class CarManager {
 
+    public boolean deleteCar(Car car) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "DELETE FROM car " +
+                            "WHERE car_vin = '" + car.getCar_vin() + "';"
+            );
+            int numberOfRows = st.executeUpdate();
+
+            if(numberOfRows != 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public Boolean addNewServisToSpecificCar(Car car, Integer harmID, String servisNameAndLocation, String type,
                                              Date dateOfService, Float priceOfService) {
         ServiceRecord serviceRecord;

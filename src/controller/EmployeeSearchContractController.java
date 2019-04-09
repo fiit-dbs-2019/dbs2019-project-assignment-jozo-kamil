@@ -462,4 +462,27 @@ public class EmployeeSearchContractController implements Initializable {
         thread.setDaemon(true);
         thread.start();
     }
+
+    public void deleteMenuSelected(ActionEvent actionEvent) {
+        Contract selectedContract = tableView.getSelectionModel().getSelectedItem();
+
+        CreateContractManager contractManager = new CreateContractManager();
+
+        if(contractManager.deleteContract(selectedContract)) {
+
+            Notifications notification = Notifications.create()
+                    .title("Záznam bol úspešne odstránený!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showConfirm();
+
+            tableView.getItems().remove(selectedContract);
+        } else {
+            Notifications notification = Notifications.create()
+                    .title("Záznam sa nepodarilo odstrániť!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
+        }
+    }
 }

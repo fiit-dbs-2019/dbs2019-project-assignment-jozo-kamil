@@ -858,4 +858,50 @@ public class EmployeeSearchCustomerController implements Initializable {
         currentStage.setScene(newScene);
         currentStage.show();
     }
+
+    public void deleteNaturalPersonSelected(ActionEvent actionEvent) {
+        Person selectedNaturalPerson = tableViewNatural.getSelectionModel().getSelectedItem();
+
+        PersonManager personManager = new PersonManager();
+
+        if(personManager.deletePerson(selectedNaturalPerson)) {
+
+            Notifications notification = Notifications.create()
+                    .title("Záznam bol úspešne odstránený!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showConfirm();
+
+            tableViewNatural.getItems().remove(selectedNaturalPerson);
+        } else {
+            Notifications notification = Notifications.create()
+                    .title("Záznam sa nepodarilo odstrániť!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
+        }
+    }
+
+    public void deleteLegalPersonSelected(ActionEvent actionEvent) {
+        Person selectedLegalPerson = tableViewLegal.getSelectionModel().getSelectedItem();
+
+        PersonManager personManager = new PersonManager();
+
+        if(personManager.deletePerson(selectedLegalPerson)) {
+
+            Notifications notification = Notifications.create()
+                    .title("Záznam bol úspešne odstránený!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showConfirm();
+
+            tableViewLegal.getItems().remove(selectedLegalPerson);
+        } else {
+            Notifications notification = Notifications.create()
+                    .title("Záznam sa nepodarilo odstrániť!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
+        }
+    }
 }

@@ -19,6 +19,43 @@ import java.util.Properties;
 
 public class EmployeeManager {
 
+    public boolean deleteEmployee(Employee employee) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "DELETE FROM employee " +
+                            "WHERE employee_id = " + employee.getEmployeeID() + ";"
+            );
+            int numberOfRows = st.executeUpdate();
+
+            if(numberOfRows != 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public void updateEmployeeInfo(Employee employee) {
         AllTablesManager atm;
         Connection conn = null;

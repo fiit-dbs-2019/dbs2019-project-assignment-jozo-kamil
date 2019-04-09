@@ -18,6 +18,43 @@ import java.util.concurrent.TimeUnit;
 
 public class CreateContractManager {
 
+    public boolean deleteContract(Contract contract) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "DELETE FROM contract " +
+                            "WHERE contract_id = " + contract.getContract_id() + ";"
+            );
+            int numberOfRows = st.executeUpdate();
+
+            if(numberOfRows != 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public boolean checkIfHarmHasRepair(int harm_id){
         AllTablesManager atm;
         Connection conn = null;

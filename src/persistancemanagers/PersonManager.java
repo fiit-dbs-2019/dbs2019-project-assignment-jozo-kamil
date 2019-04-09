@@ -18,6 +18,64 @@ import java.util.Properties;
 
 public class PersonManager {
 
+    public boolean deletePerson(Person person) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        int numberOfRows = 0;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            if(person instanceof NaturalPerson) {
+
+                st = conn.prepareStatement("DELETE FROM natural_person " +
+                        "WHERE natural_person_id = '" + person.getID() + "';"
+                );
+
+            } else {
+
+                st = conn.prepareStatement("DELETE FROM legal_person " +
+                        "WHERE legal_person_ico = '" + person.getID() + "';"
+                );
+
+            }
+            numberOfRows = st.executeUpdate();
+
+            if(numberOfRows == 0) {
+                return false;
+            }
+
+            st = conn.prepareStatement(
+                    "DELETE FROM customer " +
+                            "WHERE customer_id = '" + person.getID() + "';"
+            );
+            numberOfRows = st.executeUpdate();
+
+            if(numberOfRows != 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public ObservableList<NaturalPerson> getNaturalPerson(Integer offset){
         ObservableList<NaturalPerson> listOfNaturalPerson = FXCollections.observableArrayList();
 

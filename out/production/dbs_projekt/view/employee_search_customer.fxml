@@ -84,6 +84,9 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
                 <TableView fx:id="tableViewNatural" prefHeight="496.0" prefWidth="424.0">
+                    <placeholder>
+                        <Label text="Nenašli sa žiadne záznamy"/>
+                    </placeholder>
                     <columns>
                         <TableColumn fx:id="collumnFirstName" prefWidth="129.0" text="Meno" />
                         <TableColumn fx:id="collumnLastName" prefWidth="139.0" text="Priezvisko" />
@@ -94,6 +97,7 @@
                         <ContextMenu>
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#detailForNaturalPersonSelected" text="Zobraziť detail" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteNaturalPersonSelected" text="Zmazať" />
                         <MenuItem mnemonicParsing="false" onAction="#createContractNaturalPersonSelected" text="Vytvoriť zmluvu" />
                             </items>
                         </ContextMenu>
@@ -127,6 +131,9 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
             <TableView fx:id="tableViewLegal" prefHeight="496.0" prefWidth="424.0">
+                <placeholder>
+                    <Label text="Nenašli sa žiadne záznamy"/>
+                </placeholder>
                <columns>
                   <TableColumn fx:id="collumnIco" prefWidth="127.0" text="IČO" />
                   <TableColumn fx:id="collumnDic" prefWidth="126.0" text="DIČ" />
@@ -137,6 +144,7 @@
                   <ContextMenu>
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#detailLegalPersonSelected" text="Zobraziť detail" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteLegalPersonSelected" text="Zmazať" />
                         <MenuItem mnemonicParsing="false" onAction="#createContractLegalPersonSelected" text="Vytvoriť zmluvu" />
                      </items>
                   </ContextMenu>
