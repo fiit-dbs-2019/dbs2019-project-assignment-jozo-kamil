@@ -17,7 +17,6 @@ import persistancemanagers.EnumManager;
 
 import java.net.URL;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EmployeeAddHarmRepairController implements Initializable {
@@ -59,7 +58,7 @@ public class EmployeeAddHarmRepairController implements Initializable {
 
     public void setServiceNamesAndLocations() {
         EnumManager enumManager = new EnumManager();
-        allServices = enumManager.getServiceNamesAndRecords();
+        allServices = enumManager.getServiceNamesAndLocations();
 
         TextFields.bindAutoCompletion(textFieldService,allServices);
     }
@@ -115,11 +114,7 @@ public class EmployeeAddHarmRepairController implements Initializable {
 
             Car carFromContract = null;
 
-            try {
-                carFromContract = carManager.getCarFromDatabase(contract.getCar_vin());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            carFromContract = carManager.getCarFromDatabase(contract.getCar_vin());
 
             if(!carManager.addNewServisToSpecificCar(carFromContract,contract.getHarm_id(),getServiceName(),
                     typeOfHarm,getDateOfService(),getPriceOfService())){

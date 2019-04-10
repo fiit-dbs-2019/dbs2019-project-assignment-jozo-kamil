@@ -1,9 +1,7 @@
 package controller;
 
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Duration;
@@ -21,7 +18,6 @@ import javafx.util.converter.IntegerStringConverter;
 import model.Car;
 import model.ServiceRecord;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.CarManager;
 import persistancemanagers.EnumManager;
@@ -125,7 +121,7 @@ public class EmployeeCarDetailController implements Initializable {
 
     public void setServiceNamesAndLocations() {
         EnumManager enumManager = new EnumManager();
-        allServices = enumManager.getServiceNamesAndRecords();
+        allServices = enumManager.getServiceNamesAndLocations();
 
         TextFields.bindAutoCompletion(textFieldServiceName,allServices);
     }

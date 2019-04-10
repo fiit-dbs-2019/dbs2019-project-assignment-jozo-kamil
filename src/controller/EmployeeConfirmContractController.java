@@ -6,28 +6,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.*;
 import org.controlsfx.control.Notifications;
 import persistancemanagers.CarManager;
-import persistancemanagers.CreateContractManager;
-import persistancemanagers.EmployeeManager;
+import persistancemanagers.ContractManager;
 import persistancemanagers.PersonManager;
 
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -118,22 +112,14 @@ public class EmployeeConfirmContractController implements Initializable {
         if(car == null) {
             CarManager cm = new CarManager();
 
-            try {
-                car = cm.getCarFromDatabase(carVIN);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            car = cm.getCarFromDatabase(carVIN);
         }
 
         // check if customer is set, else there is a need to connect to databse to get customer info from set ID
         if(customer == null) {
             PersonManager pm = new PersonManager();
 
-            try {
-                customer = pm.getPersonFromDatabase(customerID);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            customer = pm.getPersonFromDatabase(customerID);
         }
     }
 
@@ -370,60 +356,52 @@ public class EmployeeConfirmContractController implements Initializable {
     }
 
     public void btnSubmitPushed(ActionEvent actionEvent) {
-        CreateContractManager ccm = new CreateContractManager();
+        ContractManager ccm = new ContractManager();
 
         java.sql.Date sqlDateFROM = new java.sql.Date(dateFROM.getTime());
         java.sql.Date sqlDateTO = new java.sql.Date(dateTO.getTime());
 
         if(customer instanceof NaturalPerson) {
-            try {
-                if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
+            if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
-                    Notifications notification = Notifications.create()
-                            .title("Zmluva bola úspešne vytvorená!")
-                            .hideAfter(Duration.seconds(4))
-                            .hideCloseButton();
-                    notification.showConfirm();
+                Notifications notification = Notifications.create()
+                        .title("Zmluva bola úspešne vytvorená!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showConfirm();
 
-                    backToMenu();
+                backToMenu();
 
-                } else {
+            } else {
 
-                    Notifications notification = Notifications.create()
-                            .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
-                            .hideAfter(Duration.seconds(4))
-                            .hideCloseButton();
-                    notification.showError();
-                    return;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                Notifications notification = Notifications.create()
+                        .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showError();
+                return;
             }
         }
 
         if(customer instanceof LegalPerson) {
-            try {
-                if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
+            if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
-                    Notifications notification = Notifications.create()
-                            .title("Zmluva bola úspešne vytvorená!")
-                            .hideAfter(Duration.seconds(4))
-                            .hideCloseButton();
-                    notification.showConfirm();
+                Notifications notification = Notifications.create()
+                        .title("Zmluva bola úspešne vytvorená!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showConfirm();
 
-                    backToMenu();
+                backToMenu();
 
-                } else {
+            } else {
 
-                    Notifications notification = Notifications.create()
-                            .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
-                            .hideAfter(Duration.seconds(4))
-                            .hideCloseButton();
-                    notification.showError();
-                    return;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                Notifications notification = Notifications.create()
+                        .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showError();
+                return;
             }
         }
     }

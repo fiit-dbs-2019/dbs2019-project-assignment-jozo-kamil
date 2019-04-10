@@ -20,14 +20,13 @@ import javafx.util.Duration;
 import model.*;
 import org.controlsfx.control.Notifications;
 import persistancemanagers.CarManager;
-import persistancemanagers.CreateContractManager;
+import persistancemanagers.ContractManager;
 import persistancemanagers.EmployeeManager;
 import persistancemanagers.PersonManager;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
@@ -114,7 +113,7 @@ public class EmployeeSearchContractController implements Initializable {
     }
 
     public void addItemsToList() {
-        CreateContractManager contractManager = new CreateContractManager();
+        ContractManager contractManager = new ContractManager();
         observableList = contractManager.getContract(offSet);
     }
 
@@ -286,7 +285,7 @@ public class EmployeeSearchContractController implements Initializable {
             protected Object call() throws Exception {
                 progressBar.setVisible(true);
 
-                CreateContractManager contractManager = new CreateContractManager();
+                ContractManager contractManager = new ContractManager();
 
                 if(isButtonSearchInDatabasePushed) {
                     observableList = contractManager.getContractByAtributes(getTextFieldSearchInDatabase(),offSet);
@@ -338,7 +337,7 @@ public class EmployeeSearchContractController implements Initializable {
 
                 progressBar.setVisible(true);
 
-                CreateContractManager contractManager = new CreateContractManager();
+                ContractManager contractManager = new ContractManager();
 
                 if(isButtonSearchInDatabasePushed) {
                     observableList = contractManager.getContractByAtributes(getTextFieldSearchInDatabase(),offSet);
@@ -380,7 +379,7 @@ public class EmployeeSearchContractController implements Initializable {
 
                 progressBar.setVisible(true);
 
-                CreateContractManager contractManager = new CreateContractManager();
+                ContractManager contractManager = new ContractManager();
                 observableList = contractManager.getContractByAtributes(getTextFieldSearchInDatabase(),offSet);
 
                 return observableList;
@@ -427,7 +426,7 @@ public class EmployeeSearchContractController implements Initializable {
 
                 progressBar.setVisible(true);
 
-                CreateContractManager contractManager = new CreateContractManager();
+                ContractManager contractManager = new ContractManager();
                 observableList = contractManager.getContractForSpecificEmployee(employee,offSet);
 
                 return observableList;
@@ -466,7 +465,7 @@ public class EmployeeSearchContractController implements Initializable {
     public void deleteMenuSelected(ActionEvent actionEvent) {
         Contract selectedContract = tableView.getSelectionModel().getSelectedItem();
 
-        CreateContractManager contractManager = new CreateContractManager();
+        ContractManager contractManager = new ContractManager();
 
         if(contractManager.deleteContract(selectedContract)) {
 

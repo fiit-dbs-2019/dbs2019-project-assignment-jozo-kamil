@@ -3,34 +3,27 @@ package controller;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Car;
 import model.Employee;
 import model.Person;
 import org.controlsfx.control.Notifications;
-import persistancemanagers.AllTablesManager;
-import persistancemanagers.CreateContractManager;
+import persistancemanagers.ContractManager;
 
 import java.io.*;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 
@@ -147,7 +140,7 @@ public class EmployeeCreateContractController implements Initializable {
            notification.showWarning();
 
         } else {
-                CreateContractManager ccm = new CreateContractManager();
+                ContractManager ccm = new ContractManager();
 
                 int result = ccm.checkInfo(getTextFieldVin(),getTextFieldID(),getDateFrom(),getDateTo());
 

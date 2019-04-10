@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,15 +19,11 @@ import model.*;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.CarManager;
-import persistancemanagers.CreateContractManager;
+import persistancemanagers.ContractManager;
 import persistancemanagers.EnumManager;
-import persistancemanagers.PersonManager;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -130,7 +125,7 @@ public class EmployeeContractDetailController implements Initializable {
             textFieldDescriptionOfHarm.setVisible(false);
             buttonAddHarm.setVisible(false);
 
-            CreateContractManager contractManager = new CreateContractManager();
+            ContractManager contractManager = new ContractManager();
             contractManager.setHarmToContract(contract);
 
             if (!contractManager.checkIfHarmHasRepair(contract.getHarm_id())){
@@ -352,7 +347,7 @@ public class EmployeeContractDetailController implements Initializable {
             notification.showError();
         }
         else {
-            CreateContractManager contractManager = new CreateContractManager();
+            ContractManager contractManager = new ContractManager();
             contractManager.addNewHarm(contract,getTypeOfHarm(),getDescriptionOfHarm());
 
             Notifications notification = Notifications.create()

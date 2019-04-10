@@ -1,14 +1,11 @@
 package controller;
 
 import com.jfoenix.controls.JFXProgressBar;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,24 +15,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Employee;
-import model.Person;
 import org.controlsfx.control.Notifications;
 import persistancemanagers.EmployeeManager;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -362,7 +351,7 @@ public class AdminSearchEmployeeController implements Initializable {
 
                         if(adminEmployeeDetailController.getDataChanged()) {
                             EmployeeManager employeeManager = new EmployeeManager();
-                            employeeManager.updateEmployeeInfo(employeeForDetail);
+                            employeeManager.updateEmployee(employeeForDetail);
                         }
                         return null;
                     }

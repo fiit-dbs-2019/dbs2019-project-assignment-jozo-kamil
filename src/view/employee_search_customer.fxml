@@ -85,7 +85,7 @@
                 <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
                 <TableView fx:id="tableViewNatural" prefHeight="496.0" prefWidth="424.0">
                     <placeholder>
-                        <Label text="Nenašli sa žiadne záznamy"/>
+                        <Label text="Nenašli sa žiadne záznamy" />
                     </placeholder>
                     <columns>
                         <TableColumn fx:id="collumnFirstName" prefWidth="129.0" text="Meno" />
@@ -108,7 +108,7 @@
         <Button fx:id="buttonNextDataNatural" layoutX="365.0" layoutY="379.0" mnemonicParsing="false" onAction="#loadNextNatural" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
         <Button fx:id="buttonPreviousDataNatural" layoutX="331.0" layoutY="379.0" mnemonicParsing="false" onAction="#loadPreviousNatural" text="&lt;-" />
         <TextField fx:id="textFieldSearchInTablesNatural" layoutX="70.0" layoutY="379.0" onKeyReleased="#searchInTableNatural" prefHeight="30.0" prefWidth="215.0" promptText="Filtruj nájdené položky" />
-        <TextField fx:id="textFieldSearchInDatabaseNatural" layoutX="431.0" layoutY="379.0" onKeyReleased="#searchInTableNatural" prefHeight="31.0" prefWidth="215.0" promptText="Meno, Priezvisko, OP, Číslo" />
+        <TextField fx:id="textFieldSearchInDatabaseNatural" layoutX="431.0" layoutY="379.0" onKeyReleased="#searchInTableNatural" prefHeight="31.0" prefWidth="215.0" promptText="Meno, Priezvisko, OP" />
         <Button layoutX="431.0" layoutY="420.0" mnemonicParsing="false" onAction="#buttonSearchInDatabaseNaturalPushed" prefHeight="35.0" prefWidth="215.0" text="Vyhľadávanie v databáze" />
         <Button layoutX="70.0" layoutY="420.0" mnemonicParsing="false" onAction="#buttonDisplayDataNaturalPushed" text="Zobraz údaje" />
         <Label fx:id="labelOffsetNatural" alignment="CENTER" layoutX="279.0" layoutY="416.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
@@ -132,7 +132,7 @@
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="538.0" />
             <TableView fx:id="tableViewLegal" prefHeight="496.0" prefWidth="424.0">
                 <placeholder>
-                    <Label text="Nenašli sa žiadne záznamy"/>
+                    <Label text="Nenašli sa žiadne záznamy" />
                 </placeholder>
                <columns>
                   <TableColumn fx:id="collumnIco" prefWidth="127.0" text="IČO" />

@@ -11,11 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Employee;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.EmployeeManager;
 import persistancemanagers.EnumManager;
 
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
@@ -57,13 +54,9 @@ public class AdminAddEmployeeController implements Initializable {
     }
 
     public void addItemsComboBox() {
-        try {
-            EnumManager em = new EnumManager();
+        EnumManager em = new EnumManager();
 
-            em.employeeTypeEnum(comboBoxType,"employee_type");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        em.employeeTypeEnum(comboBoxType,"employee_type");
     }
 
     public Employee getAdmin() {
@@ -151,7 +144,7 @@ public class AdminAddEmployeeController implements Initializable {
 
             EmployeeManager em = new EmployeeManager();
 
-            if(em.AddNewEmployeeToDatabase(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
+            if(em.addNewEmployee(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
 
 //                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Konto zamestnanca bolo úspešne vytvorené!", ButtonType.CLOSE);
 //                alertInfo.initStyle(StageStyle.TRANSPARENT);

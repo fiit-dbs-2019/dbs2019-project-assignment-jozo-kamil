@@ -1,21 +1,13 @@
 package persistancemanagers;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
 import model.Employee;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Observable;
-import java.util.Properties;
 
 public class EmployeeManager {
 
@@ -30,8 +22,10 @@ public class EmployeeManager {
 
             st = conn.prepareStatement(
                     "DELETE FROM employee " +
-                            "WHERE employee_id = " + employee.getEmployeeID() + ";"
+                    "WHERE employee_id = ?;"
             );
+            st.setInt(1,employee.getEmployeeID());
+
             int numberOfRows = st.executeUpdate();
 
             if(numberOfRows != 0) {
@@ -56,7 +50,7 @@ public class EmployeeManager {
         }
     }
 
-    public void updateEmployeeInfo(Employee employee) {
+    public void updateEmployee(Employee employee) {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -65,7 +59,8 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("UPDATE employee " +
+            st = conn.prepareStatement(
+                    "UPDATE employee " +
                     "SET first_name = ?, last_name = ?, password = ?, phone = ? " +
                     "WHERE employee_id = ?;"
             );
@@ -105,14 +100,20 @@ public class EmployeeManager {
 
 
 
-            st = conn.prepareStatement("select * " +
-                    "from employee " +
-                    "where ((first_name || ' ' || last_name) ILIKE '" + pattern + "%') OR ((last_name || ' ' || first_name) ILIKE '" + pattern + "%')" +
-                    "OR login ILIKE '" + pattern + "%' OR phone ILIKE '" + pattern + "%'" +
+            st = conn.prepareStatement("SELECT * " +
+                    "FROM employee " +
+                    "WHERE ((first_name || ' ' || last_name) ILIKE ?) OR ((last_name || ' ' || first_name) ILIKE ?) " +
+                    "OR login ILIKE ? OR phone ILIKE ? " +
                     "ORDER BY last_name,first_name " +
-                    "LIMIT 500" +
-                    "OFFSET " + offSet + ";"
+                    "LIMIT 500 " +
+                    "OFFSET ?;"
             );
+            st.setString(1,pattern + "%");
+            st.setString(2,pattern + "%");
+            st.setString(3,pattern + "%");
+            st.setString(4,pattern + "%");
+            st.setInt(5,offSet);
+
             ResultSet rs = st.executeQuery();
 
             while(rs.next()) {
@@ -145,7 +146,7 @@ public class EmployeeManager {
         }
     }
 
-    public ObservableList<Employee> getEmployee(Integer offset) {
+    public ObservableList<Employee> getEmployee(Integer offSet) {
         ObservableList<Employee> listOfEmployee = FXCollections.observableArrayList();
 
         AllTablesManager atm;
@@ -156,7 +157,15 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("SELECT * FROM employee ORDER BY last_name,first_name LIMIT 500 OFFSET " + offset + ";");
+            st = conn.prepareStatement(
+                    "SELECT * " +
+                    "FROM employee " +
+                    "ORDER BY last_name,first_name " +
+                    "LIMIT 500 " +
+                    "OFFSET ?;"
+            );
+            st.setInt(1,offSet);
+
             ResultSet rs = st.executeQuery();
 
             while(rs.next()) {
@@ -189,7 +198,7 @@ public class EmployeeManager {
         }
     }
 
-    public Employee getEmployeeFromDatabase(int id) throws SQLException {
+    public Employee getEmployeeFromDatabase(int employeeID) {
         Employee employee = null;
 
         AllTablesManager atm;
@@ -200,9 +209,13 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("SELECT first_name,last_name,phone FROM employee " +
-                    "WHERE employee_id = '" + id + "';"
+            st = conn.prepareStatement(
+                    "SELECT first_name,last_name,phone " +
+                    "FROM employee " +
+                    "WHERE employee_id = ?;"
             );
+            st.setInt(1,employeeID);
+
             ResultSet rs = st.executeQuery();
 
             rs.next();
@@ -218,7 +231,11 @@ public class EmployeeManager {
             e.printStackTrace();
             return null;
         } finally {
-            st.close();
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             if (conn != null)
             {
                 try { conn.close(); } catch (SQLException e) {}
@@ -226,7 +243,8 @@ public class EmployeeManager {
         }
     }
 
-    public boolean AddNewEmployeeToDatabase(String firstName, String lastName, String login, String password, String phone, String type) throws SQLException {
+    public boolean addNewEmployee(String firstName, String lastName,
+                                  String login, String password, String phone, String type) {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -238,15 +256,19 @@ public class EmployeeManager {
 
             // test if login name already exists in database
             st = conn.prepareStatement(
-                    "SELECT EXISTS (SELECT login FROM employee WHERE login = '" + login + "') AS exist;"
+                    "SELECT EXISTS (SELECT login FROM employee WHERE login = ?) " +
+                    "AS exist;"
             );
+            st.setString(1,login);
+
             ResultSet rs = st.executeQuery();
 
             rs.next();
 
             if(!rs.getBoolean("exist")) {
                 st = conn.prepareStatement(
-                        "INSERT INTO employee(first_name,last_name,login,password,phone,type) VALUES (?,?,?,?,?,?::employee_type);"
+                        "INSERT INTO employee(first_name,last_name,login,password,phone,type) " +
+                        "VALUES (?,?,?,?,?,?::employee_type);"
                 );
                 st.setString(1,firstName);
                 st.setString(2,lastName);
@@ -267,15 +289,19 @@ public class EmployeeManager {
                 e.printStackTrace();
                 return false;
             } finally {
+            try {
                 st.close();
-                if (conn != null)
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
                 {
                     try { conn.close(); } catch (SQLException e) {}
                 }
         }
     }
 
-    public Employee LoginEngine(String login, String password) throws SQLException {
+    public Employee loginEngine(String login, String password) {
         Employee employee = null;
 
         AllTablesManager atm;
@@ -288,11 +314,20 @@ public class EmployeeManager {
 
 
             // test if login name already exists in database
-            st = conn.prepareStatement("SELECT employee_id,first_name,last_name,phone,type FROM employee " +
-                    "WHERE login = (SELECT login FROM employee WHERE login = '" + login + "' AND password = '" + password + "')" +
-                    "AND password = (SELECT password FROM employee WHERE login = '" + login + "' AND password = '" + password + "');");
+            st = conn.prepareStatement(
+                    "SELECT employee_id,first_name,last_name,phone,type " +
+                    "FROM employee " +
+                    "WHERE login = (SELECT login FROM employee WHERE login = ? AND password = ?)" +
+                        "AND password = (SELECT password FROM employee WHERE login = ? AND password = ?);"
+            );
+            st.setString(1,login);
+            st.setString(2,password);
+            st.setString(3,login);
+            st.setString(4,password);
+
             ResultSet rs = st.executeQuery();
 
+            // doesnt exists
             if(!rs.next()){
                 return null;
             }
@@ -311,7 +346,11 @@ public class EmployeeManager {
             e.printStackTrace();
             return null;
         } finally {
-            st.close();
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             if (conn != null)
             {
                 try { conn.close(); } catch (SQLException e) {}

@@ -3,30 +3,19 @@ package controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.NumberValidator;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Employee;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.control.PrefixSelectionComboBox;
 import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.CarManager;
 import persistancemanagers.EnumManager;
@@ -96,22 +85,18 @@ public class EmployeeAddCarController implements Initializable {
     }
 
     public void addItemsComboBox() {
-        try {
-            EnumManager em = new EnumManager();
+        EnumManager em = new EnumManager();
 
-            em.employeeTypeEnum(comboBoxBrand,"car_brand");
+        em.employeeTypeEnum(comboBoxBrand,"car_brand");
 
-            em.employeeTypeEnum(comboBoxCarBody,"car_body_style");
+        em.employeeTypeEnum(comboBoxCarBody,"car_body_style");
 
-            em.employeeTypeEnum(comboBoxGearBox,"car_gear_box");
+        em.employeeTypeEnum(comboBoxGearBox,"car_gear_box");
 
-            em.employeeTypeEnum(comboBoxFuel,"car_fuel");
+        em.employeeTypeEnum(comboBoxFuel,"car_fuel");
 
-            em.employeeTypeEnum(comboBoxColor,"car_color");
+        em.employeeTypeEnum(comboBoxColor,"car_color");
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public void spinnerConfig() {
@@ -267,7 +252,7 @@ public class EmployeeAddCarController implements Initializable {
             return;
         } else {
             CarManager cm = new CarManager();
-            if(cm.addNewCarToDatabase(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
+            if(cm.addNewCar(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
                     getPrice(),getYear(),getMileAge(),getSPZ())) {
 
                 Notifications notification = Notifications.create()
@@ -315,11 +300,7 @@ public class EmployeeAddCarController implements Initializable {
             return;
         } else {
             EnumManager em = new EnumManager();
-            try {
-                em.setModelsForSpecificBrand(getBrand(),comboBoxModel);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            em.setModelsForSpecificBrand(getBrand(),comboBoxModel);
         }
     }
 
@@ -328,17 +309,13 @@ public class EmployeeAddCarController implements Initializable {
         String newItem = popUpWindow.display(null,"brand","Zadaj značku: ");
 
         if(newItem != null) {
-            try {
-                EnumManager em = new EnumManager();
+            EnumManager em = new EnumManager();
 
-                em.employeeTypeEnum(comboBoxBrand, "car_brand");
-                comboBoxBrand.setEditable(true);
-                TextFields.bindAutoCompletion(comboBoxBrand.getEditor(),comboBoxBrand.getItems());
+            em.employeeTypeEnum(comboBoxBrand, "car_brand");
+            comboBoxBrand.setEditable(true);
+            TextFields.bindAutoCompletion(comboBoxBrand.getEditor(),comboBoxBrand.getItems());
 
-                comboBoxBrand.setValue(newItem);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            comboBoxBrand.setValue(newItem);
         }
     }
 
@@ -356,15 +333,11 @@ public class EmployeeAddCarController implements Initializable {
         String newItem = popUpWindow.display(getBrand(),"model","Zadaj model: ");
 
         if(newItem != null) {
-            try {
-                EnumManager em = new EnumManager();
+            EnumManager em = new EnumManager();
 
-                em.employeeTypeEnum(comboBoxModel, "car_model");
+            em.employeeTypeEnum(comboBoxModel, "car_model");
 
-                comboBoxModel.setValue(newItem);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            comboBoxModel.setValue(newItem);
         }
     }
 
@@ -374,15 +347,11 @@ public class EmployeeAddCarController implements Initializable {
         String newItem = popUpWindow.display(null,"color","Zadaj farbu: ");
 
         if(newItem != null) {
-            try {
-                EnumManager em = new EnumManager();
+            EnumManager em = new EnumManager();
 
-                em.employeeTypeEnum(comboBoxColor,"car_color");
+            em.employeeTypeEnum(comboBoxColor,"car_color");
 
-                comboBoxColor.setValue(newItem);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            comboBoxColor.setValue(newItem);
         }
     }
 

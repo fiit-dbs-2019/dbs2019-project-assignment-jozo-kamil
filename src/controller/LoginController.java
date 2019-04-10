@@ -1,39 +1,26 @@
 package controller;
 
-import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Employee;
 import org.controlsfx.control.Notifications;
-import persistancemanagers.CarManager;
 import persistancemanagers.EmployeeManager;
 
-import javax.management.Notification;
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -80,7 +67,7 @@ public class LoginController implements Initializable {
         Employee employee = null;
 
         EmployeeManager em = new EmployeeManager();
-        employee = em.LoginEngine(getLogin(),getPassword());
+        employee = em.loginEngine(getLogin(),getPassword());
 
         if (employee == null) {
 
