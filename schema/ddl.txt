@@ -79,15 +79,15 @@ spz VARCHAR(20) NOT NULL
 
 CREATE TABLE car_repair (
 car_repair_id SERIAL NOT NULL PRIMARY KEY,
-car_vin VARCHAR(17) NOT NULL REFERENCES car(car_vin),
-repair_id INT NOT NULL REFERENCES repair(repair_id)
+car_vin VARCHAR(17) NOT NULL REFERENCES car(car_vin) ON DELETE CASCADE,
+repair_id INT NOT NULL REFERENCES repair(repair_id) ON DELETE CASCADE
 );
 
 CREATE TABLE harm (
 harm_id SERIAL NOT NULL PRIMARY KEY,
 type type_of_harm NOT NULL,
 date DATE NOT NULL,
-repair_id INT REFERENCES repair(repair_id),
+repair_id INT REFERENCES repair(repair_id) ON DELETE CASCADE,
 description TEXT
 );
 
@@ -108,32 +108,32 @@ UNIQUE (customer_id,customer_type)
 );
 
 CREATE TABLE natural_person (
-natural_person_id VARCHAR(8) NOT NULL PRIMARY KEY REFERENCES customer(customer_id),
+natural_person_id VARCHAR(8) NOT NULL PRIMARY KEY REFERENCES customer(customer_id) ON DELETE CASCADE,
 first_name VARCHAR(255) NOT NULL,
 last_name VARCHAR(255) NOT NULL,
 adress VARCHAR(255) NOT NULL,
 bank_account VARCHAR(30) NOT NULL,
 phone VARCHAR(255) NOT NULL,
 customer_type person_type DEFAULT 'Fyzická osoba' CHECK (customer_type = 'Fyzická osoba'),
-FOREIGN KEY (natural_person_id, customer_type) REFERENCES customer(customer_id, customer_type)
+FOREIGN KEY (natural_person_id, customer_type) REFERENCES customer(customer_id, customer_type) ON DELETE CASCADE
 );
 
 CREATE TABLE legal_person (
-legal_person_ico VARCHAR(8) NOT NULL PRIMARY KEY REFERENCES customer(customer_id),
+legal_person_ico VARCHAR(8) NOT NULL PRIMARY KEY REFERENCES customer(customer_id) ON DELETE CASCADE,
 dic VARCHAR(10) UNIQUE NOT NULL,
 name_of_organization VARCHAR(255) NOT NULL,
 adress VARCHAR(255) NOT NULL,
 bank_account VARCHAR(30) NOT NULL,
 phone VARCHAR(255) NOT NULL,
 customer_type person_type DEFAULT 'Právnická osoba' CHECK (customer_type = 'Právnická osoba'),
-FOREIGN KEY (legal_person_ico, customer_type) REFERENCES customer(customer_id, customer_type)
+FOREIGN KEY (legal_person_ico, customer_type) REFERENCES customer(customer_id, customer_type) ON DELETE CASCADE
 );
 
 CREATE TABLE contract (
 contract_id SERIAL NOT NULL PRIMARY KEY,
-car_vin VARCHAR(17) NOT NULL REFERENCES car(car_vin),
-customer_id VARCHAR(8) NOT NULL REFERENCES customer(customer_id),
-employee_id INT NOT NULL REFERENCES employee(employee_id),
+car_vin VARCHAR(17) NOT NULL REFERENCES car(car_vin) ON DELETE CASCADE ,
+customer_id VARCHAR(8) NOT NULL REFERENCES customer(customer_id) ON DELETE CASCADE ,
+employee_id INT NOT NULL REFERENCES employee(employee_id) ON DELETE CASCADE,
 date_from DATE NOT NULL,
 date_to DATE NOT NULL,
 price FLOAT NOT NULL,
@@ -152,3 +152,5 @@ CREATE INDEX indexNaturalID ON natural_person(natural_person_id TEXT_PATTERN_OPS
 CREATE INDEX indexLegalID ON legal_person(legal_person_ico TEXT_PATTERN_OPS);
 CREATE INDEX indexCarVin ON contract(car_vin TEXT_PATTERN_OPS);
 CREATE INDEX indexID ON contract(customer_id TEXT_PATTERN_OPS);
+CREATE INDEX indexVIN ON car(car_vin TEXT_PATTERN_OPS);
+CREATE INDEX indexEmployeeID ON employee(employee_id );

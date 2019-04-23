@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 import org.controlsfx.control.Notifications;
-import persistancemanagers.EmployeeManager;
 import persistancemanagers.PersonManager;
 
 import java.io.IOException;
@@ -167,7 +166,7 @@ public class EmployeeSearchCustomerController implements Initializable {
 
                         if(employeeNaturalPersonDetailController.getDataChanged()) {
                             PersonManager personManager = new PersonManager();
-                            personManager.updateNaturalPersonInfo(naturalPersonDetail);
+                            personManager.updateNaturalPerson(naturalPersonDetail);
                         }
                         return null;
                     }
@@ -787,7 +786,7 @@ public class EmployeeSearchCustomerController implements Initializable {
 
                         if(employeeLegalPersonDetailController.getDataChanged()) {
                             PersonManager personManager = new PersonManager();
-                            personManager.updateLegalPersonInfo(legalPersonDetail);
+                            personManager.updateLegalPerson(legalPersonDetail);
                         }
                         return null;
                     }

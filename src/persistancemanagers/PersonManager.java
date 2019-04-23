@@ -187,7 +187,7 @@ public class PersonManager {
         }
     }
 
-    public void updateNaturalPersonInfo(NaturalPerson naturalPerson) {
+    public void updateNaturalPerson(NaturalPerson naturalPerson) {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
@@ -337,7 +337,7 @@ public class PersonManager {
         }
     }
 
-    public void updateLegalPersonInfo(LegalPerson legalPerson) {
+    public void updateLegalPerson(LegalPerson legalPerson) {
         AllTablesManager atm;
         Connection conn = null;
         PreparedStatement st = null;
