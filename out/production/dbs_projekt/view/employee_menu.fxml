@@ -72,5 +72,6 @@
             </HBox>
          </children>
       </VBox>
+      <Button layoutX="115.0" layoutY="496.0" mnemonicParsing="false" onAction="#btnStatisticsPushed" prefHeight="56.0" prefWidth="375.0" text="Štatistiky" />
    </children>
 </AnchorPane>

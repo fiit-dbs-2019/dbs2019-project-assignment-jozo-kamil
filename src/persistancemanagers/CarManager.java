@@ -63,6 +63,7 @@ public class CarManager {
         try {
             atm = new AllTablesManager();
             conn = atm.connect();
+            conn.setAutoCommit(false);
 
             //////////////////////////////////////////////////////////////////////////
             st = conn.prepareStatement(
@@ -139,14 +140,22 @@ public class CarManager {
 
             car.addServiceRecord(serviceRecord);
 
+            conn.commit();
+
             return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             return false;
         } finally {
             try {
                 st.close();
+                conn.setAutoCommit(true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -166,6 +175,7 @@ public class CarManager {
         try {
             atm = new AllTablesManager();
             conn = atm.connect();
+            conn.setAutoCommit(false);
 
             st = conn.prepareStatement(
                     "UPDATE car " +
@@ -189,11 +199,19 @@ public class CarManager {
 
             st.executeUpdate();
 
+            conn.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } finally {
             try {
                 st.close();
+                conn.setAutoCommit(true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -201,6 +219,7 @@ public class CarManager {
             {
                 try { conn.close(); } catch (SQLException e) {}
             }
+
         }
     }
 
@@ -506,6 +525,7 @@ public class CarManager {
         try {
             atm = new AllTablesManager();
             conn = atm.connect();
+            conn.setAutoCommit(false);
 
             // test if car VIN already exists in database
             st = conn.prepareStatement(
@@ -558,6 +578,8 @@ public class CarManager {
 
                 st.executeUpdate();
 
+                conn.commit();
+
                 return true;
             } else {
                 // car with this VIN already exists
@@ -570,8 +592,14 @@ public class CarManager {
         } finally {
             try {
                 st.close();
+                conn.setAutoCommit(true);
             } catch (SQLException e) {
                 e.printStackTrace();
+                try {
+                    conn.rollback();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
             if (conn != null)
             {
