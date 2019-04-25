@@ -118,10 +118,6 @@ public class AdminAddEmployeeController implements Initializable {
 
     public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException, IOException {
         if (tooLongText()){
-//            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Príliš dlhé údaje. Max. veľkosť jedného údaju je 254 znakov!", ButtonType.CLOSE);
-//            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-//            alertEmptyField.setHeaderText("Varovanie!");
-//            alertEmptyField.showAndWait();
             Notifications notification = Notifications.create()
                     .title("Príliš dlhé údaje. Max. veľkosť jedného údaju je 254 znakov!")
                     .hideAfter(Duration.seconds(4))
@@ -130,10 +126,6 @@ public class AdminAddEmployeeController implements Initializable {
             return;
         }
         else if(emptyFieldChecker()){
-//            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
-//            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-//            alertEmptyField.setHeaderText("Varovanie!");
-//            alertEmptyField.showAndWait();
             Notifications notification = Notifications.create()
                     .title("Vypíšte správne všetky údaje!")
                     .hideAfter(Duration.seconds(4))
@@ -146,25 +138,16 @@ public class AdminAddEmployeeController implements Initializable {
 
             if(em.addNewEmployee(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
 
-//                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Konto zamestnanca bolo úspešne vytvorené!", ButtonType.CLOSE);
-//                alertInfo.initStyle(StageStyle.TRANSPARENT);
-//                alertInfo.setHeaderText("Info!");
-//                alertInfo.showAndWait();
                 Notifications notification = Notifications.create()
                         .title("Konto zamestnanca bolo úspešne vytvorené!")
                         .hideAfter(Duration.seconds(4))
                         .hideCloseButton();
                 notification.showConfirm();
 
-//                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
-//                rootPane.getChildren().setAll(pane);
                 backToMenu();
 
             } else {
-//                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login - " + getLogin() + " - už existuje!", ButtonType.CLOSE);
-//                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
-//                alertLoginAlreadyExist.setHeaderText("Chyba!");
-//                alertLoginAlreadyExist.showAndWait();
+
                 Notifications notification = Notifications.create()
                         .title("Zadaný login - " + getLogin() + " - už existuje!")
                         .hideAfter(Duration.seconds(4))

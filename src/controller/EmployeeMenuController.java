@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class EmployeeMenuController implements Initializable {
 
     @FXML private AnchorPane rootPane;
+
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
     @FXML private Label labelDate;

@@ -63,7 +63,6 @@ public class CarManager {
         try {
             atm = new AllTablesManager();
             conn = atm.connect();
-            conn.setAutoCommit(false);
 
             //////////////////////////////////////////////////////////////////////////
             st = conn.prepareStatement(
@@ -86,6 +85,7 @@ public class CarManager {
             }
 
             //////////////////////////////////////////////////////////////////////////
+            conn.setAutoCommit(false);
 
             st = conn.prepareStatement(
                     "INSERT INTO repair(type, date, price, servis_id) " +
@@ -361,6 +361,110 @@ public class CarManager {
         }
     }
 
+    public ObservableList<Car> getCarForStatisticNumberTwo(Integer offSet){
+        ObservableList<Car> listOfCars = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "SELECT car_vin, SUM(r.price) " +
+                            "FROM contract c " +
+                            "JOIN harm h ON c.harm_id = h.harm_id " +
+                            "JOIN repair r ON h.repair_id = r.repair_id " +
+                            "WHERE h.type = 'havária' " +
+                            "GROUP BY car_vin, h.repair_id " +
+                            "HAVING SUM(r.price) > 1000 " +
+                            "ORDER BY SUM(r.price)" +
+                            "LIMIT 500 " +
+                            "OFFSET ?;"
+            );
+            st.setInt(1,offSet);
+
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String carVIN = rs.getString("car_vin");
+                Integer sum = rs.getInt("sum");
+
+                listOfCars.add(new Car(carVIN,sum));
+            }
+
+            return listOfCars;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<Car> getCarForStatistic(Integer offSet){
+        ObservableList<Car> listOfCars = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement(
+                    "SELECT c.car_vin, c.spz " +
+                            "FROM car c " +
+                            "JOIN car_repair cr ON c.car_vin = cr.car_vin " +
+                            "JOIN repair r ON cr.repair_id = r.repair_id " +
+                            "WHERE r.type = 'havária' " +
+                            "GROUP BY c.car_vin " +
+                            "HAVING COUNT(cr.repair_id) > 1 " +
+                            "ORDER BY car_vin, spz " +
+                            "LIMIT 500 " +
+                            "OFFSET ?;"
+            );
+            st.setInt(1,offSet);
+
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String carVIN = rs.getString("car_vin");
+                String SPZ = rs.getString("spz");
+
+                listOfCars.add(new Car(carVIN,SPZ));
+            }
+
+            return listOfCars;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public ObservableList<Car> getCars(Integer offSet) {
         ObservableList<Car> listOfCars = FXCollections.observableArrayList();
 
@@ -525,7 +629,6 @@ public class CarManager {
         try {
             atm = new AllTablesManager();
             conn = atm.connect();
-            conn.setAutoCommit(false);
 
             // test if car VIN already exists in database
             st = conn.prepareStatement(
@@ -542,6 +645,8 @@ public class CarManager {
             rsExist.next();
 
             if(!rsExist.getBoolean("exist")) {
+                conn.setAutoCommit(false);
+
                 st = conn.prepareStatement(
                         "INSERT INTO car_info (brand, model, body_style, engine_capacity, engine_power, " +
                             "gear_box, fuel, color, price_per_day) " +

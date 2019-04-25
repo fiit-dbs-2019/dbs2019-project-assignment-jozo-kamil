@@ -23,6 +23,7 @@ public class Car {
     private Integer mileage;
     private SimpleStringProperty spz;
     private ObservableList<ServiceRecord> serviceRecords;
+    private Integer sum;
 
     public Car(String car_vin, Integer carInfoID, Date year_of_production, Integer mileage, String spz) {
         this.car_vin = new SimpleStringProperty(car_vin);
@@ -30,6 +31,18 @@ public class Car {
         this.year_of_production = year_of_production;
         this.mileage = mileage;
         this.spz = new SimpleStringProperty(spz);
+    }
+
+    //constructor for statistic
+    public Car(String car_vin, String spz) {
+        this.car_vin = new SimpleStringProperty(car_vin);
+        this.spz = new SimpleStringProperty(spz);
+    }
+
+    //contructor for statistic
+    public Car(String car_vin, Integer sum) {
+        this.car_vin = new SimpleStringProperty(car_vin);
+        this.sum = sum;
     }
 
     public Car(Date year_of_production, String spz, int mileage, String car_vin) {

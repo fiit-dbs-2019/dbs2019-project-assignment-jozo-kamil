@@ -34,31 +34,22 @@ public class EmployeeAddCarController implements Initializable {
     @FXML private AnchorPane rootPane;
 
     @FXML private JFXComboBox comboBoxBrand;
-
     @FXML private JFXComboBox comboBoxModel;
-    @FXML private Button buttonAddModel;
 
     @FXML private JFXDatePicker datePickerYear;
-
     @FXML private Spinner spinnerMileage;
-
     @FXML private JFXComboBox comboBoxFuel;
-
     @FXML private Spinner spinnerEngineCapacity;
-
     @FXML private Spinner spinnerEnginePower;
-
     @FXML private JFXComboBox comboBoxGearBox;
-
     @FXML private JFXComboBox comboBoxCarBody;
-
     @FXML private JFXComboBox comboBoxColor;
+
     @FXML private Button buttonAddColor;
+    @FXML private Button buttonAddModel;
 
     @FXML private JFXTextField textFieldSPZ;
-
     @FXML private JFXTextField textFieldVIN;
-
     @FXML private JFXTextField textFieldPrice;
 
     private Employee employee;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeCarFromCarStatisticController">
    <children>
@@ -71,14 +71,18 @@
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="buttonPreviousData" layoutX="301.0" layoutY="506.0" mnemonicParsing="false" onAction="#loadPrevious" text="&lt;-" />
-      <Button fx:id="buttonNextData" layoutX="334.0" layoutY="506.0" mnemonicParsing="false" onAction="#loadNext" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
-      <Label fx:id="labelOffset" alignment="CENTER" layoutX="254.0" layoutY="550.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
-      <TableView fx:id="tableView" layoutX="161.0" layoutY="106.0" prefHeight="394.0" prefWidth="333.0">
+      <Button fx:id="buttonPreviousData" layoutX="272.0" layoutY="506.0" mnemonicParsing="false" onAction="#loadPrevious" text="&lt;-" />
+      <Button fx:id="buttonNextData" layoutX="306.0" layoutY="506.0" mnemonicParsing="false" onAction="#loadNext" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
+      <Label fx:id="labelOffset" alignment="CENTER" layoutX="221.0" layoutY="553.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
+      <TableView fx:id="tableView" layoutX="134.0" layoutY="103.0" prefHeight="394.0" prefWidth="333.0">
+         <placeholder>
+            <Label text="Nenašli sa žiadne záznamy" />
+         </placeholder>
          <columns>
             <TableColumn fx:id="collumnVin" prefWidth="165.6666259765625" text="VIN číslo vozidla" />
-            <TableColumn fx:id="CollumnSPZ" prefWidth="166.33331298828125" text="ŠPZ" />
+            <TableColumn fx:id="collumnSPZ" prefWidth="166.33331298828125" text="ŠPZ" />
          </columns>
       </TableView>
+      <JFXProgressBar fx:id="progressBar" layoutX="272.0" layoutY="544.0" prefHeight="4.0" prefWidth="62.0" />
    </children>
 </AnchorPane>

@@ -15,7 +15,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EmployeeLegalPersonDetailController implements Initializable {
+
     @FXML private AnchorPane rootPane;
+
     @FXML private TableView<LegalPerson> tableView;
     @FXML private TableColumn<LegalPerson, String> collumnIco;
     @FXML private TableColumn<LegalPerson, String> collumnDic;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -70,14 +71,18 @@
             </HBox>
          </children>
       </VBox>
-      <TableView fx:id="tableView" layoutX="151.0" layoutY="96.0" prefHeight="394.0" prefWidth="333.0">
-        <columns>
+      <TableView fx:id="tableView" layoutX="134.0" layoutY="103.0" prefHeight="394.0" prefWidth="333.0">
+         <placeholder>
+            <Label text="Nenašli sa žiadne záznamy" />
+         </placeholder>
+         <columns>
           <TableColumn fx:id="collumnVin" prefWidth="165.6666259765625" text="VIN číslo vozidla" />
-          <TableColumn fx:id="CollumnTotalPrice" prefWidth="166.33331298828125" text="Celková suma" />
+          <TableColumn fx:id="collumnTotalPrice" prefWidth="166.33331298828125" text="Celková suma" />
         </columns>
       </TableView>
-      <Label fx:id="labelOffset" alignment="CENTER" layoutX="244.0" layoutY="540.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
-      <Button fx:id="buttonPreviousData" layoutX="291.0" layoutY="496.0" mnemonicParsing="false" onAction="#loadPrevious" text="&lt;-" />
-      <Button fx:id="buttonNextData" layoutX="324.0" layoutY="496.0" mnemonicParsing="false" onAction="#loadNext" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
+      <Label fx:id="labelOffset" alignment="CENTER" layoutX="221.0" layoutY="553.0" prefHeight="21.0" prefWidth="160.0" text="Label" />
+      <Button fx:id="buttonPreviousData" layoutX="272.0" layoutY="506.0" mnemonicParsing="false" onAction="#loadPrevious" text="&lt;-" />
+      <Button fx:id="buttonNextData" layoutX="306.0" layoutY="506.0" mnemonicParsing="false" onAction="#loadNext" prefHeight="35.0" prefWidth="28.0" text="-&gt;" />
+      <JFXProgressBar fx:id="progressBar" layoutX="272.0" layoutY="544.0" prefHeight="4.0" prefWidth="62.0" />
    </children>
 </AnchorPane>

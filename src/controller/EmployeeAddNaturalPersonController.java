@@ -71,10 +71,6 @@ public class EmployeeAddNaturalPersonController implements Initializable {
 
     public void isTextEmpty() throws SQLException,IOException{
         if (tooLongText()) {
-//            Alert alertError = new Alert(Alert.AlertType.WARNING,"Príliš dlhé údaje, niektoré položky majú obmedzený počet znakov, prosím skontrolujte, či ste všetky informácie zadali správne!", ButtonType.CLOSE);
-//            alertError.initStyle(StageStyle.TRANSPARENT);
-//            alertError.setHeaderText("Varovanie!");
-//            alertError.showAndWait();
             Notifications notification = Notifications.create()
                     .title("Príliš dlhé údaje, niektoré položky majú obmedzený počet znakov, prosím skontrolujte, či ste všetky informácie zadali správne!")
                     .hideAfter(Duration.seconds(4))
@@ -82,10 +78,6 @@ public class EmployeeAddNaturalPersonController implements Initializable {
             notification.showError();
         }
         else if (getFirstName().trim().isEmpty() || getAdress().trim().isEmpty() || getBankAccount().trim().isEmpty() || getLastName().trim().isEmpty() || getPhone().trim().isEmpty() || getID().trim().isEmpty()) {
-//            Alert alertError = new Alert(Alert.AlertType.WARNING,"Vyplňte správne všetky údaje.", ButtonType.CLOSE);
-//            alertError.initStyle(StageStyle.TRANSPARENT);
-//            alertError.setHeaderText("Varovanie!");
-//            alertError.showAndWait();
             Notifications notification = Notifications.create()
                     .title("Vyplňte správne všetky údaje!")
                     .hideAfter(Duration.seconds(4))
@@ -97,25 +89,16 @@ public class EmployeeAddNaturalPersonController implements Initializable {
 
             if (pm.addNewNaturalPersonToDatabase(getID(),getFirstName(),getLastName(),getAdress(),getBankAccount(),getPhone())){
 
-//                Alert alertOKInformation = new Alert(Alert.AlertType.INFORMATION,"Informácie o vypožičiavaťeľovi boli úspešne pridané.", ButtonType.CLOSE);
-//                alertOKInformation.initStyle(StageStyle.TRANSPARENT);
-//                alertOKInformation.setHeaderText("Info!");
-//                alertOKInformation.showAndWait();
                 Notifications notification = Notifications.create()
                         .title("Informácie o vypožičiavaťeľovi boli úspešne pridané!")
                         .hideAfter(Duration.seconds(4))
                         .hideCloseButton();
                 notification.showConfirm();
 
-//                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-//                rootPane.getChildren().setAll(pane);
                 backToMenu();
             }
             else {
-//                Alert alertError = new Alert(Alert.AlertType.ERROR,"Vypožičiavaťeľ s ID: "+getID()+" sa už v systéme nachádza.", ButtonType.CLOSE);
-//                alertError.initStyle(StageStyle.TRANSPARENT);
-//                alertError.setHeaderText("Chyba!");
-//                alertError.showAndWait();
+
                 Notifications notification = Notifications.create()
                         .title("Vypožičiavaťeľ s ID: "+getID()+" sa už v systéme nachádza!")
                         .hideAfter(Duration.seconds(4))

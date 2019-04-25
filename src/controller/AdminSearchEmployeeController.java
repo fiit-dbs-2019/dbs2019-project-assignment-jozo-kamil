@@ -50,7 +50,7 @@ public class AdminSearchEmployeeController implements Initializable {
 
     private ObservableList<Employee> observableList;
 
-    private FilteredList filer;
+    private FilteredList filter;
 
     @FXML private Button buttonNextData;
     @FXML private Button buttonPreviousData;
@@ -124,7 +124,7 @@ public class AdminSearchEmployeeController implements Initializable {
     public void addItemsToTable() {
         tableView.setItems(observableList);
 
-        filer = new FilteredList(observableList,e->true);
+        filter = new FilteredList(observableList,e->true);
 
         if(observableList.size() == 500) {
             buttonNextData.setDisable(false);
@@ -185,7 +185,7 @@ public class AdminSearchEmployeeController implements Initializable {
                 buttonNextData.setDisable(true);
             }
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             textFieldSearchInTables.setText("");
 
@@ -232,7 +232,7 @@ public class AdminSearchEmployeeController implements Initializable {
 
             progressBar.setVisible(false);
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             textFieldSearchInTables.setText("");
 
@@ -251,20 +251,20 @@ public class AdminSearchEmployeeController implements Initializable {
         }
 
         textFieldSearchInTables.textProperty().addListener((observable, oldValue, newValue) -> {
-            filer.setPredicate((Predicate<? super Employee>) employee ->{
+            filter.setPredicate((Predicate<? super Employee>) employee ->{
 
                 if(newValue == null ||  newValue.isEmpty()) {
                     return true;
                 }
 
-                String lowerCaseFiler = newValue.toLowerCase();
-                if(employee.getFirstName().toLowerCase().contains(lowerCaseFiler)) {
+                String lowerCaseFilter = newValue.toLowerCase();
+                if(employee.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if(employee.getLastName().toLowerCase().contains(lowerCaseFiler)) {
+                } else if(employee.getLastName().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if(employee.getLogin().toLowerCase().contains(lowerCaseFiler)) {
+                } else if(employee.getLogin().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if(employee.getPhoneNumber().toLowerCase().contains(lowerCaseFiler)) {
+                } else if(employee.getPhoneNumber().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
 
@@ -272,7 +272,7 @@ public class AdminSearchEmployeeController implements Initializable {
             });
         });
 
-        SortedList<Employee> sortedList = new SortedList<>(filer);
+        SortedList<Employee> sortedList = new SortedList<>(filter);
         sortedList.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(sortedList);
 
@@ -314,7 +314,7 @@ public class AdminSearchEmployeeController implements Initializable {
                 buttonNextData.setDisable(true);
             }
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             textFieldSearchInTables.setText("");
 
@@ -400,7 +400,7 @@ public class AdminSearchEmployeeController implements Initializable {
         displayData.setOnSucceeded(event -> {
             addItemsToTable();
 
-            filer = new FilteredList(observableList,e->true);
+            filter = new FilteredList(observableList,e->true);
 
             progressBar.setVisible(false);
 

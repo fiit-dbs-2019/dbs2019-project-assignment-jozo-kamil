@@ -15,11 +15,9 @@ import java.util.ResourceBundle;
 
 public class AdminEmployeeDetailController implements Initializable {
 
-    @FXML
-    private AnchorPane rootPane;
+    @FXML private AnchorPane rootPane;
 
     @FXML private TableView<Employee> tableView;
-
     @FXML private TableColumn<Employee, Integer> collumnID;
     @FXML private TableColumn<Employee, String> collumnFirstName;
     @FXML private TableColumn<Employee, String> collumnLastName;

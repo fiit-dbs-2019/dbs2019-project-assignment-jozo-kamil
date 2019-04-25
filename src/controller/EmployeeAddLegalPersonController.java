@@ -89,8 +89,7 @@ public class EmployeeAddLegalPersonController implements Initializable {
                 alertOKInformation.initStyle(StageStyle.TRANSPARENT);
                 alertOKInformation.setHeaderText("Info!");
                 alertOKInformation.showAndWait();
-//                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-//                rootPane.getChildren().setAll(pane);
+
                 backToMenu();
             }
             else if (result == 0){

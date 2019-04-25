@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 public class EmployeeSearchContractController implements Initializable {
+
     @FXML private TableColumn<Contract, Date> collumnDateOfCreating;
     @FXML private AnchorPane rootPane;
     @FXML private Label labelFirstName;

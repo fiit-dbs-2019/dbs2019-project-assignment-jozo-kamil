@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -68,8 +69,9 @@
             </HBox>
          </children>
       </VBox>
-      <Button layoutX="46.0" layoutY="177.0" mnemonicParsing="false" onAction="#btnCarFromContractStatisticPushed" prefHeight="64.0" prefWidth="529.0" text="Štatistika o vozidlách s cenami za opravy kvôli haváriám väčšími ako 1000" />
-      <Button layoutX="46.0" layoutY="287.0" mnemonicParsing="false" onAction="#btnCarFromCarStatisticPushed" prefHeight="64.0" prefWidth="529.0" text="Štatistika o vozidlách s počtom opráv kvôli havárii väčším ako 1" />
-      <Button layoutX="46.0" layoutY="399.0" mnemonicParsing="false" onAction="#btnEmployeeFromContractStatisticPushed" prefHeight="64.0" prefWidth="529.0" text="Štatistika o zamestnancoch, kde výpožičky aút stáli spolu viac ako 25k €" />
+      <Button layoutX="36.0" layoutY="177.0" mnemonicParsing="false" onAction="#btnCarFromContractStatisticPushed" prefHeight="80.0" prefWidth="529.0" text="Štatistika o vozidlách s poškodením kvôli havárii, kde oprava stála viac ako 1000€" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="36.0" layoutY="300.0" mnemonicParsing="false" onAction="#btnCarFromCarStatisticPushed" prefHeight="80.0" prefWidth="529.0" text="Štatistika o vozidlách s počtom opráv kvôli haváriám väčším ako 1" />
+      <Button layoutX="36.0" layoutY="422.0" mnemonicParsing="false" onAction="#btnEmployeeFromContractStatisticPushed" prefHeight="80.0" prefWidth="529.0" text="Štatistika o zamestnancoch, ktorí vyhotovili výpožičky vozidiel v hodnote spolu viac ako 25k €" textAlignment="CENTER" wrapText="true" />
+      <JFXProgressBar fx:id="progressBar" layoutX="200.0" layoutY="527.0" />
    </children>
 </AnchorPane>

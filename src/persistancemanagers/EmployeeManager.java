@@ -243,6 +243,61 @@ public class EmployeeManager {
         }
     }
 
+    public ObservableList<Employee> getEmployeeForStatistic(Integer offSet) {
+        ObservableList<Employee> listOfEmployee = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+
+
+            st = conn.prepareStatement("SELECT e.first_name, e.last_name, sum(c.price), max(c.price)" +
+                    "FROM contract c " +
+                    "JOIN employee e on c.employee_id = e.employee_id " +
+                    "JOIN customer c2 on c.customer_id = c2.customer_id " +
+                    "WHERE customer_type = 'Fyzická osoba' " +
+                    "GROUP BY e.employee_id " +
+                    "HAVING SUM(c.price) > 25000 " +
+                    "ORDER BY sum(c.price) DESC " +
+                    "LIMIT 500 " +
+                    "OFFSET ?;"
+            );
+            st.setInt(1,offSet);
+
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                Integer sum = rs.getInt("sum");
+                Integer max = rs.getInt("max");
+
+                listOfEmployee.add(new Employee(firstName,lastName,sum,max));
+            }
+
+            return listOfEmployee;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
     public boolean addNewEmployee(String firstName, String lastName,
                                   String login, String password, String phone, String type) {
         AllTablesManager atm;

@@ -12,6 +12,10 @@ public class Employee {
     private SimpleStringProperty phoneNumber;
     private SimpleStringProperty type;
 
+    //variables for statistics
+    private Integer sum;
+    private Integer max;
+
     public Employee() {
     }
 
@@ -19,6 +23,13 @@ public class Employee {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
+    }
+
+    public Employee(String firstName, String lastName, Integer sum, Integer max) {
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
+        this.sum = sum;
+        this.max = max;
     }
 
     public Employee(Integer employeeID, String firstName, String lastName, String login, String password, String phoneNumber, String type) {
@@ -105,6 +116,22 @@ public class Employee {
 
     public SimpleStringProperty typeProperty() {
         return type;
+    }
+
+    public Integer getSum() {
+        return sum;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public void setSum(Integer sum) {
+        this.sum = sum;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
     }
 
     public void setType(String type) {
