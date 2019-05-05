@@ -361,7 +361,7 @@ public class CarManager {
         }
     }
 
-    public ObservableList<Car> getCarForStatisticNumberTwo(Integer offSet){
+    public ObservableList<Car> getCarForStatisticNumberTwo(Integer offSet, Integer repairsPrice){
         ObservableList<Car> listOfCars = FXCollections.observableArrayList();
 
         AllTablesManager atm;
@@ -377,14 +377,14 @@ public class CarManager {
                             "FROM contract c " +
                             "JOIN harm h ON c.harm_id = h.harm_id " +
                             "JOIN repair r ON h.repair_id = r.repair_id " +
-                            "WHERE h.type = 'havária' " +
                             "GROUP BY car_vin, h.repair_id " +
-                            "HAVING SUM(r.price) > 1000 " +
+                            "HAVING SUM(r.price) >= ? " +
                             "ORDER BY SUM(r.price)" +
                             "LIMIT 500 " +
                             "OFFSET ?;"
             );
-            st.setInt(1,offSet);
+            st.setInt(1,repairsPrice);
+            st.setInt(2,offSet);
 
             ResultSet rs = st.executeQuery();
 
@@ -413,7 +413,7 @@ public class CarManager {
         }
     }
 
-    public ObservableList<Car> getCarForStatistic(Integer offSet){
+    public ObservableList<Car> getCarForStatistic(Integer offSet, Integer numberOfRepairs){
         ObservableList<Car> listOfCars = FXCollections.observableArrayList();
 
         AllTablesManager atm;
@@ -431,12 +431,13 @@ public class CarManager {
                             "JOIN repair r ON cr.repair_id = r.repair_id " +
                             "WHERE r.type = 'havária' " +
                             "GROUP BY c.car_vin " +
-                            "HAVING COUNT(cr.repair_id) > 1 " +
+                            "HAVING COUNT(cr.repair_id) = ? " +
                             "ORDER BY car_vin, spz " +
                             "LIMIT 500 " +
                             "OFFSET ?;"
             );
-            st.setInt(1,offSet);
+            st.setInt(1,numberOfRepairs);
+            st.setInt(2,offSet);
 
             ResultSet rs = st.executeQuery();
 

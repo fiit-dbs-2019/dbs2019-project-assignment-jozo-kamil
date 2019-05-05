@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -29,7 +26,10 @@ import java.util.ResourceBundle;
 
 public class EmployeeCarFromContractStatisticController implements Initializable {
 
+    @FXML private Label labelTitle;
+
     @FXML private TableView<Car> tableView;
+
     @FXML private TableColumn<Car, String> collumnVin;
     @FXML private TableColumn<Car, Integer> collumnTotalPrice;
 
@@ -43,6 +43,8 @@ public class EmployeeCarFromContractStatisticController implements Initializable
     @FXML private Label labelDate;
     @FXML private Label labelLastName;
 
+    @FXML private Spinner spinnerTotalPrice;
+
     private Employee employee;
 
     private Integer offSet = 0;
@@ -51,10 +53,16 @@ public class EmployeeCarFromContractStatisticController implements Initializable
 
     private ObservableList<Car> observableList;
 
+    private Integer totalRepairsPrice = 1000;
+
     @FXML private JFXProgressBar progressBar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        spinnerTotalPrice.setValueFactory(new
+                SpinnerValueFactory.IntegerSpinnerValueFactory
+                (500,50000,1000,500));
+
         collumnVin.setCellValueFactory(new PropertyValueFactory<>("car_vin"));
         collumnTotalPrice.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
@@ -128,7 +136,7 @@ public class EmployeeCarFromContractStatisticController implements Initializable
                 CarManager carManager = new CarManager();
 
 
-                observableList = carManager.getCarForStatisticNumberTwo(offSet);
+                observableList = carManager.getCarForStatisticNumberTwo(offSet, totalRepairsPrice);
 
 
                 return observableList;
@@ -175,7 +183,7 @@ public class EmployeeCarFromContractStatisticController implements Initializable
                 CarManager carManager = new CarManager();
 
 
-                observableList = carManager.getCarForStatisticNumberTwo(offSet);
+                observableList = carManager.getCarForStatisticNumberTwo(offSet, totalRepairsPrice);
 
 
                 return observableList;
@@ -205,7 +213,7 @@ public class EmployeeCarFromContractStatisticController implements Initializable
 
     public void addItemsToList() {
         CarManager carManager = new CarManager();
-        observableList = carManager.getCarForStatisticNumberTwo(offSet);
+        observableList = carManager.getCarForStatisticNumberTwo(offSet, totalRepairsPrice);
     }
 
     public void addItemsToTable() {
@@ -220,5 +228,44 @@ public class EmployeeCarFromContractStatisticController implements Initializable
 
     public void setLabelOffset(String labelOffset) {
         this.labelOffset.setText(labelOffset);
+    }
+
+    public void setLabelTitle() {
+        this.labelTitle.setText("Vozidlá s celkovou hodnotou opráv väčšou ako " + totalRepairsPrice);
+    }
+
+    public void refreshTable() {
+        addItemsToList();
+        addItemsToTable();
+        setNewRangeOfDisplayedData();
+        setLabelTitle();
+    }
+
+    public void buttonSearchPushed(ActionEvent actionEvent) {
+        totalRepairsPrice = Integer.parseInt(spinnerTotalPrice.getValue().toString());
+
+        Task setInfo = new Task() {
+            @Override
+            protected Object call() {
+                progressBar.setVisible(true);
+
+                addItemsToList();
+
+                return null;
+            }
+        };
+
+        setInfo.setOnSucceeded(event -> {
+            addItemsToTable();
+            setNewRangeOfDisplayedData();
+            setLabelTitle();
+
+            progressBar.setVisible(false);
+
+        });
+
+        Thread thread = new Thread(setInfo);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

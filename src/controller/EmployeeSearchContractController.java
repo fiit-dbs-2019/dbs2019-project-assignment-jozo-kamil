@@ -150,6 +150,10 @@ public class EmployeeSearchContractController implements Initializable {
     }
 
     public void detailMenuSelected(ActionEvent actionEvent) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_contract_detail.fxml"));
 
         EmployeeContractDetailController employeeContractDetailController;
@@ -464,6 +468,10 @@ public class EmployeeSearchContractController implements Initializable {
     }
 
     public void deleteMenuSelected(ActionEvent actionEvent) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         Contract selectedContract = tableView.getSelectionModel().getSelectedItem();
 
         ContractManager contractManager = new ContractManager();

@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -30,6 +27,8 @@ import java.util.ResourceBundle;
 
 public class EmployeeEmployeeFromContractStatisticController implements Initializable {
 
+    public Label labelTitle;
+    public Spinner spinnerTotalPrice;
     @FXML private AnchorPane rootPane;
 
     @FXML private Label labelFirstName;
@@ -53,10 +52,16 @@ public class EmployeeEmployeeFromContractStatisticController implements Initiali
 
     private ObservableList<Employee> observableList;
 
+    private Integer maxPriceOfContracts = 25000;
+
     @FXML private JFXProgressBar progressBar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        spinnerTotalPrice.setValueFactory(new
+                SpinnerValueFactory.IntegerSpinnerValueFactory
+                (1000,50000,25000,1000));
+
         collumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         collumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         collumnSum.setCellValueFactory(new PropertyValueFactory<>("sum"));
@@ -121,6 +126,48 @@ public class EmployeeEmployeeFromContractStatisticController implements Initiali
         backToMenu();
     }
 
+    public void loadNext(ActionEvent actionEvent) {
+        offSet += 500;
+
+        if(offSet > 0) {
+            buttonPreviousData.setDisable(false);
+        }
+
+        Task loadNext = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                progressBar.setVisible(true);
+
+                EmployeeManager employeeManager = new EmployeeManager();
+
+
+                observableList = employeeManager.getEmployeeForStatistic(offSet, maxPriceOfContracts);
+
+
+                return observableList;
+            }
+        };
+
+        loadNext.setOnSucceeded(event1 -> {
+            tableView.setItems(observableList);
+
+            progressBar.setVisible(false);
+
+            if(observableList.size() < 500) {
+                buttonNextData.setDisable(true);
+            }
+
+            filter = new FilteredList(observableList,e->true);
+
+
+            setNewRangeOfDisplayedData();
+        });
+
+        Thread thread = new Thread(loadNext);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
     public void loadPrevious(ActionEvent actionEvent) {
         if(offSet > 0) {
             buttonNextData.setDisable(false);
@@ -141,7 +188,7 @@ public class EmployeeEmployeeFromContractStatisticController implements Initiali
                 EmployeeManager employeeManager = new EmployeeManager();
 
 
-                observableList = employeeManager.getEmployeeForStatistic(offSet);
+                observableList = employeeManager.getEmployeeForStatistic(offSet, maxPriceOfContracts);
 
 
                 return observableList;
@@ -168,6 +215,10 @@ public class EmployeeEmployeeFromContractStatisticController implements Initiali
         this.labelOffset.setText(labelOffset);
     }
 
+    public void setLabelTitle() {
+        this.labelTitle.setText("Celková suma kontraktov väčšou ako " + maxPriceOfContracts);
+    }
+
     public void setNewRangeOfDisplayedData() {
         int range = offSet + observableList.size();
         setLabelOffset(((offSet + 1) + " - " + range));
@@ -175,7 +226,14 @@ public class EmployeeEmployeeFromContractStatisticController implements Initiali
 
     public void addItemsToList() {
         EmployeeManager employeeManager = new EmployeeManager();
-        observableList = employeeManager.getEmployeeForStatistic(offSet);
+        observableList = employeeManager.getEmployeeForStatistic(offSet, maxPriceOfContracts);
+    }
+
+    public void refreshTable() {
+        addItemsToList();
+        addItemsToTable();
+        setNewRangeOfDisplayedData();
+        setLabelTitle();
     }
 
     public void addItemsToTable() {
@@ -188,44 +246,30 @@ public class EmployeeEmployeeFromContractStatisticController implements Initiali
         }
     }
 
-    public void loadNext(ActionEvent actionEvent) {
-        offSet += 500;
+    public void buttonSearchPushed(ActionEvent actionEvent) {
+        maxPriceOfContracts = Integer.parseInt(spinnerTotalPrice.getValue().toString());
 
-        if(offSet > 0) {
-            buttonPreviousData.setDisable(false);
-        }
-
-        Task loadNext = new Task() {
+        Task setInfo = new Task() {
             @Override
-            protected Object call() throws Exception {
+            protected Object call() {
                 progressBar.setVisible(true);
 
-                EmployeeManager employeeManager = new EmployeeManager();
+                addItemsToList();
 
-
-                observableList = employeeManager.getEmployeeForStatistic(offSet);
-
-
-                return observableList;
+                return null;
             }
         };
 
-        loadNext.setOnSucceeded(event1 -> {
-            tableView.setItems(observableList);
+        setInfo.setOnSucceeded(event -> {
+            addItemsToTable();
+            setNewRangeOfDisplayedData();
+            setLabelTitle();
 
             progressBar.setVisible(false);
 
-            if(observableList.size() < 500) {
-                buttonNextData.setDisable(true);
-            }
-
-            filter = new FilteredList(observableList,e->true);
-
-
-            setNewRangeOfDisplayedData();
         });
 
-        Thread thread = new Thread(loadNext);
+        Thread thread = new Thread(setInfo);
         thread.setDaemon(true);
         thread.start();
     }

@@ -327,6 +327,10 @@ public class AdminSearchEmployeeController implements Initializable {
     }
 
     public void detailMenuSelected(ActionEvent actionEvent) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/admin_employee_detail.fxml"));
 
         AdminEmployeeDetailController adminEmployeeDetailController;
@@ -419,6 +423,10 @@ public class AdminSearchEmployeeController implements Initializable {
     }
 
     public void deleteMenuSelected(ActionEvent actionEvent) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         Employee selectedEmployee = tableView.getSelectionModel().getSelectedItem();
 
         EmployeeManager employeeManager = new EmployeeManager();

@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Car;
 import model.Contract;
@@ -131,6 +132,9 @@ public class EmployeeAddHarmRepairController implements Initializable {
                 notification.showConfirm();
 
                 repairAdded = true;
+
+                Stage stage = (Stage) rootPane.getScene().getWindow();
+                stage.close();
             }
         }
     }

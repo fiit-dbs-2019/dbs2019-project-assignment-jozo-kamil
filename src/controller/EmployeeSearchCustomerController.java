@@ -142,6 +142,10 @@ public class EmployeeSearchCustomerController implements Initializable {
     }
 
     public void detailForNaturalPersonSelected(ActionEvent actionEvent) {
+        if(tableViewNatural.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_natural_person_detail.fxml"));
 
         EmployeeNaturalPersonDetailController employeeNaturalPersonDetailController;
@@ -762,6 +766,10 @@ public class EmployeeSearchCustomerController implements Initializable {
     }
 
     public void detailLegalPersonSelected(ActionEvent actionEvent) {
+        if(tableViewLegal.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_legal_person_detail.fxml"));
 
         EmployeeLegalPersonDetailController employeeLegalPersonDetailController;
@@ -815,11 +823,19 @@ public class EmployeeSearchCustomerController implements Initializable {
     }
 
     public void createContractNaturalPersonSelected(ActionEvent actionEvent) {
+        if(tableViewNatural.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
        //displayCreateContractScene(true);
         backToCreateContract(true,true);
     }
 
     public void createContractLegalPersonSelected(ActionEvent actionEvent) {
+        if(tableViewLegal.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         //displayCreateContractScene(false);
         backToCreateContract(false,true);
     }
@@ -859,6 +875,10 @@ public class EmployeeSearchCustomerController implements Initializable {
     }
 
     public void deleteNaturalPersonSelected(ActionEvent actionEvent) {
+        if(tableViewNatural.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         Person selectedNaturalPerson = tableViewNatural.getSelectionModel().getSelectedItem();
 
         PersonManager personManager = new PersonManager();
@@ -882,6 +902,10 @@ public class EmployeeSearchCustomerController implements Initializable {
     }
 
     public void deleteLegalPersonSelected(ActionEvent actionEvent) {
+        if(tableViewLegal.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         Person selectedLegalPerson = tableViewLegal.getSelectionModel().getSelectedItem();
 
         PersonManager personManager = new PersonManager();

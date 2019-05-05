@@ -243,7 +243,7 @@ public class EmployeeManager {
         }
     }
 
-    public ObservableList<Employee> getEmployeeForStatistic(Integer offSet) {
+    public ObservableList<Employee> getEmployeeForStatistic(Integer offSet, Integer maxPrice) {
         ObservableList<Employee> listOfEmployee = FXCollections.observableArrayList();
 
         AllTablesManager atm;
@@ -254,20 +254,19 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-
-
             st = conn.prepareStatement("SELECT e.first_name, e.last_name, sum(c.price), max(c.price)" +
                     "FROM contract c " +
                     "JOIN employee e on c.employee_id = e.employee_id " +
                     "JOIN customer c2 on c.customer_id = c2.customer_id " +
                     "WHERE customer_type = 'Fyzická osoba' " +
                     "GROUP BY e.employee_id " +
-                    "HAVING SUM(c.price) > 25000 " +
+                    "HAVING SUM(c.price) >= ? " +
                     "ORDER BY sum(c.price) DESC " +
                     "LIMIT 500 " +
                     "OFFSET ?;"
             );
-            st.setInt(1,offSet);
+            st.setInt(1,maxPrice);
+            st.setInt(2,offSet);
 
             ResultSet rs = st.executeQuery();
 

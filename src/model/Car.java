@@ -242,4 +242,12 @@ public class Car {
     public void addServiceRecord(ServiceRecord serviceRecord) {
         this.serviceRecords.add(serviceRecord);
     }
+
+    public Integer getSum() {
+        return sum;
+    }
+
+    public void setSum(Integer sum) {
+        this.sum = sum;
+    }
 }

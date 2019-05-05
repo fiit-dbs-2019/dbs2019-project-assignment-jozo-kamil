@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -32,6 +29,8 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
 
     @FXML private AnchorPane rootPane;
 
+    @FXML private Label labelTitle;
+
     @FXML private Label labelFirstName;
     @FXML private Label labelDate;
     @FXML private Label labelLastName;
@@ -39,6 +38,8 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
     @FXML private Button buttonPreviousData;
     @FXML private Button buttonNextData;
     @FXML private Label labelOffset;
+
+    @FXML private Spinner spinnerNumberOfRepairs;
 
     @FXML private TableView<Car> tableView;
     @FXML private TableColumn<Car, String> collumnSPZ;
@@ -52,10 +53,16 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
 
     private ObservableList<Car> observableList;
 
+    private Integer numberOfRepairs = 1;
+
     @FXML private JFXProgressBar progressBar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        spinnerNumberOfRepairs.setValueFactory(new
+                SpinnerValueFactory.IntegerSpinnerValueFactory
+                (1,20,1,1));
+
         collumnVin.setCellValueFactory(new PropertyValueFactory<>("car_vin"));
         collumnSPZ.setCellValueFactory(new PropertyValueFactory<>("spz"));
 
@@ -134,7 +141,7 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
                 CarManager carManager = new CarManager();
 
 
-                observableList = carManager.getCarForStatistic(offSet);
+                observableList = carManager.getCarForStatistic(offSet, numberOfRepairs);
 
 
                 return observableList;
@@ -172,7 +179,7 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
                 CarManager carManager = new CarManager();
 
 
-                observableList = carManager.getCarForStatistic(offSet);
+                observableList = carManager.getCarForStatistic(offSet, numberOfRepairs);
 
 
                 return observableList;
@@ -206,7 +213,7 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
 
     public void addItemsToList() {
         CarManager carManager = new CarManager();
-        observableList = carManager.getCarForStatistic(offSet);
+        observableList = carManager.getCarForStatistic(offSet, numberOfRepairs);
     }
 
     public void addItemsToTable() {
@@ -223,4 +230,42 @@ public class EmployeeCarFromCarStatisticController implements Initializable {
         this.labelOffset.setText(labelOffset);
     }
 
+    public void setLabelTitle() {
+        this.labelTitle.setText("Vozidlá s počtom havárií " + numberOfRepairs);
+    }
+
+    public void refreshTable() {
+        addItemsToList();
+        addItemsToTable();
+        setNewRangeOfDisplayedData();
+        setLabelTitle();
+    }
+
+    public void buttonSearchPushed(ActionEvent actionEvent) {
+        numberOfRepairs = Integer.parseInt(spinnerNumberOfRepairs.getValue().toString());
+
+        Task setInfo = new Task() {
+            @Override
+            protected Object call() {
+                progressBar.setVisible(true);
+
+                addItemsToList();
+
+                return null;
+            }
+        };
+
+        setInfo.setOnSucceeded(event -> {
+            addItemsToTable();
+            setNewRangeOfDisplayedData();
+            setLabelTitle();
+
+            progressBar.setVisible(false);
+
+        });
+
+        Thread thread = new Thread(setInfo);
+        thread.setDaemon(true);
+        thread.start();
+    }
 }

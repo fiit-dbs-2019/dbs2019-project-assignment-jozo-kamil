@@ -359,6 +359,10 @@ public class EmployeeSearchCarController implements Initializable {
 
     @FXML
     public void detailMenuSelected(ActionEvent event) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/employee_car_detail.fxml"));
 
         EmployeeCarDetailController employeeCarDetailController;
@@ -459,6 +463,10 @@ public class EmployeeSearchCarController implements Initializable {
 
     @FXML
     public void createContractMenuSelected(ActionEvent actionEvent) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         backToCreateContract(true);
 //        Parent parent = null;
 //        try {
@@ -534,6 +542,10 @@ public class EmployeeSearchCarController implements Initializable {
     }
 
     public void deleteMenuSelected(ActionEvent actionEvent) {
+        if(tableView.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         Car selectedCar = tableView.getSelectionModel().getSelectedItem();
 
         CarManager carManager = new CarManager();

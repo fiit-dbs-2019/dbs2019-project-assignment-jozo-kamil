@@ -93,9 +93,7 @@ public class EmployeeStatisticsMenuController implements Initializable {
                 protected Object call() {
                     progressBar.setVisible(true);
 
-                    employeeCarFromContractStatisticController.addItemsToList();
-                    employeeCarFromContractStatisticController.addItemsToTable();
-                    employeeCarFromContractStatisticController.setNewRangeOfDisplayedData();
+                    employeeCarFromContractStatisticController.refreshTable();
 
                     return null;
                 }
@@ -137,9 +135,7 @@ public class EmployeeStatisticsMenuController implements Initializable {
                 protected Object call() {
                     progressBar.setVisible(true);
 
-                    employeeCarFromCarStatisticController.addItemsToList();
-                    employeeCarFromCarStatisticController.addItemsToTable();
-                    employeeCarFromCarStatisticController.setNewRangeOfDisplayedData();
+                    employeeCarFromCarStatisticController.refreshTable();
 
                     return null;
                 }
@@ -183,9 +179,7 @@ public class EmployeeStatisticsMenuController implements Initializable {
                 protected Object call() {
                     progressBar.setVisible(true);
 
-                    employeeEmployeeFromContractStatisticController.addItemsToList();
-                    employeeEmployeeFromContractStatisticController.addItemsToTable();
-                    employeeEmployeeFromContractStatisticController.setNewRangeOfDisplayedData();
+                    employeeEmployeeFromContractStatisticController.refreshTable();
 
                     return null;
                 }
