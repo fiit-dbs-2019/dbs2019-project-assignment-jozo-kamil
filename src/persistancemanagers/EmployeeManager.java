@@ -254,7 +254,8 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            st = conn.prepareStatement("SELECT e.first_name, e.last_name, sum(c.price), max(c.price)" +
+            st = conn.prepareStatement(
+                    "SELECT e.first_name, e.last_name, sum(c.price), max(c.price)" +
                     "FROM contract c " +
                     "JOIN employee e on c.employee_id = e.employee_id " +
                     "JOIN customer c2 on c.customer_id = c2.customer_id " +

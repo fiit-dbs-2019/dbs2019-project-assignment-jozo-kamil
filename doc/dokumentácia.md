@@ -1,6 +1,6 @@
 ﻿## **Zadanie - VehicleList**
 
-Témou nášho projektu je vytvorenie softvéru, ktorý bude zaznamenávať informácie o vypožičaných autách v požičovni áut. Systém bude zhromažďovať väčšinu informácií o vozidle, ako sú typ vozidla, rok výroby, výkon a objem motora atď. Taktiež bude systém zaznamenávať informácie o zmluvách vyhotovených pri výpožičke áut a informácie o vypožičiavateľovi daného auta. Systém ponúkne široké možnosti vyhľadávania podľa kľúčových atribútov vozidiel a pod.
+Témou nášho projektu je vytvorenie softvéru, ktorý bude zaznamenávať informácie o vypožičaných autách v požičovni áut. Systém bude zhromažďovať väčšinu informácii o vozidle, ako sú typ vozidla, rok výroby, výkon a objem motora atď. Taktiež bude systém zaznamenávať informácie o zmluvách vyhotovených pri výpožičke áut a informácie o vypožičiavateľovi daného auta. Systém ponúkne široké možnosti vyhľadávania podľa kľúčových atribútov vozidiel a pod.
 
 ## **Špecifikácia scenárov**
 
@@ -26,23 +26,22 @@ Aktualizácia záznamu je možná až po vyhľadaní a zobrazení detailu danéh
 
 ***3. Scenár - Vyhľadávanie existujúcich záznamov + detail***
 
-Tretí scenár ponúka adminovi v aplikácii vyhľadávať zamestnancov napríklad na základe mena, priezviska, loginu či čísla. 
+Tretí scenár ponúka adminovi v aplikácii vyhľadávať zamestnancov napríklad na základe mena, priezviska, loginu. 
 
 Zamestnanec má možnosť v aplikácii vyhľadať konkrétne vozidlo, výpožičiavateľa či zmluvu. Po vyhľadaní konkrétneho záznamu aplikácia zobrazuje po kliknutí pravým tlačidlom na záznam možnosť zobrazenia jeho detailnejších informácií. Pri hľadaní zmlúv aplikácia umožňuje zamestnancovi zobraziť ním vyhotovené zmluvy.
 
-**Slovný opis štvrtého a piateho scenára**
-
 ***4. Scenár - Vymazanie existujúcich záznamov***
 
-Štvrtý scenár pridá aplikácii funkcionalitu vymazávania záznamov o aute, zamestnancovi, zmluve , či vypožičiavateľovi.
+Štvrtý scenár pridáva aplikácii funkcionalitu vymazávania záznamov o aute, zamestnancovi, zmluve , či vypožičiavateľovi. V prípade zmazania entity, ktorá figuruje v zmluve zmažú sa taktiež všetky príslušné zmluvy.
 
 ***5. Scenár - Zobrazenie záznamov podľa vybranej doménovej štatistiky***
 
-Piaty scenár ponúkne zobrazenie záznamov spĺňajúce rôzne štatistické kritéria, napríklad:
+Piaty scenár ponúka zobrazenie záznamov spĺňajúce rôzne štatistické kritéria, napríklad:
 	
 
- - vozidlá, ktoré mali haváriu 
- - a iné...
+ - vyhľadať vozidlá podľa celkovej sumy opráv
+ - vyhľadať vozidlá podľa počtu havárií
+ - vyhľadať zamestnancov podľa sumy cien vyhotovených zmlúv
 
 ## Diagram logického a fyzického  modelu
 ![Fyzický model](https://prnt.sc/n8scqs)
@@ -65,11 +64,26 @@ Pre správne fungovanie aplikácie je nutné spustiť skript pre vytvorenie tabu
 
 Snažíme sa písať prehľadný kód s odpovedajúcimi názvami premenných a metód, ktoré sa snažia jednoznačne určiť načo daná trieda, metóda, či premenná slúži. 
 
+**Generovanie dát do tabuliek**
+
+Na generovanie fake dát sme použili aplikáciu Spawner spolu s knižnicou Faker, čím sme docielili, že dáta sú podobné tým skutočným. Ako ukážku uvádzame nami vygenerované dáta z tabuľky právnických osôb:
+
+-obrazok
+
+Do troch tabuliek sme vygenerovali milión záznamov. Tabuľka zmlúv obsahuje desať miliónov záznamov.
+
 **Opis implementácie prvého scenára**
 
 Aplikačnú logiku s GUI prepájame controllerom, ktorý volá rôzne metódy z rôznych tried z balíka persistancemanagers pre prístup do databázy. Tieto metódy častokrát vracajú inštancie objektov, s ktorými následne controller vykonáva rôzne operácie, či zobrazuje ich dáta na obrazovku. Prvý scenár zahŕňa triedy v balíku controller, ktoré obsahujú v názve '*...add...*', čo už z názvu vyplýva, že tieto triedy sú využívané ak chceme pridať nejaký nový záznam do databázy. V balíku model sme si vytvorili triedy Car, Employee, LegalPerson, NaturalPerson, ktoré obsahujú potrebné atribúty pre uloženie záznamu z databázy pre ten ktorý prvok. Taktiež tieto triedy obsahujú gety/sety aby sme mohli meniť, či získavať tieto atribúty bezpečne.
 
 GUI je vytvorené v SceneBuilder-i, ktorý vytvára fxml súbor, ku ktorému sme vytvárali triedu v controlleri, čiže každý súbor fxml má svoju triedu v balíku controller.
+
+**1. *Ukážka niektorých querry, ktoré tvoria prvý scenár***
+
+    obrazok1
+    obrazok2
+
+Používame prepareStatement, ktorým docielime väčšiu bezpečnosť.
 
 **Opis implementácie druhého a tretieho scenára**
  
@@ -79,3 +93,35 @@ GUI je vytvorené v SceneBuilder-i, ktorý vytvára fxml súbor, ku ktorému sme
  2. Nájdenie a vrátenie záznamov spĺňajúcich zadané kritéria
 
 Ďalej v balíku persistancemanagers pribudli metódy, ktoré slúžia na aktualizáciu dát v databáze, teda vykonávajú query na update dát.
+
+
+**2. *Ukážka niektorých querry, ktoré tvoria druhý a tretí scenár***
+
+ obrazok1
+ obrazok2
+ 
+Vyššie uvedené querry sú v jednej transakcii, pretože insert do jednej tabuľky ovplyvňuje insert do druhej. Teda ak by jeden z nich zlyhal ďalší sa taktiež nevykoná.
+
+**Opis implementácie štvrtého a piateho scenára**
+
+Do balíku persistancemanagers pribudli nové metódy na mazanie a taktiež pre zobrazenie štatistík.
+
+Mazanie bolo implementované, čo sa týka používateľského rozhrania, do okien s vyhľadávaním. Jednoduchým kliknutím pravým tlačidlom myši sa zobrazí menu, kde je možnosť okrem iného aj zmazania záznamu. 
+ 
+ Čo sa týka štatistík boli vytvorené nové okná pre ich zobrazenie. Používateľ si môže zvoliť atribút vyhľadávania, napríklad v prípade vyhľadania vozidiel na základe počtu havárii je umožnené určiť počet týchto havárii.
+
+ **3. *Ukážka niektorých querry, ktoré tvoria štvrtý a piaty scenár***
+
+obrazok1
+obrazok2
+obrazok3
+
+**Zopár obrazoviek našej aplikácie**
+
+obrazok - login
+
+obrazok - auto
+
+obrazok - vyhladavat vypociavatelov
+
+obrazok - detail zmluvy 
