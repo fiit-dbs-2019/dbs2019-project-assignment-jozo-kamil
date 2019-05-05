@@ -4,25 +4,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.StageStyle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.*;
+import org.controlsfx.control.Notifications;
 import persistancemanagers.CarManager;
-import persistancemanagers.CreateContractManager;
-import persistancemanagers.EmployeeManager;
+import persistancemanagers.ContractManager;
 import persistancemanagers.PersonManager;
 
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -65,29 +64,104 @@ public class EmployeeConfirmContractController implements Initializable {
     @FXML private Label labelDateOfContract;
     @FXML private Label labelTotalPrice;
 
-    // for save the data from database
+    // for save the data from database, or previously got from create contract scene [optional]
     private Car car = null;
-    private Person person = null;
+    private Person customer = null;
     private Date dateFROM = null;
     private Date dateTO = null;
+
+    // logged employee
+    private Employee employee;
+
+    // only filled in case of employee didnt search for customer or cas
+    private String carVIN;
+    private String customerID;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    public void setAllLabels() {
         setEmployeeLabels();
         setAnotherLabels();
     }
 
-    public void setEmployeeLabels() {
-        EmployeeManager em = new EmployeeManager();
-        Employee employee = null;
+    ///////////////////////////////////////////////////////////////////
+    // setters for car and person, they are optional
 
-        try {
-            employee = em.getEmployeeFromDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public void setCustomer(Person person) {
+        this.customer = person;
+    }
+
+    public void setCarAndCustomer() {
+
+        // check if car is set, else there is a need to connect to databse to get car info from set VIN
+        if(car == null) {
+            CarManager cm = new CarManager();
+
+            car = cm.getCarFromDatabase(carVIN);
         }
 
+        // check if customer is set, else there is a need to connect to databse to get customer info from set ID
+        if(customer == null) {
+            PersonManager pm = new PersonManager();
+
+            customer = pm.getPersonFromDatabase(customerID);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    // setters for info from previous scene
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getCarVIN() {
+        return carVIN;
+    }
+
+    public void setCarVIN(String carVIN) {
+        this.carVIN = carVIN;
+    }
+
+    public Date getDateFROM() {
+        return dateFROM;
+    }
+
+    public void setDateFROM(Date dateFROM) {
+        this.dateFROM = dateFROM;
+    }
+
+    public Date getDateTO() {
+        return dateTO;
+    }
+
+    public void setDateTO(Date dateTO) {
+        this.dateTO = dateTO;
+    }
+
+    // LABELS set - complex - connection to database and more
+
+    public void setEmployeeLabels() {
         setLabelEmployeeFirstName(employee.getFirstName());
         setLabelEmployeeLastName(employee.getLastName());
     }
@@ -95,58 +169,7 @@ public class EmployeeConfirmContractController implements Initializable {
     public void setAnotherLabels() {
         setLabelDateOfContract(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 
-        Properties prop = new Properties();
-        String car_vin;
-        String customer_id;
-
-        // input for contract_info
-        FileInputStream input = null;
-
-        try {
-            input = new FileInputStream("src/contract_info");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            prop.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            try {
-                String dateFromProperty = prop.getProperty("dateFROM");
-                dateFROM = new SimpleDateFormat("yyyy-MM-dd").parse(dateFromProperty);
-
-                String dateToProperty = prop.getProperty("dateTO");
-                dateTO = new SimpleDateFormat("yyyy-MM-dd").parse(dateToProperty);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            setLabelDateFromTo("OD: " + prop.getProperty("dateFROM") + " - DO: " + prop.getProperty("dateTO"));
-
-            car_vin = prop.getProperty("carVIN");
-            customer_id = prop.getProperty("customerID");
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        CarManager cm = new CarManager();
-
-        try {
-            car = cm.getCarFromDatabase(car_vin);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        setLabelDateFromTo("OD: " + dateFROM + " DO: " + dateTO);
 
         setLabelVIN(car.getCar_vin());
         setLabelSPZ(car.getSpz());
@@ -160,47 +183,41 @@ public class EmployeeConfirmContractController implements Initializable {
         setLabelGearBox(car.getGear_box());
         setLabelBodyStyle(car.getBody_style());
         setLabelColor(car.getColor());
-        setLabelPrice(String.valueOf(car.getPrice_per_day()));
+        setLabelPrice(car.getPrice_per_day() + "€");
 
         // add total price
         long diff = dateTO.getTime() - dateFROM.getTime();
         setLabelTotalPrice(car.getPrice_per_day()*(int)(TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS)));
 
-        PersonManager pm = new PersonManager();
-
-        try {
-            person = pm.getPersonFromDatabase(customer_id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (person instanceof NaturalPerson) {
+        if (customer instanceof NaturalPerson) {
             setLabelCustomer1("Meno:");
             setLabelCustomer2("Priezvisko:");
             setLabelCustomer3("Číslo OP:");
 
-            setFieldCustomer1(((NaturalPerson) person).getFirstName());
-            setFieldCustomer2(((NaturalPerson) person).getLastName());
-            setFieldCustomer3(((NaturalPerson) person).getOp());
+            setFieldCustomer1(((NaturalPerson) customer).getFirstName());
+            setFieldCustomer2(((NaturalPerson) customer).getLastName());
+            setFieldCustomer3(((NaturalPerson) customer).getID());
 
-            setLabelAdress(((NaturalPerson) person).getAdress());
-            setLabelBankAccount(((NaturalPerson) person).getBankAccount());
-            setLabelCustomerPhone(((NaturalPerson) person).getPhoneNumber());
+            setLabelAdress(((NaturalPerson) customer).getAdress());
+            setLabelBankAccount(((NaturalPerson) customer).getBankAccount());
+            setLabelCustomerPhone(((NaturalPerson) customer).getPhoneNumber());
         }
-        if (person instanceof LegalPerson){
+        if (customer instanceof LegalPerson){
             setLabelCustomer1("IČO:");
             setLabelCustomer2("DIČ:");
             setLabelCustomer3("Názov firmy:");
 
-            setFieldCustomer1(((LegalPerson) person).getIco());
-            setFieldCustomer2(((LegalPerson) person).getDic());
-            setFieldCustomer3(((LegalPerson) person).getName());
+            setFieldCustomer1(((LegalPerson) customer).getID());
+            setFieldCustomer2(((LegalPerson) customer).getDic());
+            setFieldCustomer3(((LegalPerson) customer).getName());
 
-            setLabelAdress(((LegalPerson) person).getAdress());
-            setLabelBankAccount(((LegalPerson) person).getBankAccount());
-            setLabelCustomerPhone(((LegalPerson) person).getPhoneNumber());
+            setLabelAdress(((LegalPerson) customer).getAdress());
+            setLabelBankAccount(((LegalPerson) customer).getBankAccount());
+            setLabelCustomerPhone(((LegalPerson) customer).getPhoneNumber());
         }
     }
+
+    // SO MUCH SETTERS FOR LABELS IN GUI
 
     public void setLabelCustomer1(String labelCustomer1) {
         this.labelCustomer1.setText(labelCustomer1);
@@ -306,75 +323,107 @@ public class EmployeeConfirmContractController implements Initializable {
         this.labelDateOfContract.setText(labelDateOfContract);
     }
 
-    public void setLabelTotalPrice(Integer labelTotalPrice) {
+    public void setLabelTotalPrice(Float labelTotalPrice) {
         this.labelTotalPrice.setText(String.valueOf(labelTotalPrice) + "€");
     }
 
-    public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_create_contract.fxml"));
-        rootPane.getChildren().setAll(pane);
+    // BUTTONS EVENTS
+
+    public void btnBackPushed(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_create_contract.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeCreateContractController employeeCreateContractController = loaader.getController();
+            employeeCreateContractController.setEmployee(employee);
+            employeeCreateContractController.setCar(car);
+            employeeCreateContractController.setCustomer(customer);
+
+            employeeCreateContractController.setCarVin();
+            employeeCreateContractController.setCustomerID();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public void btnSubmitPushed(ActionEvent actionEvent) {
-        CreateContractManager ccm = new CreateContractManager();
+        ContractManager ccm = new ContractManager();
 
         java.sql.Date sqlDateFROM = new java.sql.Date(dateFROM.getTime());
         java.sql.Date sqlDateTO = new java.sql.Date(dateTO.getTime());
 
-        if(person instanceof NaturalPerson) {
-            try {
-                if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) person).getOp(),sqlDateFROM,sqlDateTO)) {
+        if(customer instanceof NaturalPerson) {
+            if(ccm.createNewContract(car.getCar_vin(),((NaturalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
-                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
-                    alertInfo.initStyle(StageStyle.TRANSPARENT);
-                    alertInfo.setHeaderText("Info!");
-                    alertInfo.showAndWait();
+                Notifications notification = Notifications.create()
+                        .title("Zmluva bola úspešne vytvorená!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showConfirm();
 
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                    rootPane.getChildren().setAll(pane);
+                backToMenu();
 
-                } else {
-                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!", ButtonType.CLOSE);
-                    alertError.initStyle(StageStyle.TRANSPARENT);
-                    alertError.setHeaderText("Chyba!");
-                    alertError.showAndWait();
-                    return;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else {
+
+                Notifications notification = Notifications.create()
+                        .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showError();
+                return;
             }
         }
 
-        if(person instanceof LegalPerson) {
-            try {
-                if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) person).getIco(),sqlDateFROM,sqlDateTO)) {
+        if(customer instanceof LegalPerson) {
+            if(ccm.createNewContract(car.getCar_vin(),((LegalPerson) customer).getID(),sqlDateFROM,sqlDateTO,employee.getEmployeeID())) {
 
-                    Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Zmluva bola úspešne vytvorená!", ButtonType.CLOSE);
-                    alertInfo.initStyle(StageStyle.TRANSPARENT);
-                    alertInfo.setHeaderText("Info!");
-                    alertInfo.showAndWait();
+                Notifications notification = Notifications.create()
+                        .title("Zmluva bola úspešne vytvorená!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showConfirm();
 
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                    rootPane.getChildren().setAll(pane);
+                backToMenu();
 
-                } else {
-                    Alert alertError = new Alert(Alert.AlertType.ERROR,"Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!", ButtonType.CLOSE);
-                    alertError.initStyle(StageStyle.TRANSPARENT);
-                    alertError.setHeaderText("Chyba!");
-                    alertError.showAndWait();
-                    return;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else {
+
+                Notifications notification = Notifications.create()
+                        .title("Pri zakladaní zmluvy sa vyskytla neočakávaná chyba!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showError();
+                return;
             }
         }
-
-
     }
 
+    public void backToMenu() {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_menu.fxml"));
+            parent = (Parent) loaader.load();
 
+            EmployeeMenuController employeeMenuController = loaader.getController();
+            employeeMenuController.setEmployee(employee);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
+    }
 }

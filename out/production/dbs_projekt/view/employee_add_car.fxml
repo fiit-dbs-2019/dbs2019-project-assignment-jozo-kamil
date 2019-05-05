@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -14,49 +16,50 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeAddCarController">
     <children>
-        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
+        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0" spacing="10.0">
             <children>
-                <Label alignment="CENTER" prefHeight="60.0" prefWidth="482.0" text="Pridanie záznamu o vozidle">
+                <Label alignment="CENTER" prefHeight="60.0" prefWidth="482.0" text="Pridanie záznamu o vozidle" textFill="WHITE">
                     <font>
                         <Font name="Lucida Console" size="30.0" />
                     </font>
                 </Label>
+                  <Button mnemonicParsing="false" onAction="#btnBackPushed" text="Späť" />
             </children>
         </HBox>
         <HBox layoutX="75.0" layoutY="60.0" prefHeight="526.0" prefWidth="380.0" spacing="40.0">
             <children>
                 <VBox prefHeight="526.0" prefWidth="144.0" spacing="6.0">
                     <children>
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Značka:" />
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Model:" />
-                        <Label prefHeight="35.0" prefWidth="160.0" text="Rok výroby:" />
-                  <Label prefHeight="35.0" prefWidth="160.0" text="Stav tachometra:" />
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Palivo:" />
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Objem motora:" />
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Výkon motora:" />
-                        <Label prefHeight="35.0" prefWidth="160.0" text="Typ prevodovky:" />
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Karoséria:" />
-                        <Label prefHeight="35.0" prefWidth="120.0" text="Farba:" />
-                  <Label prefHeight="35.0" prefWidth="120.0" text="ŠPZ:" />
-                  <Label prefHeight="35.0" prefWidth="127.0" text="VIN:" />
-                  <Label prefHeight="35.0" prefWidth="179.0" text="Cena výpožičky/deň:" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Značka:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Model:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="160.0" text="Rok výroby:" textFill="WHITE" />
+                  <Label prefHeight="35.0" prefWidth="160.0" text="Stav tachometra:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Palivo:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Objem motora:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Výkon motora:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="160.0" text="Typ prevodovky:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Karoséria:" textFill="WHITE" />
+                        <Label prefHeight="35.0" prefWidth="120.0" text="Farba:" textFill="WHITE" />
+                  <Label prefHeight="35.0" prefWidth="120.0" text="ŠPZ:" textFill="WHITE" />
+                  <Label prefHeight="35.0" prefWidth="127.0" text="VIN:" textFill="WHITE" />
+                  <Label prefHeight="35.0" prefWidth="179.0" text="Cena výpožičky/deň:" textFill="WHITE" />
                     </children>
                 </VBox>
                 <VBox prefHeight="460.0" prefWidth="187.0" spacing="5.0">
                     <children>
-                  <ComboBox fx:id="comboBoxBrand" prefHeight="35.0" prefWidth="185.0" />
-                  <ComboBox fx:id="comboBoxModel" onMouseClicked="#comboBoxModelClicked" prefHeight="35.0" prefWidth="185.0" />
-                        <DatePicker fx:id="datePickerYear" prefHeight="35.0" prefWidth="185.0" />
+                  <JFXComboBox fx:id="comboBoxBrand" onAction="#comboBoxBrandSelected" prefHeight="35.0" prefWidth="233.0" />
+                  <JFXComboBox fx:id="comboBoxModel" onAction="#comboBoxModelSelected" onMouseClicked="#comboBoxModelClicked" prefHeight="35.0" prefWidth="203.0" />
+                  <JFXDatePicker fx:id="datePickerYear" editable="false" onAction="#datePickerDateSelected" prefHeight="39.0" prefWidth="201.0" />
                   <Spinner fx:id="spinnerMileage" prefHeight="35.0" prefWidth="185.0" />
-                  <ComboBox fx:id="comboBoxFuel" prefHeight="35.0" prefWidth="185.0" />
+                  <JFXComboBox fx:id="comboBoxFuel" onAction="#comboBoxFuelSelected" prefHeight="35.0" prefWidth="205.0" />
                          <Spinner fx:id="spinnerEngineCapacity" prefHeight="35.0" prefWidth="185.0" />
                          <Spinner fx:id="spinnerEnginePower" prefHeight="35.0" prefWidth="185.0" />
-                  <ComboBox fx:id="comboBoxGearBox" prefHeight="35.0" prefWidth="185.0" />
-                  <ComboBox fx:id="comboBoxCarBody" prefHeight="35.0" prefWidth="185.0" />
-                  <ComboBox fx:id="comboBoxColor" prefHeight="35.0" prefWidth="185.0" />
-                  <TextField fx:id="textFieldSpz" prefHeight="35.0" prefWidth="185.0" />
-                  <TextField fx:id="textFieldVin" prefHeight="35.0" prefWidth="185.0" />
-                  <Spinner fx:id="spinnerPrice" prefHeight="35.0" prefWidth="185.0" />
+                  <JFXComboBox fx:id="comboBoxGearBox" onAction="#comboBoxGearBoxSelected" prefHeight="35.0" prefWidth="205.0" />
+                  <JFXComboBox fx:id="comboBoxCarBody" onAction="#comboBoxCarBodySelected" prefHeight="35.0" prefWidth="202.0" />
+                  <JFXComboBox fx:id="comboBoxColor" onAction="#comboBoxColorSelected" prefHeight="35.0" prefWidth="195.0" />
+                  <JFXTextField fx:id="textFieldSPZ" prefHeight="35.0" prefWidth="175.0" />
+                  <JFXTextField fx:id="textFieldVIN" prefHeight="35.0" prefWidth="175.0" />
+                  <JFXTextField fx:id="textFieldPrice" prefHeight="35.0" prefWidth="175.0" />
                     </children>
                <HBox.margin>
                   <Insets />
@@ -64,22 +67,30 @@
                 </VBox>
             </children>
         </HBox>
-        <VBox layoutX="466.0" layoutY="508.0" prefHeight="78.0" prefWidth="120.0">
-            <children>
-                <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="102.0">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#btnBackPushed" text="Späť" />
-                    </children>
-                </HBox>
-                <HBox alignment="BOTTOM_CENTER" prefHeight="74.0" prefWidth="128.0">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#btnConfirmPushed" prefHeight="35.0" prefWidth="120.0" text="Pridať" />
-                    </children>
-                </HBox>
-            </children>
-        </VBox>
-      <Button layoutX="479.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnAddBrandPushed" prefHeight="37.0" prefWidth="110.0" text="Pridať značku" />
-      <Button layoutX="479.0" layoutY="103.0" mnemonicParsing="false" onAction="#btnAddModelPushed" prefHeight="37.0" prefWidth="110.0" text="Pridať model" />
-      <Button layoutX="479.0" layoutY="429.0" mnemonicParsing="false" onAction="#btnAddColorPushed" prefHeight="37.0" prefWidth="110.0" text="Pridať farbu" />
+      <Button layoutX="455.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnAddBrandPushed" prefHeight="35.0" prefWidth="35.0" style="-fx-background-color: #ffffff;">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../PLUS.jpg" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="buttonAddModel" layoutX="455.0" layoutY="104.0" mnemonicParsing="false" onAction="#btnAddModelPushed" prefHeight="35.0" prefWidth="35.0" style="-fx-background-color: #ffffff;">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../PLUS.jpg" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="buttonAddColor" layoutX="455.0" layoutY="424.0" mnemonicParsing="false" onAction="#btnAddColorPushed" prefHeight="35.0" prefWidth="35.0" style="-fx-background-color: #ffffff;">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../PLUS.jpg" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+            <Button layoutX="475.0" layoutY="551.0" mnemonicParsing="false" onAction="#btnConfirmPushed" prefHeight="35.0" prefWidth="120.0" text="Pridať" />
     </children>
 </AnchorPane>

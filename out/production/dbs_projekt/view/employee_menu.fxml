@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@../our.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeMenuController">
    <children>
-      <Button fx:id="ee" layoutX="115.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnSearchingPushed" prefHeight="56.0" prefWidth="375.0" text="Vyhľadávanie v systéme" />
+      <Button layoutX="115.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnSearchingPushed" prefHeight="56.0" prefWidth="375.0" text="Vyhľadávanie v systéme" />
       <Button layoutX="115.0" layoutY="245.0" mnemonicParsing="false" onAction="#btnCreateCarPushed" prefHeight="56.0" prefWidth="375.0" text="Pridanie nového záznamu o vozidle" />
       <Button layoutX="113.0" layoutY="330.0" mnemonicParsing="false" onAction="#btnCreateAgreement" prefHeight="56.0" prefWidth="375.0" text="Vytvorenie zmluvy o výpožičke vozidla" />
       <Button layoutX="115.0" layoutY="160.0" mnemonicParsing="false" onAction="#btnAddCustomerPushed" prefHeight="56.0" prefWidth="375.0" text="Pridanie nového vypožičiavateľa" />
@@ -19,7 +19,7 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="300.0" spacing="20.0">
                      <children>
-                        <Label fx:id="labelFirstName" prefHeight="16.0" prefWidth="280.0" text="Label">
+                        <Label fx:id="labelFirstName" prefHeight="16.0" prefWidth="280.0" text="Label" textFill="WHITE">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -31,7 +31,7 @@
                   </HBox>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="300.0" spacing="20.0">
                      <children>
-                        <Label fx:id="labelDate" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="280.0" text="Label" />
+                        <Label fx:id="labelDate" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="280.0" text="Label" textFill="WHITE" />
                      </children>
                      <HBox.margin>
                         <Insets right="10.0" top="10.0" />
@@ -43,7 +43,7 @@
                <children>
                   <HBox prefHeight="25.0" prefWidth="290.0" spacing="20.0">
                      <children>
-                        <Label fx:id="labelLastName" prefHeight="16.0" prefWidth="280.0" text="Label">
+                        <Label fx:id="labelLastName" prefHeight="16.0" prefWidth="280.0" text="Label" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="10.0" top="8.0" />
                            </HBox.margin>
@@ -72,5 +72,6 @@
             </HBox>
          </children>
       </VBox>
+      <Button layoutX="115.0" layoutY="496.0" mnemonicParsing="false" onAction="#btnStatisticsPushed" prefHeight="56.0" prefWidth="375.0" text="Štatistiky" />
    </children>
 </AnchorPane>

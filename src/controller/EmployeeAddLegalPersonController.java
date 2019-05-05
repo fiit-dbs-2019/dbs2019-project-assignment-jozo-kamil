@@ -1,16 +1,21 @@
 package controller;
 
+import com.jfoenix.controls.JFXTextField;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Employee;
 import persistancemanagers.PersonManager;
 
 import java.io.IOException;
@@ -19,18 +24,28 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EmployeeAddLegalPersonController implements Initializable {
-    @FXML private TextField textFieldIco;
-    @FXML private TextField textFieldDic;
-    @FXML private TextField textFieldName;
     @FXML private AnchorPane rootPane;
-    @FXML private TextField textFieldAdress;
-    @FXML private TextField textFieldBankAccount;
-    @FXML private TextField textFieldPhone;
 
+    @FXML private JFXTextField textFieldIco;
+    @FXML private JFXTextField textFieldDic;
+    @FXML private JFXTextField textFieldName;
+    @FXML private JFXTextField textFieldAdress;
+    @FXML private JFXTextField textFieldBankAccount;
+    @FXML private JFXTextField textFieldPhone;
+
+    private Employee employee;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public void btnAddPushed(ActionEvent actionEvent) throws SQLException,IOException {
@@ -38,8 +53,7 @@ public class EmployeeAddLegalPersonController implements Initializable {
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_add_customer.fxml"));
-        rootPane.getChildren().setAll(pane);
+        backToMenu();
     }
 
     public boolean tooLongText(){
@@ -75,8 +89,8 @@ public class EmployeeAddLegalPersonController implements Initializable {
                 alertOKInformation.initStyle(StageStyle.TRANSPARENT);
                 alertOKInformation.setHeaderText("Info!");
                 alertOKInformation.showAndWait();
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                rootPane.getChildren().setAll(pane);
+
+                backToMenu();
             }
             else if (result == 0){
                 Alert alertError = new Alert(Alert.AlertType.ERROR,"Vypožičiavaťeľ s ID: "+getIco()+" sa už v systéme nachádza.", ButtonType.CLOSE);
@@ -98,6 +112,27 @@ public class EmployeeAddLegalPersonController implements Initializable {
             }
 
         }
+    }
+
+    public void backToMenu() {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_menu.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeMenuController employeeMenuController = loaader.getController();
+            employeeMenuController.setEmployee(employee);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 
     public String getIco(){

@@ -1,15 +1,22 @@
 package controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Popup;
-import javafx.stage.StageStyle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import model.Employee;
+import org.controlsfx.control.Notifications;
+import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.CarManager;
 import persistancemanagers.EnumManager;
 import view.PopUpWindow;
@@ -25,45 +32,76 @@ import java.util.ResourceBundle;
 public class EmployeeAddCarController implements Initializable {
 
     @FXML private AnchorPane rootPane;
-    @FXML private ComboBox comboBoxBrand;
-    @FXML private ComboBox comboBoxModel;
+
+    @FXML private JFXComboBox comboBoxBrand;
+    @FXML private JFXComboBox comboBoxModel;
+
+    @FXML private JFXDatePicker datePickerYear;
     @FXML private Spinner spinnerMileage;
-    @FXML private ComboBox comboBoxFuel;
-    @FXML private ComboBox comboBoxGearBox;
-    @FXML private ComboBox comboBoxCarBody;
-    @FXML private ComboBox comboBoxColor;
-    @FXML private Spinner spinnerPrice;
-    @FXML private DatePicker datePickerYear;
+    @FXML private JFXComboBox comboBoxFuel;
     @FXML private Spinner spinnerEngineCapacity;
     @FXML private Spinner spinnerEnginePower;
-    @FXML private TextField textFieldSpz;
-    @FXML private TextField textFieldVin;
+    @FXML private JFXComboBox comboBoxGearBox;
+    @FXML private JFXComboBox comboBoxCarBody;
+    @FXML private JFXComboBox comboBoxColor;
+
+    @FXML private Button buttonAddColor;
+    @FXML private Button buttonAddModel;
+
+    @FXML private JFXTextField textFieldSPZ;
+    @FXML private JFXTextField textFieldVIN;
+    @FXML private JFXTextField textFieldPrice;
+
+    private Employee employee;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         spinnerConfig();
         addItemsComboBox();
+
+        comboBoxModel.setDisable(true);
+        buttonAddModel.setDisable(true);
+        comboBoxCarBody.setDisable(true);
+        comboBoxColor.setDisable(true);
+        buttonAddColor.setDisable(true);
+        comboBoxFuel.setDisable(true);
+        comboBoxGearBox.setDisable(true);
+        textFieldSPZ.setDisable(true);
+        textFieldVIN.setDisable(true);
+        textFieldPrice.setDisable(true);
+        spinnerMileage.setDisable(true);
+        spinnerEnginePower.setDisable(true);
+        spinnerEngineCapacity.setDisable(true);
+        datePickerYear.setDisable(true);
     }
 
     public void addItemsComboBox() {
-        try {
-            EnumManager em = new EnumManager();
+        EnumManager em = new EnumManager();
 
-            em.employeeTypeEnum(comboBoxBrand,"car_brand");
-            em.employeeTypeEnum(comboBoxCarBody,"car_body_style");
-            em.employeeTypeEnum(comboBoxGearBox,"car_gear_box");
-            em.employeeTypeEnum(comboBoxFuel,"car_fuel");
-            em.employeeTypeEnum(comboBoxColor,"car_color");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        em.employeeTypeEnum(comboBoxBrand,"car_brand");
+
+        em.employeeTypeEnum(comboBoxCarBody,"car_body_style");
+
+        em.employeeTypeEnum(comboBoxGearBox,"car_gear_box");
+
+        em.employeeTypeEnum(comboBoxFuel,"car_fuel");
+
+        em.employeeTypeEnum(comboBoxColor,"car_color");
+
     }
 
     public void spinnerConfig() {
-        spinnerEngineCapacity.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(2,3.6,2,0.1));
-        spinnerEnginePower.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(80,280,180,1));
+        spinnerEngineCapacity.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(2.5,5.0,1,0.1));
+        spinnerEnginePower.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(80,500,180,1));
         spinnerMileage.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,10000,1000));
-        spinnerPrice.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(20,120,50,1));
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     // getters for fields and spinners in gui
@@ -113,8 +151,8 @@ public class EmployeeAddCarController implements Initializable {
         return comboBoxColor.getSelectionModel().getSelectedItem().toString();
     }
 
-    public Integer getPrice() {
-        return Integer.parseInt(spinnerPrice.getValue().toString());
+    public Float getPrice() {
+        return Float.parseFloat(textFieldPrice.getText());
     }
 
     public Date getYear() {
@@ -134,11 +172,11 @@ public class EmployeeAddCarController implements Initializable {
     }
 
     public String getSPZ() {
-        return textFieldSpz.getText();
+        return textFieldSPZ.getText();
     }
 
     public String getVIN() {
-        return textFieldVin.getText();
+        return textFieldVIN.getText();
     }
 
     public boolean tooLongText() {
@@ -160,63 +198,94 @@ public class EmployeeAddCarController implements Initializable {
             getSPZ().trim().isEmpty() ||
             getVIN().trim().isEmpty()){
             return true;
+        } else {
+            try {
+                Float.parseFloat(getPrice().toString());
+            } catch (NumberFormatException e) {
+                return true;
+            }
         }
         return false;
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-        rootPane.getChildren().setAll(pane);
+        backToMenu();
     }
 
     public void btnConfirmPushed(ActionEvent actionEvent) throws SQLException, IOException {
 
         if(tooLongText()) {
-            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Príliš dlhé údaje v kolonke ŠPZ/VIN! Max. počet znakov pre VIN je 17, pre ŠPZ 20.", ButtonType.CLOSE);
-            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-            alertEmptyField.setHeaderText("Varovanie!");
-            alertEmptyField.showAndWait();
+            Notifications notification = Notifications.create()
+                    .title("Príliš dlhé údaje v kolonke ŠPZ/VIN! Max. počet znakov pre VIN je 17, pre ŠPZ 20.")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showWarning();
             return;
         }
 
         if(emptyFieldChecker()) {
-            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING, "Vypíšte správne všetky údaje!", ButtonType.CLOSE);
-            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-            alertEmptyField.setHeaderText("Varovanie!");
-            alertEmptyField.showAndWait();
+
+            Notifications notification = Notifications.create()
+                    .title("Vypíšte správne všetky údaje!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showWarning();
             return;
         }
 
         if(!getYear().before(Calendar.getInstance().getTime())){
-            Alert alertBadDate = new Alert(Alert.AlertType.ERROR,"Rok výroby auta je neplatný!", ButtonType.CLOSE);
-            alertBadDate.initStyle(StageStyle.TRANSPARENT);
-            alertBadDate.setHeaderText("Chyba!");
-            alertBadDate.showAndWait();
 
+            Notifications notification = Notifications.create()
+                    .title("Rok výroby auta je neplatný!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
             return;
         } else {
             CarManager cm = new CarManager();
-            if(cm.addNewCarToDatabase(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
+            if(cm.addNewCar(getVIN(),getBrand(),getModel(),getCarBody(),getEngineCapacity(),getEnginePower(),getGearBox(),getFuel(),getColor(),
                     getPrice(),getYear(),getMileAge(),getSPZ())) {
 
-                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Auto s VIN číslom " + getVIN() + " bolo pridané!", ButtonType.CLOSE);
-                alertInfo.initStyle(StageStyle.TRANSPARENT);
-                alertInfo.setHeaderText("Info!");
-                alertInfo.showAndWait();
+                Notifications notification = Notifications.create()
+                        .title("Auto s VIN číslom " + getVIN() + " bolo pridané!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showConfirm();
 
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/employee_menu.fxml"));
-                rootPane.getChildren().setAll(pane);
-
+                    backToMenu();
             } else {
-                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Záznam o aute s VIN číslom " + getVIN() + " už existuje!", ButtonType.CLOSE);
-                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
-                alertLoginAlreadyExist.setHeaderText("Chyba!");
-                alertLoginAlreadyExist.showAndWait();
+
+                Notifications notification = Notifications.create()
+                        .title("Záznam o aute s VIN číslom " + getVIN() + " už existuje!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showError();
             }
         }
     }
 
-    public void comboBoxModelClicked(MouseEvent mouseEvent) throws SQLException {
+    public void backToMenu() {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/employee_menu.fxml"));
+            parent = (Parent) loaader.load();
+
+            EmployeeMenuController employeeMenuController = loaader.getController();
+            employeeMenuController.setEmployee(employee);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
+    }
+
+    public void comboBoxModelClicked(MouseEvent mouseEvent) {
 
         if(getBrand() == null) {
             return;
@@ -228,40 +297,87 @@ public class EmployeeAddCarController implements Initializable {
 
     public void btnAddBrandPushed(ActionEvent actionEvent) throws IOException {
         PopUpWindow popUpWindow = new PopUpWindow();
-        popUpWindow.display(null,"brand","Zadaj značku: ");
+        String newItem = popUpWindow.display(null,"brand","Zadaj značku: ");
 
-        try {
+        if(newItem != null) {
             EnumManager em = new EnumManager();
 
-            em.employeeTypeEnum(comboBoxBrand,"car_brand");
-        } catch (SQLException e) {
-            e.printStackTrace();
+            em.employeeTypeEnum(comboBoxBrand, "car_brand");
+            comboBoxBrand.setEditable(true);
+            TextFields.bindAutoCompletion(comboBoxBrand.getEditor(),comboBoxBrand.getItems());
+
+            comboBoxBrand.setValue(newItem);
         }
     }
 
     public void btnAddModelPushed(ActionEvent actionEvent) {
         if(getBrand() == null) {
-            Alert alertEmptyBrand = new Alert(Alert.AlertType.ERROR,"Pre pridanie modelu vyber príslušnú značku!", ButtonType.CLOSE);
-            alertEmptyBrand.initStyle(StageStyle.TRANSPARENT);
-            alertEmptyBrand.setHeaderText("Chyba!");
-            alertEmptyBrand.showAndWait();
+            Notifications notification = Notifications.create()
+                    .title("Pre pridanie modelu vyber príslušnú značku!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
             return;
         }
 
         PopUpWindow popUpWindow = new PopUpWindow();
-        popUpWindow.display(getBrand(),"model","Zadaj model: ");
+        String newItem = popUpWindow.display(getBrand(),"model","Zadaj model: ");
+
+        if(newItem != null) {
+            EnumManager em = new EnumManager();
+
+            em.employeeTypeEnum(comboBoxModel, "car_model");
+
+            comboBoxModel.setValue(newItem);
+        }
     }
 
     public void btnAddColorPushed(ActionEvent actionEvent) {
         PopUpWindow popUpWindow = new PopUpWindow();
-        popUpWindow.display(null,"color","Zadaj farbu: ");
 
-        try {
+        String newItem = popUpWindow.display(null,"color","Zadaj farbu: ");
+
+        if(newItem != null) {
             EnumManager em = new EnumManager();
 
             em.employeeTypeEnum(comboBoxColor,"car_color");
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            comboBoxColor.setValue(newItem);
         }
+    }
+
+    public void comboBoxBrandSelected(ActionEvent actionEvent) {
+        comboBoxModel.setDisable(false);
+        buttonAddModel.setDisable(false);
+    }
+
+    public void comboBoxModelSelected(ActionEvent actionEvent) {
+        datePickerYear.setDisable(false);
+    }
+
+    public void datePickerDateSelected(ActionEvent actionEvent) {
+        spinnerMileage.setDisable(false);
+        comboBoxFuel.setDisable(false);
+    }
+
+    public void comboBoxFuelSelected(ActionEvent actionEvent) {
+        spinnerEnginePower.setDisable(false);
+        spinnerEngineCapacity.setDisable(false);
+        comboBoxGearBox.setDisable(false);
+    }
+
+    public void comboBoxGearBoxSelected(ActionEvent actionEvent) {
+        comboBoxCarBody.setDisable(false);
+    }
+
+    public void comboBoxCarBodySelected(ActionEvent actionEvent) {
+        comboBoxColor.setDisable(false);
+        buttonAddColor.setDisable(false);
+    }
+
+    public void comboBoxColorSelected(ActionEvent actionEvent) {
+        textFieldSPZ.setDisable(false);
+        textFieldVIN.setDisable(false);
+        textFieldPrice.setDisable(false);
     }
 }
