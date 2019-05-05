@@ -44,6 +44,7 @@ Piaty scenár ponúka zobrazenie záznamov spĺňajúce rôzne štatistické kri
  - vyhľadať zamestnancov podľa sumy cien vyhotovených zmlúv
 
 ## Diagram logického a fyzického  modelu
+
 ![Fyzický model](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/fyzickyModel.png)
 Každá tabuľka car obsahuje práve jeden FK z car_info. Car_info obsahuje atribúty enumerátorov. Tabuľka contract spája auto, zamestnanca a vypožičiavateľa a ďalšie špecifické atribúty. Nachádza sa tam taktiež väzobná tabuľka car_repair, ktorá slúži nato aby sme vedeli uložiť viacero opráv k jednému autu. Customer tabuľka sa vie odkazovať na 2 rôzne tabuľky podľa typu customera (právnická alebo fyzická osoba).
 
@@ -68,7 +69,7 @@ Snažíme sa písať prehľadný kód s odpovedajúcimi názvami premenných a m
 
 Na generovanie fake dát sme použili aplikáciu Spawner spolu s knižnicou Faker, čím sme docielili, že dáta sú podobné tým skutočným. Ako ukážku uvádzame nami vygenerované dáta z tabuľky právnických osôb:
 
--obrazok
+![Vygenerované dáta](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/vygenerovaneD%C3%A1ta.png)
 
 Do troch tabuliek sme vygenerovali milión záznamov. Tabuľka zmlúv obsahuje desať miliónov záznamov.
 
@@ -80,8 +81,11 @@ GUI je vytvorené v SceneBuilder-i, ktorý vytvára fxml súbor, ku ktorému sme
 
 **1. *Ukážka niektorých querry, ktoré tvoria prvý scenár***
 
-    obrazok1
-    obrazok2
+ ![Querry 1.1](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry1.1.png)
+ Prvým selectom zistíme, či sa dané VIN číslo už nachádza v databáze a následne pridáme záznam do tabuľky car_info. Nasleduje aj pridanie do tabuľky car, avšak to nevošlo na screenshot.
+ 
+ ![Querry 1.2](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry1.2.png)
+ Znova, select zisťuje, či sa zadaný login už nachádza v databáze. Následne sa pridáva záznam o zamestnancovi do príslušnej tabuľky.
 
 Používame prepareStatement, ktorým docielime väčšiu bezpečnosť.
 
@@ -97,8 +101,14 @@ Používame prepareStatement, ktorým docielime väčšiu bezpečnosť.
 
 **2. *Ukážka niektorých querry, ktoré tvoria druhý a tretí scenár***
 
- obrazok1
- obrazok2
+![Querry 2.1](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry2_3.1.png)
+Pridanie poškodenia ku zmluve. Je tu využitá transakcia. Pridáva do dvoch tabuľiek a taktiež do väzobnej tabuľky.
+
+![Querry 2.2](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry2_3.2.png)
+Querry slúži na update informácií o aute, ako sú ŠPZ či stav tachometra. Updateujú sa dve tabuľky.
+
+![Querry 2.3](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry2_3.3.png)
+Select slúži na vyhľadávanie vozidiel na základe VIN čísla či ŠPZ. Používateľ nemusí zadať úplné údaje, select totiž vyhľadá všetky záznamy obsahujúce zadané údaje.
  
 Vyššie uvedené querry sú v jednej transakcii, pretože insert do jednej tabuľky ovplyvňuje insert do druhej. Teda ak by jeden z nich zlyhal ďalší sa taktiež nevykoná.
 
@@ -112,16 +122,26 @@ Mazanie bolo implementované, čo sa týka používateľského rozhrania, do oki
 
  **3. *Ukážka niektorých querry, ktoré tvoria štvrtý a piaty scenár***
 
-obrazok1
-obrazok2
-obrazok3
+![Querry 3.1](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry4_5.1.png)
+Select, ktorý slúži na vyhľadanie áut s celkovou sumou za opravy väčšou ako je tá zadaná.
+
+![Querry 3.2](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry4_5.2.png)
+Select slúži na vyhľadanie áut, ktoré mali určitý počet havárií. Tento počet zadáva užívateľ.
+
+![Querry 3.3](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/querry4_5.3.png)
+Select slúži na vyhľadanie zamestnancov, ktorí vytvorili zmluvy s celkovou sumou väčšou ako tou zadanou.
+
 
 **Zopár obrazoviek našej aplikácie**
 
-obrazok - login
+![Login](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/login.png)
+Toto okno sa zobrazí ihneď po spustení aplikácie. Slúži na prihlásenie admina alebo zamestnanca do systému.
 
-obrazok - auto
+![Pridanie vozidla](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/pridanieVozidla.png)
+Okno, ktoré zamestnancovi umožňuje vytvoriť nový záznam o vozidle.
 
-obrazok - vyhladavat vypociavatelov
+![Vyhľadanie vypožičiavateľa](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/vyhladavanieVypoziciavatelov.png)
+V tomto okne má zamestnanec možnosť vyhľadať vypožičiavateľa, teda fyzickú či právnickú osobu na základe atribútov.
 
-obrazok - detail zmluvy 
+![Detail zmluvy](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/detailZmluvy.png)
+Okno, ktoré sa zobrazí po zvolení menu Zobraziť detail pri vyhľadávaní zmlúv. Umožňuje pridať poškodenie k zmluve a taktiež zobraziť detail auta s možnosťou pridania servisného záznamu.
