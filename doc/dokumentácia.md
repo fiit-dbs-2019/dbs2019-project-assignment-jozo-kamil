@@ -44,10 +44,10 @@ Piaty scenár ponúka zobrazenie záznamov spĺňajúce rôzne štatistické kri
  - vyhľadať zamestnancov podľa sumy cien vyhotovených zmlúv
 
 ## Diagram logického a fyzického  modelu
-![Fyzický model](https://prnt.sc/n8scqs)
+![Fyzický model](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/fyzickyModel.png)
 Každá tabuľka car obsahuje práve jeden FK z car_info. Car_info obsahuje atribúty enumerátorov. Tabuľka contract spája auto, zamestnanca a vypožičiavateľa a ďalšie špecifické atribúty. Nachádza sa tam taktiež väzobná tabuľka car_repair, ktorá slúži nato aby sme vedeli uložiť viacero opráv k jednému autu. Customer tabuľka sa vie odkazovať na 2 rôzne tabuľky podľa typu customera (právnická alebo fyzická osoba).
 
-![Logický model](https://prnt.sc/n8sqo1)
+![Logický model](https://github.com/fiit-dbs-2019/dbs2019-project-assignment-jozo-kamil/blob/stvrtyPiatyScenar/doc/logickyModel.png)
 Logický model je abstraktnejší, neobsahuje väzobné tabuľky, čiže môže sa vyskytovať vzťah n:n. Obsahuje aj vyjadruje takmer totožné veci ako vo fyzickom modeli.
 
 ## Stručný opis návrhu a implementácie
