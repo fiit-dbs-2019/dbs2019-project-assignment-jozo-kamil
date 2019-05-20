@@ -19,7 +19,7 @@ CREATE TYPE car_brand AS ENUM (
 );
 
 CREATE TYPE type_of_harm AS ENUM (
-'defekt','havária','vykradnutie vozidla','odcudzenie vozidla','rozbité sklo','odbité spätné zrkadlo','vypálená žiarovka','poškodený interiér vozidla'
+'servis','defekt','havária','vykradnutie vozidla','odcudzenie vozidla','rozbité sklo','odbité spätné zrkadlo','vypálená žiarovka','poškodený interiér vozidla'
 );
 
 CREATE TYPE car_model AS ENUM (
@@ -52,7 +52,7 @@ engine_power SMALLINT NOT NULL DEFAULT '120',
 gear_box car_gear_box NOT NULL DEFAULT 'manuálna',
 fuel car_fuel NOT NULL DEFAULT 'diesel',
 color car_color NOT NULL DEFAULT 'biela',
-price_per_day SMALLINT NOT NULL DEFAULT '50'
+price_per_day FLOAT NOT NULL DEFAULT '50'
 );
 
 CREATE TABLE servis (
@@ -63,8 +63,9 @@ servis_location VARCHAR(255) NOT NULL
 
 CREATE TABLE repair (
 repair_id SERIAL NOT NULL PRIMARY KEY,
+type type_of_harm NOT NULL DEFAULT 'servis',
 date DATE NOT NULL,
-price INT NOT NULL,
+price FLOAT NOT NULL,
 servis_id INT NOT NULL REFERENCES servis(servis_id)
 );
 
@@ -85,6 +86,7 @@ repair_id INT NOT NULL REFERENCES repair(repair_id)
 CREATE TABLE harm (
 harm_id SERIAL NOT NULL PRIMARY KEY,
 type type_of_harm NOT NULL,
+date DATE NOT NULL,
 repair_id INT REFERENCES repair(repair_id),
 description TEXT
 );
@@ -134,11 +136,19 @@ customer_id VARCHAR(8) NOT NULL REFERENCES customer(customer_id),
 employee_id INT NOT NULL REFERENCES employee(employee_id),
 date_from DATE NOT NULL,
 date_to DATE NOT NULL,
-date_of_creating DATE NOT NULL,
-price INT NOT NULL,
+price FLOAT NOT NULL,
+date_of_creating DATE,
 harm_id INT REFERENCES harm(harm_id)
 );
 
 insert into employee(first_name,last_name,login,password,phone,type) values
 ('Admin','Admin','admin','admin','0000','admin'),
 ('Zamestnanec','Zamestnanec','zamestnanec','zamestnanec','0000','zamestnanec');
+
+CREATE INDEX indexFirstNameLastName ON employee((first_name || '' || last_name) TEXT_PATTERN_OPS);
+CREATE INDEX indexLastNameFirstName ON employee((last_name || '' || first_name) TEXT_PATTERN_OPS);
+CREATE INDEX indexFullNameNatural ON natural_person((first_name || ' ' || last_name) TEXT_PATTERN_OPS);
+CREATE INDEX indexNaturalID ON natural_person(natural_person_id TEXT_PATTERN_OPS);
+CREATE INDEX indexLegalID ON legal_person(legal_person_ico TEXT_PATTERN_OPS);
+CREATE INDEX indexCarVin ON contract(car_vin TEXT_PATTERN_OPS);
+CREATE INDEX indexID ON contract(customer_id TEXT_PATTERN_OPS);

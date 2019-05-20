@@ -1,5 +1,8 @@
 package persistancemanagers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import model.Employee;
 
@@ -11,11 +14,145 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Observable;
 import java.util.Properties;
 
 public class EmployeeManager {
 
-    public Employee getEmployeeFromDatabase() throws SQLException {
+    public void updateEmployeeInfo(Employee employee) {
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("UPDATE employee " +
+                    "SET first_name = ?, last_name = ?, password = ?, phone = ? " +
+                    "WHERE employee_id = ?;"
+            );
+            st.setString(1,employee.getFirstName());
+            st.setString(2,employee.getLastName());
+            st.setString(3,employee.getPassword());
+            st.setString(4,employee.getPhoneNumber());
+            st.setInt(5,employee.getEmployeeID());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<Employee> getEmployeeByFullName(String pattern, Integer offSet) {
+        ObservableList<Employee> listOfEmployee = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+
+
+            st = conn.prepareStatement("select * " +
+                    "from employee " +
+                    "where ((first_name || ' ' || last_name) ILIKE '" + pattern + "%') OR ((last_name || ' ' || first_name) ILIKE '" + pattern + "%')" +
+                    "OR login ILIKE '" + pattern + "%' OR phone ILIKE '" + pattern + "%'" +
+                    "ORDER BY last_name,first_name " +
+                    "LIMIT 500" +
+                    "OFFSET " + offSet + ";"
+            );
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                Integer employeeID = rs.getInt("employee_id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String login = rs.getString("login");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String type = rs.getString("type");
+
+                listOfEmployee.add(new Employee(employeeID,firstName,lastName,login,password,phone,type));
+            }
+
+            return listOfEmployee;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public ObservableList<Employee> getEmployee(Integer offset) {
+        ObservableList<Employee> listOfEmployee = FXCollections.observableArrayList();
+
+        AllTablesManager atm;
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            atm = new AllTablesManager();
+            conn = atm.connect();
+
+            st = conn.prepareStatement("SELECT * FROM employee ORDER BY last_name,first_name LIMIT 500 OFFSET " + offset + ";");
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()) {
+                Integer employeeID = rs.getInt("employee_id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String login = rs.getString("login");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String type = rs.getString("type");
+
+                listOfEmployee.add(new Employee(employeeID,firstName,lastName,login,password,phone,type));
+            }
+
+            return listOfEmployee;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (conn != null)
+            {
+                try { conn.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
+    public Employee getEmployeeFromDatabase(int id) throws SQLException {
         Employee employee = null;
 
         AllTablesManager atm;
@@ -26,17 +163,8 @@ public class EmployeeManager {
             atm = new AllTablesManager();
             conn = atm.connect();
 
-            Properties prop = new Properties();
-            InputStream input = new FileInputStream("src/properties");
-
-            prop.load(input);
-
-            Integer employee_id = Integer.valueOf(prop.getProperty("loggedID"));                       // get employee_id from properties file
-
-            input.close();
-
             st = conn.prepareStatement("SELECT first_name,last_name,phone FROM employee " +
-                    "WHERE employee_id = '" + employee_id + "';"
+                    "WHERE employee_id = '" + id + "';"
             );
             ResultSet rs = st.executeQuery();
 
@@ -52,54 +180,6 @@ public class EmployeeManager {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            st.close();
-            if (conn != null)
-            {
-                try { conn.close(); } catch (SQLException e) {}
-            }
-        }
-    }
-
-    public void setHeader(Label labelFirstName, Label labelLastName) throws SQLException {
-        Employee employee = null;
-
-        AllTablesManager atm;
-        Connection conn = null;
-        PreparedStatement st = null;
-
-        try {
-            atm = new AllTablesManager();
-            conn = atm.connect();
-
-            Properties prop = new Properties();
-            InputStream input = new FileInputStream("src/properties");
-
-            prop.load(input);
-
-
-            Integer employee_id = Integer.valueOf(prop.getProperty("loggedID"));                       // get employee_id from properties file
-
-            input.close();
-
-            st = conn.prepareStatement("SELECT first_name,last_name FROM employee " +
-                    "WHERE employee_id = '" + employee_id + "';");
-            ResultSet rs = st.executeQuery();
-
-            rs.next();
-
-            labelFirstName.setText(rs.getString("first_name"));
-            labelLastName.setText(rs.getString("last_name"));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             st.close();
             if (conn != null)

@@ -1,13 +1,21 @@
 package controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import model.Employee;
+import org.controlsfx.control.Notifications;
+import org.controlsfx.control.textfield.TextFields;
 import persistancemanagers.EmployeeManager;
 import persistancemanagers.EnumManager;
 
@@ -25,21 +33,18 @@ public class AdminAddEmployeeController implements Initializable {
     @FXML private Label labelFirstName;
     @FXML private Label labelLastName;
     @FXML private Label labelDate;
-    @FXML private TextField textFieldFirstName;
-    @FXML private TextField textFieldLastName;
-    @FXML private TextField textFieldLogin;
-    @FXML private TextField textFieldPassword;
-    @FXML private TextField textPhoneNumber;
-    @FXML private ComboBox comboBoxType;
+    @FXML private JFXTextField textFieldFirstName;
+    @FXML private JFXTextField textFieldLastName;
+    @FXML private JFXTextField textFieldLogin;
+    @FXML private JFXTextField textFieldPassword;
+    @FXML private JFXTextField textPhoneNumber;
+    @FXML private JFXComboBox comboBoxType;
+
+    private Employee admin;
 
     public void setHeader () {
-        EmployeeManager em = new EmployeeManager();
-
-        try {
-            em.setHeader(labelFirstName,labelLastName);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        labelFirstName.setText(admin.getFirstName());
+        labelLastName.setText(admin.getLastName());
 
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Calendar.getInstance().getTime());
 
@@ -48,7 +53,6 @@ public class AdminAddEmployeeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setHeader();
         addItemsComboBox();
     }
 
@@ -60,6 +64,15 @@ public class AdminAddEmployeeController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Employee getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Employee admin) {
+        this.admin = admin;
+        setHeader();
     }
 
     public String getFirstName() {
@@ -112,17 +125,27 @@ public class AdminAddEmployeeController implements Initializable {
 
     public void btnAddEmployeePushed(ActionEvent actionEvent) throws SQLException, IOException {
         if (tooLongText()){
-            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Príliš dlhé údaje. Max. veľkosť jedného údaju je 254 znakov!", ButtonType.CLOSE);
-            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-            alertEmptyField.setHeaderText("Varovanie!");
-            alertEmptyField.showAndWait();
+//            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Príliš dlhé údaje. Max. veľkosť jedného údaju je 254 znakov!", ButtonType.CLOSE);
+//            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+//            alertEmptyField.setHeaderText("Varovanie!");
+//            alertEmptyField.showAndWait();
+            Notifications notification = Notifications.create()
+                    .title("Príliš dlhé údaje. Max. veľkosť jedného údaju je 254 znakov!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
             return;
         }
         else if(emptyFieldChecker()){
-            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
-            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
-            alertEmptyField.setHeaderText("Varovanie!");
-            alertEmptyField.showAndWait();
+//            Alert alertEmptyField = new Alert(Alert.AlertType.WARNING,"Vypíšte správne všetky údaje!", ButtonType.CLOSE);
+//            alertEmptyField.initStyle(StageStyle.TRANSPARENT);
+//            alertEmptyField.setHeaderText("Varovanie!");
+//            alertEmptyField.showAndWait();
+            Notifications notification = Notifications.create()
+                    .title("Vypíšte správne všetky údaje!")
+                    .hideAfter(Duration.seconds(4))
+                    .hideCloseButton();
+            notification.showError();
             return;
         } else {
 
@@ -130,24 +153,56 @@ public class AdminAddEmployeeController implements Initializable {
 
             if(em.AddNewEmployeeToDatabase(getFirstName(),getLastName(),getLogin(),getPassword(), getPhone(), getType())){
 
-                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Konto zamestnanca bolo úspešne vytvorené!", ButtonType.CLOSE);
-                alertInfo.initStyle(StageStyle.TRANSPARENT);
-                alertInfo.setHeaderText("Info!");
-                alertInfo.showAndWait();
+//                Alert alertInfo = new Alert(Alert.AlertType.INFORMATION,"Konto zamestnanca bolo úspešne vytvorené!", ButtonType.CLOSE);
+//                alertInfo.initStyle(StageStyle.TRANSPARENT);
+//                alertInfo.setHeaderText("Info!");
+//                alertInfo.showAndWait();
+                Notifications notification = Notifications.create()
+                        .title("Konto zamestnanca bolo úspešne vytvorené!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showConfirm();
 
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
-                rootPane.getChildren().setAll(pane);
+//                AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
+//                rootPane.getChildren().setAll(pane);
+                backToMenu();
+
             } else {
-                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login - " + getLogin() + " - už existuje!", ButtonType.CLOSE);
-                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
-                alertLoginAlreadyExist.setHeaderText("Chyba!");
-                alertLoginAlreadyExist.showAndWait();
+//                Alert alertLoginAlreadyExist = new Alert(Alert.AlertType.ERROR,"Zadaný login - " + getLogin() + " - už existuje!", ButtonType.CLOSE);
+//                alertLoginAlreadyExist.initStyle(StageStyle.TRANSPARENT);
+//                alertLoginAlreadyExist.setHeaderText("Chyba!");
+//                alertLoginAlreadyExist.showAndWait();
+                Notifications notification = Notifications.create()
+                        .title("Zadaný login - " + getLogin() + " - už existuje!")
+                        .hideAfter(Duration.seconds(4))
+                        .hideCloseButton();
+                notification.showError();
             }
         }
     }
 
     public void btnBackPushed(ActionEvent actionEvent) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("../view/admin_menu.fxml"));
-        rootPane.getChildren().setAll(pane);
+        backToMenu();
+    }
+
+    public void backToMenu() {
+        Parent parent = null;
+        try {
+            FXMLLoader loaader = new FXMLLoader(getClass().getResource("../view/admin_menu.fxml"));
+            parent = (Parent) loaader.load();
+
+            AdminMenuController adminMenuController = loaader.getController();
+            adminMenuController.setAdmin(admin);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene newScene = new Scene(parent);
+
+        //This line gets the Stage information
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+        currentStage.setScene(newScene);
+        currentStage.show();
     }
 }
